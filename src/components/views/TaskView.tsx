@@ -24,6 +24,7 @@ export function TaskView() {
     final_condition: 'AUTO',
     max_simultaneous_executions: 1,
     priority: 0,
+    factory_io_address: '',
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -44,6 +45,7 @@ export function TaskView() {
       final_condition: 'AUTO',
       max_simultaneous_executions: 1,
       priority: 0,
+      factory_io_address: '',
     });
   };
 
@@ -56,6 +58,7 @@ export function TaskView() {
       final_condition: task.final_condition,
       max_simultaneous_executions: task.max_simultaneous_executions,
       priority: task.priority,
+      factory_io_address: task.factory_io_address || '',
     });
   };
 
@@ -68,6 +71,7 @@ export function TaskView() {
       final_condition: 'AUTO',
       max_simultaneous_executions: 1,
       priority: 0,
+      factory_io_address: ''
     });
   };
 
@@ -101,7 +105,7 @@ export function TaskView() {
                 type="number"
                 placeholder="Priority"
                 value={formData.priority}
-                onChange={(e) => setFormData({ ...formData, priority: parseInt(e.target.value) || 0 })}
+                onChange={(e) => setFormData({ ...formData, priority: parseInt(e.target.value) })}
                 className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
               <input
