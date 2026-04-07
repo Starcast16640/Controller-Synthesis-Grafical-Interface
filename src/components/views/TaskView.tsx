@@ -10,6 +10,7 @@ interface TaskFormData {
   final_condition: string;
   max_simultaneous_executions: number;
   priority: number;
+  factory_io_address: string;
 }
 
 const TASK_TYPES = ['simple', 'reactivable', 'pausable', 'interruptible'];
@@ -92,7 +93,7 @@ export function TaskView() {
             {editingId ? 'Edit Task' : 'Add New Task'}
           </h3>
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-4 gap-4">
               <input
                 type="text"
                 placeholder="Task Name"
@@ -105,7 +106,7 @@ export function TaskView() {
                 type="number"
                 placeholder="Priority"
                 value={formData.priority}
-                onChange={(e) => setFormData({ ...formData, priority: parseInt(e.target.value) })}
+                onChange={(e) => setFormData({ ...formData, priority: parseInt(e.target.value) || 0 })}
                 className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
               <input
@@ -115,6 +116,13 @@ export function TaskView() {
                 onChange={(e) =>
                   setFormData({ ...formData, max_simultaneous_executions: parseInt(e.target.value) || 1 })
                 }
+                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+              <input
+                type="text"
+                placeholder="Address Mapping"
+                value={formData.factory_io_address}
+                onChange={(e) => setFormData({ ...formData, factory_io_address: e.target.value })}
                 className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
@@ -185,6 +193,9 @@ export function TaskView() {
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Priority
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Address
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Authorization
