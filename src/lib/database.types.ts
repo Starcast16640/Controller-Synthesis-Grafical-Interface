@@ -14,6 +14,7 @@ export interface Database {
           id: string;
           name: string;
           type: 'Boolean' | 'Integer' | 'Real';
+          factory_io_address: string | null;
           machine: string;
           created_at: string;
         };
@@ -21,6 +22,7 @@ export interface Database {
           id?: string;
           name: string;
           type: 'Boolean' | 'Integer' | 'Real';
+          factory_io_address: string | null;
           machine: string;
           created_at?: string;
         };
@@ -28,6 +30,7 @@ export interface Database {
           id?: string;
           name?: string;
           type?: 'Boolean' | 'Integer' | 'Real';
+          factory_io_address: string | null;
           machine?: string;
           created_at?: string;
         };
@@ -64,6 +67,7 @@ export interface Database {
           final_condition: string;
           max_simultaneous_executions: number;
           priority: number;
+          factory_io_address: string | null;
           created_at: string;
         };
         Insert: {
@@ -74,6 +78,7 @@ export interface Database {
           final_condition?: string;
           max_simultaneous_executions?: number;
           priority?: number;
+          factory_io_address: string | null;
           created_at?: string;
         };
         Update: {
@@ -84,6 +89,7 @@ export interface Database {
           final_condition?: string;
           max_simultaneous_executions?: number;
           priority?: number;
+          factory_io_address: string | null;
           created_at?: string;
         };
       };
