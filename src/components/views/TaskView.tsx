@@ -244,6 +244,9 @@ export function TaskView() {
                         {task.final_condition}
                       </code>
                     </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-mono">
+                      {task.factory_io_address || '-'}
+                    </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <button
                         onClick={() => handleEdit(task)}
