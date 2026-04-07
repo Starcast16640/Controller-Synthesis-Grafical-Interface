@@ -50,7 +50,7 @@ export function SensorView() {
           <h3 className="text-lg font-semibold text-gray-800 mb-4">
             {editingId ? 'Edit Sensor' : 'Add New Sensor'}
           </h3>
-          <form onSubmit={handleSubmit} className="grid grid-cols-4 gap-4">
+          <form onSubmit={handleSubmit} className="grid grid-cols-5 gap-4">
             <input
               type="text"
               placeholder="Sensor Name"
@@ -75,6 +75,13 @@ export function SensorView() {
               onChange={(e) => setFormData({ ...formData, machine: e.target.value })}
               className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               required
+            />
+            <input
+              type="text"
+              placeholder="Address (ex: %I0.4)"
+              value={formData.factory_io_address || ''}
+              onChange={(e) => setFormData({ ...formData, factory_io_address: e.target.value })}
+              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
             <div className="flex gap-2">
               <button
