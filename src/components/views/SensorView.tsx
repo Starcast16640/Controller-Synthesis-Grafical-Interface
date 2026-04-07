@@ -24,7 +24,7 @@ export function SensorView() {
       await addSensor(formData as Omit<Sensor, 'id' | 'created_at'>);
     }
 
-    setFormData({ name: '', type: 'Boolean', machine: '' });
+    setFormData({ name: '', type: 'Boolean', machine: '', factory_io_address: '' });
   };
 
   const handleEdit = (sensor: Sensor) => {
@@ -33,12 +33,13 @@ export function SensorView() {
       name: sensor.name,
       type: sensor.type,
       machine: sensor.machine,
+      factory_io_address: sensor.factory_io_address || '',
     });
   };
 
   const handleCancel = () => {
     setEditingId(null);
-    setFormData({ name: '', type: 'Boolean', machine: '' });
+    setFormData({ name: '', type: 'Boolean', machine: '', factory_io_address: '' });
   };
 
   return (
@@ -117,6 +118,9 @@ export function SensorView() {
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Machine
                 </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Address
+                </th>
                 <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Actions
                 </th>
@@ -125,7 +129,7 @@ export function SensorView() {
             <tbody className="bg-white divide-y divide-gray-200">
               {sensors.length === 0 ? (
                 <tr>
-                  <td colSpan={4} className="px-6 py-8 text-center text-gray-500">
+                  <td colSpan={5} className="px-6 py-8 text-center text-gray-500">
                     No sensors defined yet. Add your first sensor above.
                   </td>
                 </tr>
@@ -142,6 +146,9 @@ export function SensorView() {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       {sensor.machine}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 font-mono">
+                      {sensor.factory_io_address || '-'}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <button
