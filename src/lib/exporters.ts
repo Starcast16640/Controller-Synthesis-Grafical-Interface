@@ -19,6 +19,9 @@ export function generateDEPS(
 
   deps += '/* ========== SENSORS ========== */\n';
   sensors.forEach((sensor) => {
+    if (sensor.factory_io_address) {
+      deps += `/* MAPPING Factory I/O: ${sensor.factory_io_address} */\n`;
+    }
     deps += `sensor ${sensor.name}: ${sensor.type} on_machine "${sensor.machine}";\n`;
   });
 
@@ -42,6 +45,9 @@ export function generateDEPS(
 
   deps += '\n/* ========== TASKS ========== */\n';
   tasks.forEach((task) => {
+    if (task.factory_io_address) {
+      deps += `/* MAPPING Factory I/O: ${task.factory_io_address} */\n`;
+    }
     deps += `task ${task.name}\n`;
     deps += `  types = [${task.type.join(', ')}]\n`;
     deps += `  priority = ${task.priority}\n`;
@@ -104,6 +110,9 @@ export function generateGRAFCET(tasks: Task[], successionArrows: SuccessionArrow
   grafcet += '  /* Steps */\n';
   tasks.forEach((task) => {
     let label = task.name;
+    if (task.factory_io_address) {
+      label += `\\n[${task.factory_io_address}]`;
+    }
     if (task.type.includes('reactivable')) {
       label += ` (max: ${task.max_simultaneous_executions})`;
     }
@@ -134,3 +143,13 @@ export function downloadFile(content: string, filename: string) {
   element.click();
   document.body.removeChild(element);
 }
+
+const escapeSqlString = (str: string | null | undefined) => {
+  if (!str) return 'NULL';
+  return `'${str.replace(/'/g, "''")}'`;
+};
+
+const escapeSqlJson = (obj: any) => {
+  if (!obj) return 'NULL';
+  return `'${JSON.stringify(obj).replace(/'/g, "''")}'::jsonb`;
+};
