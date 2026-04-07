@@ -10,6 +10,7 @@ export function SensorView() {
     name: '',
     type: 'Boolean',
     machine: '',
+    factory_io_address: '',
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
