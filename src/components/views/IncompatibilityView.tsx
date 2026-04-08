@@ -84,6 +84,37 @@ export function IncompatibilityView() {
               <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Action</th>
             </tr>
           </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {incompatibilityLinks.length === 0 ? (
+              <tr>
+                <td colSpan={4} className="px-6 py-8 text-center text-gray-500">
+                  No incompatibilities defined yet.
+                </td>
+              </tr>
+            ) : (
+              incompatibilityLinks.map((link) => (
+                <tr key={link.id} className="hover:bg-red-50/50">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                    {getTaskName(link.task1_id)}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-center text-red-500 font-bold">
+                    ✕
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                    {getTaskName(link.task2_id)}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm">
+                    <button
+                      onClick={() => deleteIncompatibilityLink(link.id)}
+                      className="text-red-600 hover:text-red-900 bg-red-50 p-2 rounded-full"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
         </table>
       </div>
     </div>
