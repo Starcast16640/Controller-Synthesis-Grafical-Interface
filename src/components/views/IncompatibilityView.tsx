@@ -79,7 +79,7 @@ export function IncompatibilityView() {
           <thead className="bg-gray-50">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Task 1</th>
-              <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Status</th>
+              <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Linked</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Task 2</th>
               <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Action</th>
             </tr>
@@ -93,7 +93,7 @@ export function IncompatibilityView() {
               </tr>
             ) : (
               incompatibilityLinks.map((link) => (
-                <tr key={link.id} className="hover:bg-red-50/50">
+                <tr key={link.id} className="hover:bg-blue-50/50">
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                     {getTaskName(link.task1_id)}
                   </td>
