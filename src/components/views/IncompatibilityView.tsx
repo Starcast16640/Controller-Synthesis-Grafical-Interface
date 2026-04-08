@@ -158,6 +158,19 @@ export function IncompatibilityView() {
       <div className="bg-red-50 border border-red-200 rounded-lg p-6 mb-8 shadow-sm">
         <h3 className="text-lg font-semibold text-red-900 mb-4">Create New Incompatibility</h3>
         <div className="flex flex-col md:flex-row gap-4 items-end">
+          <div className="">
+            <label className="">Task A</label>
+            <select
+              value={task1Id}
+              onChange={(e) => setTask1Id(e.target.value)}
+              className=""
+            >
+              <option value=""> Select Task </option>
+              {tasks.map((t) => (
+                <option key={t.id} value={t.id} disabled={t.id === task2Id}>{t.name}</option>
+              ))}
+            </select>
+          </div>
         </div>
       </div>
       {incompatibilityLinks.length > 0 && (
