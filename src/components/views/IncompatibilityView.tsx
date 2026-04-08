@@ -22,21 +22,11 @@ export function IncompatibilityView() {
     return task ? task.name : 'Deleted Task';
   };
 
-  const handleCreateLink = () => {
-    if (selectedTasks.length === 2) {
-      addIncompatibilityLink({
-        task1_id: selectedTasks[0],
-        task2_id: selectedTasks[1],
-      });
-      setSelectedTasks([]);
-    }
-  };
-
   return (
     <div className="p-6 h-full flex flex-col">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-bold text-gray-900">Incompatibility View</h2>
-
+      </div>
       <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8 shadow-sm">
         <h3 className="text-lg font-semibold text-black-900 mb-4">Create New Incompatibility</h3>
         <div className="flex flex-col md:flex-row gap-4 items-end">
@@ -96,7 +86,6 @@ export function IncompatibilityView() {
           </thead>
         </table>
       </div>
-    </div>
     </div>
   );
 }
