@@ -2,120 +2,24 @@ import { useState, useRef, useEffect } from 'react';
 import { useData } from '../../contexts/DataContext';
 import { Trash2 } from 'lucide-react';
 
-const TASK_BLOCK_WIDTH = 150;
-const TASK_BLOCK_HEIGHT = 80;
-
-interface TaskPosition {
-  id: string;
-  x: number;
-  y: number;
-}
-
 export function IncompatibilityView() {
   const { tasks, incompatibilityLinks, addIncompatibilityLink, deleteIncompatibilityLink } = useData();
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [positions, setPositions] = useState<TaskPosition[]>([]);
-  const [selectedTasks, setSelectedTasks] = useState<string[]>([]);
-  const [draggingTaskId, setDraggingTaskId] = useState<string | null>(null);
-  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
+  const [task1Id, setTask1Id] = useState('');
+  const [task2Id, setTask2Id] = useState('');
 
-  useEffect(() => {
-    if (positions.length === 0 && tasks.length > 0) {
-      const cols = Math.ceil(Math.sqrt(tasks.length));
-      const newPositions = tasks.map((task, idx) => ({
-        id: task.id,
-        x: (idx % cols) * (TASK_BLOCK_WIDTH + 40) + 20,
-        y: Math.floor(idx / cols) * (TASK_BLOCK_HEIGHT + 40) + 20,
-      }));
-      setPositions(newPositions);
-    }
-  }, [tasks, positions.length]);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    const rect = canvas.getBoundingClientRect();
-    ctx.clearRect(0, 0, rect.width, rect.height);
-
-    incompatibilityLinks.forEach((link) => {
-      const from = positions.find((p) => p.id === link.task1_id);
-      const to = positions.find((p) => p.id === link.task2_id);
-
-      if (from && to) {
-        const fromX = from.x + TASK_BLOCK_WIDTH / 2;
-        const fromY = from.y + TASK_BLOCK_HEIGHT / 2;
-        const toX = to.x + TASK_BLOCK_WIDTH / 2;
-        const toY = to.y + TASK_BLOCK_HEIGHT / 2;
-
-        ctx.strokeStyle = '#dc2626';
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.moveTo(fromX, fromY);
-        ctx.lineTo(toX, toY);
-        ctx.stroke();
-
-        ctx.fillStyle = '#dc2626';
-        ctx.font = 'bold 14px sans-serif';
-        ctx.textAlign = 'center';
-        const midX = (fromX + toX) / 2;
-        const midY = (fromY + toY) / 2;
-        ctx.fillText('✕', midX, midY);
-      }
-    });
-  }, [incompatibilityLinks, positions]);
-
-  const handleTaskMouseDown = (taskId: string, e: React.MouseEvent) => {
-    const pos = positions.find((p) => p.id === taskId);
-    if (!pos) return;
-
-    const container = containerRef.current;
-    if (!container) return;
-
-    const rect = container.getBoundingClientRect();
-    setDraggingTaskId(taskId);
-    setDragOffset({
-      x: e.clientX - rect.left - pos.x,
-      y: e.clientY - rect.top - pos.y,
-    });
-  };
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!draggingTaskId) return;
-
-    const container = containerRef.current;
-    if (!container) return;
-
-    const rect = container.getBoundingClientRect();
-    const newX = e.clientX - rect.left - dragOffset.x;
-    const newY = e.clientY - rect.top - dragOffset.y;
-
-    setPositions((prev) =>
-      prev.map((p) => (p.id === draggingTaskId ? { ...p, x: Math.max(0, newX), y: Math.max(0, newY) } : p))
-    );
-  };
-
-  const handleMouseUp = () => {
-    setDraggingTaskId(null);
-  };
-
-  const handleTaskClick = (taskId: string) => {
-    setSelectedTasks((prev) =>
-      prev.includes(taskId) ? prev.filter((t) => t !== taskId) : [...prev, taskId]
-    );
+  const getTaskName = (id: string) => {
+    const task = tasks.find((t) => t.id === id);
+    return task ? task.name : 'Deleted Task';
   };
 
   const handleCreateLink = () => {
-    if (selectedTasks.length === 2) {
+    if (task1Id && task2Id && task1Id !== task2Id) {
       addIncompatibilityLink({
-        task1_id: selectedTasks[0],
-        task2_id: selectedTasks[1],
+        task1_id: task1Id,
+        task2_id: task2Id,
       });
-      setSelectedTasks([]);
+      setTask1Id('');
+      setTask2Id('');
     }
   };
 
