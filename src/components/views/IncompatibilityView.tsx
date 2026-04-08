@@ -22,28 +22,6 @@ export function IncompatibilityView() {
     return task ? task.name : 'Deleted Task';
   };
 
-  useEffect(() => {
-    if (positions.length === 0 && tasks.length > 0) {
-      const cols = Math.ceil(Math.sqrt(tasks.length));
-      const newPositions = tasks.map((task, idx) => ({
-        id: task.id,
-        x: (idx % cols) * (TASK_BLOCK_WIDTH + 40) + 20,
-        y: Math.floor(idx / cols) * (TASK_BLOCK_HEIGHT + 40) + 20,
-      }));
-      setPositions(newPositions);
-    }
-  }, [tasks, positions.length]);
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    const rect = canvas.getBoundingClientRect();
-    ctx.clearRect(0, 0, rect.width, rect.height);
-
     incompatibilityLinks.forEach((link) => {
       const from = positions.find((p) => p.id === link.task1_id);
       const to = positions.find((p) => p.id === link.task2_id);
@@ -71,46 +49,6 @@ export function IncompatibilityView() {
     });
   }, [incompatibilityLinks, positions]);
 
-  const handleTaskMouseDown = (taskId: string, e: React.MouseEvent) => {
-    const pos = positions.find((p) => p.id === taskId);
-    if (!pos) return;
-
-    const container = containerRef.current;
-    if (!container) return;
-
-    const rect = container.getBoundingClientRect();
-    setDraggingTaskId(taskId);
-    setDragOffset({
-      x: e.clientX - rect.left - pos.x,
-      y: e.clientY - rect.top - pos.y,
-    });
-  };
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!draggingTaskId) return;
-
-    const container = containerRef.current;
-    if (!container) return;
-
-    const rect = container.getBoundingClientRect();
-    const newX = e.clientX - rect.left - dragOffset.x;
-    const newY = e.clientY - rect.top - dragOffset.y;
-
-    setPositions((prev) =>
-      prev.map((p) => (p.id === draggingTaskId ? { ...p, x: Math.max(0, newX), y: Math.max(0, newY) } : p))
-    );
-  };
-
-  const handleMouseUp = () => {
-    setDraggingTaskId(null);
-  };
-
-  const handleTaskClick = (taskId: string) => {
-    setSelectedTasks((prev) =>
-      prev.includes(taskId) ? prev.filter((t) => t !== taskId) : [...prev, taskId]
-    );
-  };
-
   const handleCreateLink = () => {
     if (selectedTasks.length === 2) {
       addIncompatibilityLink({
@@ -125,22 +63,6 @@ export function IncompatibilityView() {
     <div className="p-6 h-full flex flex-col">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-bold text-gray-900">Incompatibility View</h2>
-        <div className="flex gap-2">
-          <button
-            onClick={handleCreateLink}
-            disabled={selectedTasks.length !== 2}
-            className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-          >
-            Create Link ({selectedTasks.length}/2)
-          </button>
-          <button
-            onClick={() => setSelectedTasks([])}
-            className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors"
-          >
-            Clear Selection
-          </button>
-        </div>
-      </div>
 
       <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8 shadow-sm">
         <h3 className="text-lg font-semibold text-black-900 mb-4">Create New Incompatibility</h3>
