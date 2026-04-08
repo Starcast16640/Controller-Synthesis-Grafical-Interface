@@ -35,7 +35,7 @@ export function IncompatibilityView() {
             <select
               value={task1Id}
               onChange={(e) => setTask1Id(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
+              className="w-full pl-4 pr-10 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
             >
               <option value="">Select Task</option>
               {tasks.map((t) => (
@@ -53,7 +53,7 @@ export function IncompatibilityView() {
             <select
               value={task2Id}
               onChange={(e) => setTask2Id(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white pr-10"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
             >
               <option value="">Select Task</option>
               {tasks.map((t) => (
