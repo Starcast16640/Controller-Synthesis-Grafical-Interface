@@ -155,7 +155,7 @@ export function IncompatibilityView() {
         </div>
       </div>
 
-      <div className="bg-red-50 border border-red-200 rounded-lg p-6 mb-8 shadow-sm">
+      <div className="bg-blue-50 border border-red-200 rounded-lg p-6 mb-8 shadow-sm">
         <h3 className="text-lg font-semibold text-red-900 mb-4">Create New Incompatibility</h3>
         <div className="flex flex-col md:flex-row gap-4 items-end">
           <div className="flex-1 w-full">
