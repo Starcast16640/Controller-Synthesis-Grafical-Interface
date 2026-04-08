@@ -200,33 +200,9 @@ export function IncompatibilityView() {
           >
             Create Link
           </button>
-          
         </div>
       </div>
-      {incompatibilityLinks.length > 0 && (
-        <div className="mt-4 bg-white rounded-lg shadow-md p-4">
-          <h3 className="text-sm font-semibold text-gray-700 mb-2">Incompatibility Links</h3>
-          <div className="space-y-2 max-h-32 overflow-y-auto">
-            {incompatibilityLinks.map((link) => {
-              const task1 = tasks.find((t) => t.id === link.task1_id);
-              const task2 = tasks.find((t) => t.id === link.task2_id);
-              return (
-                <div key={link.id} className="flex items-center justify-between bg-red-50 p-2 rounded">
-                  <span className="text-sm text-gray-700">
-                    {task1?.name} ✕ {task2?.name}
-                  </span>
-                  <button
-                    onClick={() => deleteIncompatibilityLink(link.id)}
-                    className="text-red-600 hover:text-red-900"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
+
     </div>
   );
 }
