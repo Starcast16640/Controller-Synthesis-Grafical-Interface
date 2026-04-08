@@ -97,5 +97,6 @@ export function IncompatibilityView() {
         </table>
       </div>
     </div>
+    </div>
   );
 }
