@@ -155,54 +155,7 @@ export function IncompatibilityView() {
         </div>
       </div>
 
-      <div className="flex-1 relative bg-gray-50 rounded-lg border border-gray-200 overflow-hidden">
-        <div
-          ref={containerRef}
-          className="w-full h-full relative overflow-auto"
-          onMouseMove={handleMouseMove}
-          onMouseUp={handleMouseUp}
-          onMouseLeave={handleMouseUp}
-        >
-          <canvas
-            ref={canvasRef}
-            width={2000}
-            height={2000}
-            className="absolute top-0 left-0 pointer-events-none"
-          />
-
-          {positions.map((pos) => {
-            const task = tasks.find((t) => t.id === pos.id);
-            if (!task) return null;
-
-            return (
-              <div
-                key={pos.id}
-                className={`absolute cursor-move rounded-lg p-2 border-2 transition-all ${
-                  selectedTasks.includes(pos.id)
-                    ? 'border-blue-600 shadow-lg scale-105'
-                    : 'border-gray-400 hover:border-gray-600'
-                }`}
-                style={{
-                  left: `${pos.x}px`,
-                  top: `${pos.y}px`,
-                  width: `${TASK_BLOCK_WIDTH}px`,
-                  height: `${TASK_BLOCK_HEIGHT}px`,
-                  backgroundColor: getTaskTypeColor(task.type),
-                  userSelect: 'none',
-                }}
-                onMouseDown={(e) => handleTaskMouseDown(pos.id, e)}
-                onClick={() => handleTaskClick(pos.id)}
-              >
-                <div className="text-xs font-bold text-gray-900 truncate">{task.name}</div>
-                <div className="text-xs text-gray-600 mt-1">
-                  {task.type.join(', ')}
-                </div>
-                <div className="text-xs text-gray-500 mt-2">Priority: {task.priority}</div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
+      
 
       {incompatibilityLinks.length > 0 && (
         <div className="mt-4 bg-white rounded-lg shadow-md p-4">
