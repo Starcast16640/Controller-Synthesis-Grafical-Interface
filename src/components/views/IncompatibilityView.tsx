@@ -175,7 +175,20 @@ export function IncompatibilityView() {
           <div className="flex items-center justify-center pb-2 px-2 text-red-500 font-bold text-xl">
             ✕
           </div>
-          
+
+          <div className="flex-1 w-full">
+            <label className="block text-sm font-medium text-gray-700 mb-2">Second Task :</label>
+            <select
+              value={task2Id}
+              onChange={(e) => setTask2Id(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 bg-white"
+            >
+              <option value="">Select Task</option>
+              {tasks.map((t) => (
+                <option key={t.id} value={t.id} disabled={t.id === task1Id}>{t.name}</option>
+              ))}
+            </select>
+          </div>
         </div>
       </div>
       {incompatibilityLinks.length > 0 && (
