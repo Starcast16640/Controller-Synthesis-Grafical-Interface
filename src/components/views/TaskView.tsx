@@ -136,7 +136,7 @@ export function TaskView() {
                       type="checkbox"
                       checked={formData.type.includes(type)}
                       onChange={() => toggleTaskType(type)}
-                      className="w-4 h-4 rounded border-gray-300"
+                      className="w-4 h-4 rounded border-gray-300 accent-blue-600"
                     />
                     <span className="text-sm text-gray-700 capitalize">{type}</span>
                   </label>
