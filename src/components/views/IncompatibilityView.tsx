@@ -23,13 +23,6 @@ export function IncompatibilityView() {
     }
   };
 
-  const getTaskTypeColor = (type: string[]) => {
-    if (type.includes('reactivable')) return '#dcfce7';
-    if (type.includes('pausable')) return '#fef3c7';
-    if (type.includes('interruptible')) return '#fecaca';
-    return '#dbeafe';
-  };
-
   return (
     <div className="p-6 h-full flex flex-col">
       <div className="flex justify-between items-center mb-4">
