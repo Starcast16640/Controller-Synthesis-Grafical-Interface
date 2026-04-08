@@ -165,7 +165,7 @@ export function IncompatibilityView() {
               onChange={(e) => setTask1Id(e.target.value)}
               className=""
             >
-              <option value="">   Select Task </option>
+              <option value=""> -- Select Task </option>
               {tasks.map((t) => (
                 <option key={t.id} value={t.id} disabled={t.id === task2Id}>{t.name}</option>
               ))}
