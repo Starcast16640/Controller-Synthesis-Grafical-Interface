@@ -411,7 +411,7 @@ export function SuccessionView() {
                   </span>
                   <button
                     onClick={() => deleteSuccessionArrow(arrow.id)}
-                    className="text-red-600 hover:text-red-900"
+                    className="text-red-1000 hover:text-red-900"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button> 
