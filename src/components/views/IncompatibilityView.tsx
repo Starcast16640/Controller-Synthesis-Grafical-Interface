@@ -158,8 +158,8 @@ export function IncompatibilityView() {
       <div className="bg-red-50 border border-red-200 rounded-lg p-6 mb-8 shadow-sm">
         <h3 className="text-lg font-semibold text-red-900 mb-4">Create New Incompatibility</h3>
         <div className="flex flex-col md:flex-row gap-4 items-end">
-          <div className="">
-            <label className="">First Task : </label>
+          <div className="flex-1 w-full">
+            <label className="block text-sm font-medium text-gray-700 mb-2">First Task : </label>
             <select
               value={task1Id}
               onChange={(e) => setTask1Id(e.target.value)}
