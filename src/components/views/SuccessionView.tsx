@@ -50,9 +50,15 @@ export function SuccessionView() {
       const task = tasks.find((t) => t.id === id);
       return task ? task.name : 'Task deleted';
     } else {
-      const node = successionNodes.find((n) => n.id === id);
-      if (!node) return 'Node deleted';
-      return node.split_type === 'both' ? 'Node Both' : 'Node Only One';
+      const nodeIndex = successionNodes.findIndex((n) => n.id === id);
+      
+      if (nodeIndex === -1) return 'Node deleted';
+      
+      const node = successionNodes[nodeIndex];
+      const nodeNumber = nodeIndex + 1;
+      return node.split_type === 'both' 
+        ? `Node ${nodeNumber} Both` 
+        : `Node ${nodeNumber} Only One`;
     }
   };
 
