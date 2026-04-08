@@ -48,11 +48,11 @@ export function SuccessionView() {
   const getElementName = (type: 'task' | 'node', id: string) => {
     if (type === 'task') {
       const task = tasks.find((t) => t.id === id);
-      return task ? task.name : 'Tâche supprimée';
+      return task ? task.name : 'Task deleted';
     } else {
       const node = successionNodes.find((n) => n.id === id);
-      if (!node) return 'Nœud supprimé';
-      return node.split_type === 'both' ? 'Nœud ⊕ (ET)' : 'Nœud | (OU)';
+      if (!node) return 'Node deleted';
+      return node.split_type === 'both' ? 'Node Both' : 'Node Only One';
     }
   };
 
