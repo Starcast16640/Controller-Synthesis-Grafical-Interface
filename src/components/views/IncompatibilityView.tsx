@@ -171,6 +171,11 @@ export function IncompatibilityView() {
               ))}
             </select>
           </div>
+          
+          <div className="flex items-center justify-center pb-2 px-2 text-red-500 font-bold text-xl">
+            ✕
+          </div>
+          
         </div>
       </div>
       {incompatibilityLinks.length > 0 && (
