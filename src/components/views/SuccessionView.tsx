@@ -408,27 +408,39 @@ export function SuccessionView() {
         </div>
       )}
       {successionArrows.length > 0 && (
-        <div className="mt-4 bg-white rounded-lg shadow-md p-4">
-          <h3 className="text-sm font-semibold text-gray-700 mb-2">Succession Arrows</h3>
-          <div className="space-y-2 max-h-60 overflow-y-auto">
-            {successionArrows.map((arrow) => {
-              
-              const element1 = tasks.find((t) => t.id === arrow.from_id);
-              const element2 = tasks.find((t) => t.id === arrow.to_id);
-              return (
-                <div key={arrow.id} className="flex items-center justify-between bg-red-50 p-2 rounded">
-                  <span className="text-sm text-gray-700">
-                    {element1?.name} =D {element2?.name}
-                  </span>
-                  <button
-                    onClick={() => deleteSuccessionArrow(arrow.id)}
-                    className="text-red-600 hover:text-red-900"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button> 
-                </div>
-              );
-            })}
+        <div className="mt-4 bg-white rounded-lg shadow-md p-4 flex-shrink-0">
+          <h3 className="text-sm font-semibold text-gray-700 mb-2">Succession Table</h3>
+          <div className="overflow-x-auto max-h-48 overflow-y-auto border border-gray-200 rounded">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead className="bg-gray-50 sticky top-0">
+                <tr>
+                  <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Source</th>
+                  <th className="px-4 py-2 text-left text-xs font-medium text-gray-500 uppercase">Destination</th>
+                  <th className="px-4 py-2 text-right text-xs font-medium text-gray-500 uppercase">Action</th>
+                </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {successionArrows.map((arrow) => (
+                  <tr key={arrow.id} className="hover:bg-red-50">
+                    <td className="px-4 py-2 whitespace-nowrap text-sm font-medium text-gray-900">
+                      {getElementName(arrow.from_type, arrow.from_id)}
+                    </td>
+                    <td className="px-4 py-2 whitespace-nowrap text-sm text-gray-600">
+                      → {getElementName(arrow.to_type, arrow.to_id)}
+                    </td>
+                    <td className="px-4 py-2 whitespace-nowrap text-right text-sm">
+                      <button
+                        onClick={() => deleteSuccessionArrow(arrow.id)}
+                        className="text-red-600 hover:text-red-900"
+                        title="Supprimer la flèche"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       )}
