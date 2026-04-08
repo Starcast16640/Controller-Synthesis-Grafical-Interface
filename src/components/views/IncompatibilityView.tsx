@@ -22,6 +22,105 @@ export function IncompatibilityView() {
     return task ? task.name : 'Deleted Task';
   };
 
+  useEffect(() => {
+    if (positions.length === 0 && tasks.length > 0) {
+      const cols = Math.ceil(Math.sqrt(tasks.length));
+      const newPositions = tasks.map((task, idx) => ({
+        id: task.id,
+        x: (idx % cols) * (TASK_BLOCK_WIDTH + 40) + 20,
+        y: Math.floor(idx / cols) * (TASK_BLOCK_HEIGHT + 40) + 20,
+      }));
+      setPositions(newPositions);
+    }
+  }, [tasks, positions.length]);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const rect = canvas.getBoundingClientRect();
+    ctx.clearRect(0, 0, rect.width, rect.height);
+
+    incompatibilityLinks.forEach((link) => {
+      const from = positions.find((p) => p.id === link.task1_id);
+      const to = positions.find((p) => p.id === link.task2_id);
+
+      if (from && to) {
+        const fromX = from.x + TASK_BLOCK_WIDTH / 2;
+        const fromY = from.y + TASK_BLOCK_HEIGHT / 2;
+        const toX = to.x + TASK_BLOCK_WIDTH / 2;
+        const toY = to.y + TASK_BLOCK_HEIGHT / 2;
+
+        ctx.strokeStyle = '#dc2626';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(fromX, fromY);
+        ctx.lineTo(toX, toY);
+        ctx.stroke();
+
+        ctx.fillStyle = '#dc2626';
+        ctx.font = 'bold 14px sans-serif';
+        ctx.textAlign = 'center';
+        const midX = (fromX + toX) / 2;
+        const midY = (fromY + toY) / 2;
+        ctx.fillText('✕', midX, midY);
+      }
+    });
+  }, [incompatibilityLinks, positions]);
+
+  const handleTaskMouseDown = (taskId: string, e: React.MouseEvent) => {
+    const pos = positions.find((p) => p.id === taskId);
+    if (!pos) return;
+
+    const container = containerRef.current;
+    if (!container) return;
+
+    const rect = container.getBoundingClientRect();
+    setDraggingTaskId(taskId);
+    setDragOffset({
+      x: e.clientX - rect.left - pos.x,
+      y: e.clientY - rect.top - pos.y,
+    });
+  };
+
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!draggingTaskId) return;
+
+    const container = containerRef.current;
+    if (!container) return;
+
+    const rect = container.getBoundingClientRect();
+    const newX = e.clientX - rect.left - dragOffset.x;
+    const newY = e.clientY - rect.top - dragOffset.y;
+
+    setPositions((prev) =>
+      prev.map((p) => (p.id === draggingTaskId ? { ...p, x: Math.max(0, newX), y: Math.max(0, newY) } : p))
+    );
+  };
+
+  const handleMouseUp = () => {
+    setDraggingTaskId(null);
+  };
+
+  const handleTaskClick = (taskId: string) => {
+    setSelectedTasks((prev) =>
+      prev.includes(taskId) ? prev.filter((t) => t !== taskId) : [...prev, taskId]
+    );
+  };
+
+  const handleCreateLink = () => {
+    if (selectedTasks.length === 2) {
+      addIncompatibilityLink({
+        task1_id: selectedTasks[0],
+        task2_id: selectedTasks[1],
+      });
+      setSelectedTasks([]);
+    }
+  };
+
   return (
     <div className="p-6 h-full flex flex-col">
       <div className="flex justify-between items-center mb-4">
