@@ -22,33 +22,6 @@ export function IncompatibilityView() {
     return task ? task.name : 'Deleted Task';
   };
 
-    incompatibilityLinks.forEach((link) => {
-      const from = positions.find((p) => p.id === link.task1_id);
-      const to = positions.find((p) => p.id === link.task2_id);
-
-      if (from && to) {
-        const fromX = from.x + TASK_BLOCK_WIDTH / 2;
-        const fromY = from.y + TASK_BLOCK_HEIGHT / 2;
-        const toX = to.x + TASK_BLOCK_WIDTH / 2;
-        const toY = to.y + TASK_BLOCK_HEIGHT / 2;
-
-        ctx.strokeStyle = '#dc2626';
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.moveTo(fromX, fromY);
-        ctx.lineTo(toX, toY);
-        ctx.stroke();
-
-        ctx.fillStyle = '#dc2626';
-        ctx.font = 'bold 14px sans-serif';
-        ctx.textAlign = 'center';
-        const midX = (fromX + toX) / 2;
-        const midY = (fromY + toY) / 2;
-        ctx.fillText('✕', midX, midY);
-      }
-    });
-  }, [incompatibilityLinks, positions]);
-
   const handleCreateLink = () => {
     if (selectedTasks.length === 2) {
       addIncompatibilityLink({
