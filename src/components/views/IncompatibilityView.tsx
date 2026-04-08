@@ -76,7 +76,7 @@ export function IncompatibilityView() {
       </div>
       <div className="bg-white rounded-lg shadow-md overflow-hidden flex-1">
         <table className="min-w-full divide-y divide-blue-200">
-          <thead className="bg-blue-50">
+          <thead className="bg-blue-50 border-blue-200">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">First Task</th>
               <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Linked</th>
