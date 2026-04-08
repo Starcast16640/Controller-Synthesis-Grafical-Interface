@@ -45,6 +45,17 @@ export function SuccessionView() {
     null
   );
 
+  const getElementName = (type: 'task' | 'node', id: string) => {
+    if (type === 'task') {
+      const task = tasks.find((t) => t.id === id);
+      return task ? task.name : 'Tâche supprimée';
+    } else {
+      const node = successionNodes.find((n) => n.id === id);
+      if (!node) return 'Nœud supprimé';
+      return node.split_type === 'both' ? 'Nœud ⊕ (ET)' : 'Nœud | (OU)';
+    }
+  };
+
   useEffect(() => {
     if (taskPositions.length === 0 && tasks.length > 0) {
       const cols = Math.ceil(Math.sqrt(tasks.length));
@@ -411,7 +422,7 @@ export function SuccessionView() {
                   </span>
                   <button
                     onClick={() => deleteSuccessionArrow(arrow.id)}
-                    className="text-red-1000 hover:text-red-900"
+                    className="text-red-600 hover:text-red-900"
                   >
                     <Trash2 className="w-4 h-4" />
                   </button> 
