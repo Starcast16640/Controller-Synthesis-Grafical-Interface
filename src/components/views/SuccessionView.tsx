@@ -399,7 +399,7 @@ export function SuccessionView() {
       {successionArrows.length > 0 && (
         <div className="mt-4 bg-white rounded-lg shadow-md p-4">
           <h3 className="text-sm font-semibold text-gray-700 mb-2">Succession Arrows</h3>
-          <div className="space-y-2 max-h-32 overflow-y-auto">
+          <div className="space-y-2 max-h-60 overflow-y-auto">
             {successionArrows.map((arrow) => {
               
               const element1 = tasks.find((t) => t.id === arrow.from_id);
