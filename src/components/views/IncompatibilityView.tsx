@@ -94,7 +94,7 @@ export function IncompatibilityView() {
             ) : (
               incompatibilityLinks.map((link) => (
                 <tr key={link.id} className="hover:bg-blue-50/50">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-black-900">
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-black-600">
                     {getTaskName(link.task1_id)}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-center text-blue-500 font-bold">
