@@ -79,9 +79,9 @@ export function IncompatibilityView() {
           <thead className="bg-blue-50 border border-blue-200">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-500 uppercase">First Task</th>
-              <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Linked</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Second Task</th>
-              <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Delete</th>
+              <th className="px-6 py-3 text-center text-xs font-medium text-500 uppercase">Linked</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-500 uppercase">Second Task</th>
+              <th className="px-6 py-3 text-right text-xs font-medium text-500 uppercase">Delete</th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
