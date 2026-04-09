@@ -53,17 +53,8 @@ export function SuccessionView() {
       return task ? task.name : 'Task deleted';
     } else {
       const nodeIndex = successionNodes.findIndex((n) => n.id === id);
-      
       if (nodeIndex === -1) return 'Node deleted';
-      
-      const node = successionNodes[nodeIndex];
-      if (node.name && node.name.trim() !== '') {
-        return `${node.name} type : ${node.split_type === 'both' ? 'Both' : 'Only One'}`;
-      }
-      const nodeNumber = nodeIndex + 1;
-      return node.split_type === 'both' 
-        ? `N${nodeNumber} type : Both` 
-        : `N${nodeNumber} type : Only One`;
+      return `${node.name || 'Unnamed'} type : ${node.split_type === 'both' ? 'Both' : 'Only One'}`;
     }
   };
 
@@ -267,7 +258,24 @@ export function SuccessionView() {
   };
   
   const handleCreateNode = () => {
-    addSuccessionNode({ expression: '', split_type: 'both', position_x: 100, position_y: 100 });
+    let maxNumber = 0;
+    successionNodes.forEach((node) => {
+      if (node.name) {
+        const match = node.name.match(/^N(\d+)$/);
+        if (match) {
+          const num = parseInt(match[1]);
+          if (num > maxNumber) maxNumber = num;
+        }
+      }
+    });
+    const nextNumber = maxNumber + 1;
+    addSuccessionNode({ 
+      name: `N${nextNumber}`, 
+      expression: '', 
+      split_type: 'both', 
+      position_x: 100, 
+      position_y: 100 
+    });
   };
 
   const getTaskTypeColor = (type: string[]) => {
@@ -398,7 +406,7 @@ export function SuccessionView() {
                         setEditingNameValue(node.name || `N${nodeIndex + 1}`);
                       }}
                     >
-                      {node.name || `N${nodeIndex + 1}`}
+                      {node.name || 'Unnamed'}
                     </span>
                   )}
                 </div>
