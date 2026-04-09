@@ -39,7 +39,9 @@ export function SuccessionView() {
   const [draggingNodeId, setDraggingNodeId] = useState<string | null>(null);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const [editingNode, setEditingNode] = useState<string | null>(null);
-  const [nodeForm, setNodeForm] = useState({ expression: '', split_type: 'both' });
+  const [nodeForm, setNodeForm] = useState({ name: '', expression: '', split_type: 'both' });
+  const [editingNameId, setEditingNameId] = useState<string | null>(null);
+  const [editingNameValue, setEditingNameValue] = useState('');
   const [isDrawingArrow, setIsDrawingArrow] = useState(false);
   const [arrowStart, setArrowStart] = useState<{ type: 'task' | 'node'; id: string; x: number; y: number } | null>(
     null
@@ -349,11 +351,12 @@ export function SuccessionView() {
                 onMouseDown={(e) => handleNodeMouseDown(pos.id, e)}
               >
                 <div
-                  className="w-full h-full rounded-full bg-yellow-300 border-2 border-yellow-600 flex items-center justify-center cursor-pointer hover:bg-yellow-400 relative"
+                  className="w-full h-full rounded-full bg-yellow-300 border-2 border-yellow-600 flex items-center justify-center cursor-pointer hover:bg-yellow-400 relative shadow-sm"
                   onContextMenu={(e) => {
                     e.preventDefault();
                     setEditingNode(pos.id);
-                    setNodeForm({ expression: node.expression, split_type: node.split_type });
+                    const defaultName = node.name || `N${nodeIndex + 1}`;
+                    setNodeForm({ name: defaultName, expression: node.expression, split_type: node.split_type });
                   }}
                   onDoubleClick={() => handleNodeDoubleClick(pos.id)}
                 >
@@ -369,6 +372,13 @@ export function SuccessionView() {
         <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg shadow-lg p-6 max-w-md w-full">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Edit Node</h3>
+            <input
+              type="text"
+              placeholder="Node Name (ex: N1)"
+              value={nodeForm.name}
+              onChange={(e) => setNodeForm({ ...nodeForm, name: e.target.value })}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent mb-4"
+            />
             <textarea
               placeholder="Node Expression"
               value={nodeForm.expression}
