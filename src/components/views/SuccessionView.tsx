@@ -59,8 +59,8 @@ export function SuccessionView() {
       const node = successionNodes[nodeIndex];
       const nodeNumber = nodeIndex + 1;
       return node.split_type === 'both' 
-        ? `N ${nodeNumber} Both` 
-        : `N ${nodeNumber} Only One`;
+        ? `N${nodeNumber} Both` 
+        : `N${nodeNumber} Only One`;
     }
   };
 
