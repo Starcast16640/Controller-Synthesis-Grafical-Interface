@@ -220,12 +220,16 @@ export function SuccessionView() {
       setNodePositions((prev) =>
         prev.map((p) => (p.id === draggingNodeId ? { ...p, x: Math.max(0, newX), y: Math.max(0, newY) } : p))
       );
-
-      updateSuccessionNode(draggingNodeId, { position_x: newX, position_y: newY });
     }
   };
 
   const handleMouseUp = () => {
+    if (draggingNodeId) {
+      const finalPos = nodePositions.find((p) => p.id === draggingNodeId);
+      if (finalPos) {
+        updateSuccessionNode(draggingNodeId, { position_x: finalPos.x, position_y: finalPos.y });
+      }
+    }
     setDraggingTaskId(null);
     setDraggingNodeId(null);
   };
