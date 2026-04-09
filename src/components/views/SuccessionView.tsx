@@ -189,6 +189,13 @@ export function SuccessionView() {
   };
 
   const handleNodeMouseDown = (nodeId: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (isDeleteMode) {
+      deleteSuccessionNode(nodeId);
+      setIsDeleteMode(false);
+      return;
+    }
+    
     const pos = nodePositions.find((p) => p.id === nodeId);
     if (!pos) return;
 
@@ -216,7 +223,7 @@ export function SuccessionView() {
         prev.map((p) => (p.id === draggingTaskId ? { ...p, x: Math.max(0, newX), y: Math.max(0, newY) } : p))
       );
     }
-
+    
     if (draggingNodeId) {
       const container = containerRef.current;
       if (!container) return;
@@ -228,6 +235,34 @@ export function SuccessionView() {
       setNodePositions((prev) =>
         prev.map((p) => (p.id === draggingNodeId ? { ...p, x: Math.max(0, newX), y: Math.max(0, newY) } : p))
       );
+    }
+  };
+
+  const handleContainerMouseDown = (e: React.MouseEvent) => {
+    if (!isDeleteMode) return;
+    const container = containerRef.current;
+    if (!container) return;
+    
+    const rect = container.getBoundingClientRect();
+    const clickX = e.clientX - rect.left + container.scrollLeft;
+    const clickY = e.clientY - rect.top + container.scrollTop;
+
+    for (const arrow of successionArrows) {
+      const { fromX, fromY, toX, toY } = getArrowCoords(arrow);
+
+      if (fromX && fromY && toX && toY) {
+        const dist = getDistanceToSegment(
+          { x: clickX, y: clickY },
+          { x: fromX, y: fromY },
+          { x: toX, y: toY }
+        );
+        
+        if (dist < 10) {
+          deleteSuccessionArrow(arrow.id);
+          setIsDeleteMode(false);
+          break;
+        }
+      }
     }
   };
 
@@ -307,6 +342,9 @@ export function SuccessionView() {
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-bold text-gray-900">Succession View</h2>
         <div className="flex gap-2">
+          <button
+            <Trash2 className="w-4 h-4" />
+          >
           <button
             onClick={handleCreateNode}
             className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
