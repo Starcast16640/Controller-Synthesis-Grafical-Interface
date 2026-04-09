@@ -406,7 +406,7 @@ export function SuccessionView() {
                         setEditingNameValue(node.name || `Unamed`);
                       }}
                     >
-                      {node.name || 'Unnamed'}
+                      {node.name || 'Unamed'}
                     </span>
                   )}
                 </div>
