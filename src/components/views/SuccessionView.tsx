@@ -18,6 +18,14 @@ interface NodePosition {
   y: number;
 }
 
+const getDistanceToSegment = (p: { x: number; y: number }, v: { x: number; y: number }, w: { x: number; y: number }) => {
+  const l2 = (w.x - v.x) ** 2 + (w.y - v.y) ** 2;
+  if (l2 === 0) return Math.sqrt((p.x - v.x) ** 2 + (p.y - v.y) ** 2);
+  let t = ((p.x - v.x) * (w.x - v.x) + (p.y - v.y) * (w.y - v.y)) / l2;
+  t = Math.max(0, Math.min(1, t));
+  return Math.sqrt((p.x - (v.x + t * (w.x - v.x))) ** 2 + (p.y - (v.y + t * (w.y - v.y))) ** 2);
+};
+
 export function SuccessionView() {
   const {
     tasks,
@@ -46,6 +54,7 @@ export function SuccessionView() {
   const [arrowStart, setArrowStart] = useState<{ type: 'task' | 'node'; id: string; x: number; y: number } | null>(
     null
   );
+  const [isDeleteMode, setIsDeleteMode] = useState(false);
 
   const getElementName = (type: 'task' | 'node', id: string) => {
     if (type === 'task') {
@@ -88,6 +97,39 @@ export function SuccessionView() {
     });
   }, [successionNodes]);
 
+  const getArrowCoords = (arrow: any) => {
+    let fromX = 0, fromY = 0, toX = 0, toY = 0;
+
+    if (arrow.from_type === 'task') {
+      const from = taskPositions.find((p) => p.id === arrow.from_id);
+      if (from) {
+        fromX = from.x + TASK_BLOCK_WIDTH / 2;
+        fromY = from.y + TASK_BLOCK_HEIGHT;
+      }
+    } else {
+      const from = nodePositions.find((p) => p.id === arrow.from_id);
+      if (from) {
+        fromX = from.x;
+        fromY = from.y;
+      }
+    }
+
+    if (arrow.to_type === 'task') {
+      const to = taskPositions.find((p) => p.id === arrow.to_id);
+      if (to) {
+        toX = to.x + TASK_BLOCK_WIDTH / 2;
+        toY = to.y;
+      }
+    } else {
+      const to = nodePositions.find((p) => p.id === arrow.to_id);
+      if (to) {
+        toX = to.x;
+        toY = to.y;
+      }
+    }
+    return { fromX, fromY, toX, toY };
+  };
+  
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -99,39 +141,7 @@ export function SuccessionView() {
     ctx.clearRect(0, 0, rect.width, rect.height);
 
     successionArrows.forEach((arrow) => {
-      let fromX = 0,
-        fromY = 0,
-        toX = 0,
-        toY = 0;
-
-      if (arrow.from_type === 'task') {
-        const from = taskPositions.find((p) => p.id === arrow.from_id);
-        if (from) {
-          fromX = from.x + TASK_BLOCK_WIDTH / 2;
-          fromY = from.y + TASK_BLOCK_HEIGHT;
-        }
-      } else {
-        const from = nodePositions.find((p) => p.id === arrow.from_id);
-        if (from) {
-          fromX = from.x;
-          fromY = from.y;
-        }
-      }
-
-      if (arrow.to_type === 'task') {
-        const to = taskPositions.find((p) => p.id === arrow.to_id);
-        if (to) {
-          toX = to.x + TASK_BLOCK_WIDTH / 2;
-          toY = to.y;
-        }
-      } else {
-        const to = nodePositions.find((p) => p.id === arrow.to_id);
-        if (to) {
-          toX = to.x;
-          toY = to.y;
-        }
-      }
-
+      const { fromX, fromY, toX, toY } = getArrowCoords(arrow);
       if (fromX && fromY && toX && toY) {
         ctx.strokeStyle = '#3b82f6';
         ctx.lineWidth = 2;
