@@ -343,8 +343,9 @@ export function SuccessionView() {
         <h2 className="text-2xl font-bold text-gray-900">Succession View</h2>
         <div className="flex gap-2">
           <button
-            <Trash2 className="w-4 h-4" />
           >
+            <Trash2 className="w-4 h-4" />
+          </button>
           <button
             onClick={handleCreateNode}
             className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
