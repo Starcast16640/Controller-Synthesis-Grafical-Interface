@@ -366,7 +366,12 @@ export function SuccessionView() {
                   {editingNameId === pos.id ? (
                     <input
                       onChange={(e) => setEditingNameValue(e.target.value)}
+                      
                     />
+                  ) : (
+                    <span>
+                      {node.name || `N${nodeIndex + 1}`}
+                    </span>
                   )}
                 </div>
               </div>
