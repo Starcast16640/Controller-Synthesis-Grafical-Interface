@@ -53,6 +53,7 @@ export function SuccessionView() {
       return task ? task.name : 'Task deleted';
     } else {
       const node = successionNodes.find((n) => n.id === id);
+      const nodeIndex = successionNodes.findIndex((n) => n.id === id);
       if (nodeIndex === -1) return 'Node deleted';
       return `${node.name || 'Unnamed'} type : ${node.split_type === 'both' ? 'Both' : 'Only One'}`;
     }
