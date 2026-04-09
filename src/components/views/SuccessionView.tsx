@@ -389,7 +389,7 @@ export function SuccessionView() {
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Edit Node</h3>
             <input
               type="text"
-              placeholder="Node Name (ex: N1)"
+              placeholder="Node Name"
               value={nodeForm.name}
               onChange={(e) => setNodeForm({ ...nodeForm, name: e.target.value })}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent mb-4"
