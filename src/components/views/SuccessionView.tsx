@@ -307,11 +307,10 @@ export function SuccessionView() {
         >
           <canvas ref={canvasRef} width={2000} height={2000} className="absolute top-0 left-0 pointer-events-none" />
 
-          {taskPositions.map((pos) => {
-            const task = tasks.find((t) => t.id === pos.id);
-            if (!task) return null;
+          {nodePositions.map((pos) => {
+            const node = successionNodes.find((n) => n.id === pos.id);
+            if (!node) return null;
             const nodeIndex = successionNodes.findIndex((n) => n.id === pos.id);
-            const nodeNumber = nodeIndex + 1;
             return (
               <div
                 key={pos.id}
