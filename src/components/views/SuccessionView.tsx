@@ -71,15 +71,22 @@ export function SuccessionView() {
   }, [tasks, taskPositions.length]);
 
   useEffect(() => {
-    if (nodePositions.length === 0 && successionNodes.length > 0) {
-      const newPositions = successionNodes.map((node) => ({
-        id: node.id,
-        x: node.position_x,
-        y: node.position_y,
-      }));
-      setNodePositions(newPositions);
-    }
-  }, [successionNodes, nodePositions.length]);
+    setNodePositions((prevPositions) => {
+      const validPositions = prevPositions.filter(pos => 
+        successionNodes.some(node => node.id === pos.id)
+      );
+      const newPositions = [...validPositions];
+      let hasChanges = validPositions.length !== prevPositions.length;
+
+      successionNodes.forEach((node) => {
+        if (!newPositions.some((p) => p.id === node.id)) {
+          newPositions.push({ id: node.id, x: node.position_x, y: node.position_y });
+          hasChanges = true;
+        }
+      });
+      return hasChanges ? newPositions : prevPositions;
+    });
+  }, [successionNodes]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
