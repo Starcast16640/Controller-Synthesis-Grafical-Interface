@@ -368,6 +368,7 @@ export function SuccessionView() {
                 <div className="absolute top-full mt-1 left-1/2 -translate-x-1/2">
                   {editingNameId === pos.id ? (
                     <input
+                      value={editingNameValue}
                       onChange={(e) => setEditingNameValue(e.target.value)}
                       onBlur={() => {
                         updateSuccessionNode(pos.id, { name: editingNameValue });
