@@ -363,6 +363,11 @@ export function SuccessionView() {
                   <span className="text-xs font-bold text-yellow-900">{node.split_type === 'both' ? '⊕' : '|'}</span>
                 </div>
                 <div className="absolute top-full mt-1 left-1/2 -translate-x-1/2">
+                  {editingNameId === pos.id ? (
+                    <input
+                      onChange={(e) => setEditingNameValue(e.target.value)}
+                    />
+                  )}
                 </div>
               </div>
             );
