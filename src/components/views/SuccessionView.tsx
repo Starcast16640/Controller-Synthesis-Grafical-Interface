@@ -57,6 +57,9 @@ export function SuccessionView() {
       if (nodeIndex === -1) return 'Node deleted';
       
       const node = successionNodes[nodeIndex];
+      if (node.name && node.name.trim() !== '') {
+        return node.name;
+      }
       const nodeNumber = nodeIndex + 1;
       return node.split_type === 'both' 
         ? `N${nodeNumber} Both` 
