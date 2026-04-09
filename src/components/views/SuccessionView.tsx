@@ -310,7 +310,8 @@ export function SuccessionView() {
           {taskPositions.map((pos) => {
             const task = tasks.find((t) => t.id === pos.id);
             if (!task) return null;
-
+            const nodeIndex = successionNodes.findIndex((n) => n.id === pos.id);
+            const nodeNumber = nodeIndex + 1;
             return (
               <div
                 key={pos.id}
