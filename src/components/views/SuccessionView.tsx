@@ -376,6 +376,7 @@ export function SuccessionView() {
                         }
                         if (e.key === 'Escape') setEditingNameId(null);
                       }}
+                      className="text-xs border border-blue-400 rounded px-1 w-20 text-center shadow-sm outline-none"
                     />
                   ) : (
                     <span
