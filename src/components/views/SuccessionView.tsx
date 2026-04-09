@@ -53,7 +53,6 @@ export function SuccessionView() {
       return task ? task.name : 'Task deleted';
     } else {
       const node = successionNodes.find((n) => n.id === id);
-      const nodeIndex = successionNodes.findIndex((n) => n.id === id);
       if (nodeIndex === -1) return 'Node deleted';
       return `${node.name || 'Unnamed'} type : ${node.split_type === 'both' ? 'Both' : 'Only One'}`;
     }
@@ -404,7 +403,7 @@ export function SuccessionView() {
                       onDoubleClick={(e) => {
                         e.stopPropagation();
                         setEditingNameId(pos.id);
-                        setEditingNameValue(node.name || `N${nodeIndex + 1}`);
+                        setEditingNameValue(node.name || `Unamed`);
                       }}
                     >
                       {node.name || 'Unnamed'}
