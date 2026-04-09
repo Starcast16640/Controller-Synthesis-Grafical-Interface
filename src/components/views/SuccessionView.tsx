@@ -374,6 +374,7 @@ export function SuccessionView() {
                   ) : (
                     <span
                       className="text-xs font-bold text-gray-700 bg-white/80 px-1 rounded cursor-text hover:bg-blue-100 transition-colors whitespace-nowrap"
+                      onMouseDown={(e) => e.stopPropagation()}
                       onDoubleClick={(e) => {
                         e.stopPropagation();
                         setEditingNameId(pos.id);
