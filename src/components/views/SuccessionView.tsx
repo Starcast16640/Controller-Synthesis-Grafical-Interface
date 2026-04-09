@@ -369,6 +369,10 @@ export function SuccessionView() {
                   {editingNameId === pos.id ? (
                     <input
                       onChange={(e) => setEditingNameValue(e.target.value)}
+                      onBlur={() => {
+                        updateSuccessionNode(pos.id, { name: editingNameValue });
+                        setEditingNameId(null);
+                      }}
                       onKeyDown={(e) => {
                         if (e.key === 'Enter') {
                           updateSuccessionNode(pos.id, { name: editingNameValue });
