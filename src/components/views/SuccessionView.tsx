@@ -362,8 +362,18 @@ export function SuccessionView() {
             {isDrawingArrow ? 'Cancel Arrow' : 'Draw Arrow'}
           </button>
           <button
+            onClick={() => {
+              setIsDeleteMode(!isDeleteMode);
+              if (!isDeleteMode) setIsDrawingArrow(false);
+            }}
+            className={`px-4 py-2 rounded-lg transition-colors font-bold flex items-center gap-2 border-2 ${
+              isDeleteMode
+                ? 'bg-red-100 text-red-700 border-red-600 shadow-inner'
+                : 'bg-white text-red-500 border-red-200 hover:bg-red-50'
+            }`}
           >
             <Trash2 className="w-4 h-4" />
+            Delete Mode
           </button>
         </div>
       </div>
