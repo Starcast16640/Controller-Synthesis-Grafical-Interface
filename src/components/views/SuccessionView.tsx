@@ -54,6 +54,7 @@ export function SuccessionView() {
   const [arrowStart, setArrowStart] = useState<{ type: 'task' | 'node'; id: string; x: number; y: number } | null>(
     null
   );
+  const [selectedForLink, setSelectedForLink] = useState<{ id: string; type: 'task' | 'node' }[]>([]);
   const [isDeleteMode, setIsDeleteMode] = useState(false);
   const [hoveredArrowId, setHoveredArrowId] = useState<string | null>(null);
 
@@ -66,6 +67,18 @@ export function SuccessionView() {
       if (!node) return 'Node deleted';
       return `${node.name || 'Unnamed'} type : ${node.split_type === 'both' ? 'Both' : 'Only One'}`;
     }
+  };
+
+  const handleElementSelect = (id: string, type: 'task' | 'node') => {
+    setSelectedForLink((prev) => {
+      if (prev.find((p) => p.id === id)) {
+        return prev.filter((p) => p.id !== id);
+      }
+      if (prev.length >= 2) {
+        return [prev[0], { id, type }];
+      }
+      return [...prev, { id, type }];
+    });
   };
 
   useEffect(() => {
