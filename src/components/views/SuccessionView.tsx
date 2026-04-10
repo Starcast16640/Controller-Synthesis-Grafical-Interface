@@ -442,7 +442,6 @@ export function SuccessionView() {
                       : 'bg-yellow-300 border-2 border-yellow-600 cursor-pointer hover:bg-yellow-400'
                   }`}
                   onContextMenu={(e) => {
-                    if (isDeleteMode) return;
                     e.preventDefault();
                     setEditingNode(pos.id);
                     const defaultName = node.name || `N${nodeIndex + 1}`;
