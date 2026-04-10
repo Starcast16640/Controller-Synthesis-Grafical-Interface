@@ -192,7 +192,6 @@ export function SuccessionView() {
     e.stopPropagation();
     if (isDeleteMode) {
       deleteSuccessionNode(nodeId);
-      setIsDeleteMode(false);
       return;
     }
     
