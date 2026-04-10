@@ -436,7 +436,7 @@ export function SuccessionView() {
             return (
               <div
                 key={pos.id}
-                className={`absolute rounded-lg p-2 border-2 cursor-move transition-all duration-200 ${
+                className={`absolute rounded-lg p-2 border-2 cursor-move transition duration-200 ${
                   selectedForLink.find((s) => s.id === pos.id)
                     ? 'border-blue-500 ring-4 ring-blue-300 shadow-lg scale-105'
                     : 'border-gray-400 hover:border-gray-600'
@@ -466,7 +466,7 @@ export function SuccessionView() {
             return (
               <div
                 key={pos.id}
-                className={`w-full h-full rounded-full flex items-center justify-center relative shadow-sm transition-all duration-200 ${
+                className={`w-full h-full rounded-full flex items-center justify-center relative shadow-sm transition duration-200 ${
                     isDeleteMode 
                       ? 'bg-red-200 border-2 border-red-500 cursor-crosshair hover:bg-red-400 hover:scale-110' 
                       : selectedForLink.find((s) => s.id === pos.id)
