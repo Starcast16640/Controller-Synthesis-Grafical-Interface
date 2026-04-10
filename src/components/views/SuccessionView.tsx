@@ -144,6 +144,10 @@ export function SuccessionView() {
     successionArrows.forEach((arrow) => {
       const { fromX, fromY, toX, toY } = getArrowCoords(arrow);
       if (fromX && fromY && toX && toY) {
+        const isHovered = isDeleteMode && arrow.id === hoveredArrowId;
+        const color = isHovered ? '#ef4444' : '#3b82f6';
+        ctx.strokeStyle = color;
+        ctx.lineWidth = isHovered ? 4 : 2;
         ctx.strokeStyle = '#3b82f6';
         ctx.lineWidth = 2;
         ctx.beginPath();
