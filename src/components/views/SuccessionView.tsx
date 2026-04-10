@@ -157,7 +157,7 @@ export function SuccessionView() {
 
         const angle = Math.atan2(toY - fromY, toX - fromX);
         const arrowSize = 15;
-        ctx.fillStyle = '#3b82f6';
+        ctx.fillStyle = color;
         ctx.beginPath();
         ctx.moveTo(toX, toY);
         ctx.lineTo(toX - arrowSize * Math.cos(angle - Math.PI / 6), toY - arrowSize * Math.sin(angle - Math.PI / 6));
