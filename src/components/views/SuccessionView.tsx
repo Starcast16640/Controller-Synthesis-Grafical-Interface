@@ -192,6 +192,7 @@ export function SuccessionView() {
     e.stopPropagation();
     if (isDeleteMode) {
       deleteSuccessionNode(nodeId);
+      setIsDeleteMode(false);
       return;
     }
     
@@ -435,8 +436,13 @@ export function SuccessionView() {
                 onMouseDown={(e) => handleNodeMouseDown(pos.id, e)}
               >
                 <div
-                  className="w-full h-full rounded-full bg-yellow-300 border-2 border-yellow-600 flex items-center justify-center cursor-pointer hover:bg-yellow-400 relative shadow-sm"
+                  className={`w-full h-full rounded-full flex items-center justify-center relative shadow-sm transition-colors ${
+                    isDeleteMode 
+                      ? 'bg-red-200 border-2 border-red-500 cursor-crosshair hover:bg-red-400 hover:scale-110' 
+                      : 'bg-yellow-300 border-2 border-yellow-600 cursor-pointer hover:bg-yellow-400'
+                  }`}
                   onContextMenu={(e) => {
+                    if (isDeleteMode) return;
                     e.preventDefault();
                     setEditingNode(pos.id);
                     const defaultName = node.name || `N${nodeIndex + 1}`;
