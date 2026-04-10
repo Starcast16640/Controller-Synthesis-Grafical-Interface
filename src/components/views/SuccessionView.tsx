@@ -176,17 +176,6 @@ export function SuccessionView() {
         ctx.fill();
       }
     });
-
-    if (isDrawingArrow && arrowStart) {
-      ctx.strokeStyle = '#60a5fa';
-      ctx.lineWidth = 2;
-      ctx.setLineDash([5, 5]);
-      ctx.beginPath();
-      ctx.moveTo(arrowStart.x, arrowStart.y);
-      ctx.lineTo(containerRef.current?.scrollLeft ?? 0, containerRef.current?.scrollTop ?? 0);
-      ctx.stroke();
-      ctx.setLineDash([]);
-    }
   }, [successionArrows, taskPositions, nodePositions, isDrawingArrow, arrowStart, isDeleteMode, hoveredArrowId]);
 
   const handleTaskMouseDown = (taskId: string, e: React.MouseEvent) => {
@@ -281,7 +270,10 @@ export function SuccessionView() {
   };
 
   const handleContainerMouseDown = (e: React.MouseEvent) => {
-    if (!isDeleteMode) return;
+    if (!isDeleteMode) {
+      setSelectedForLink([]);
+      return;
+    }
     const container = containerRef.current;
     if (!container) return;
     
@@ -402,10 +394,10 @@ export function SuccessionView() {
               }
             }}
             disabled={selectedForLink.length !== 2}
-            className={`px-4 py-2 rounded-lg transition-colors ${
-              isDrawingArrow
-                ? 'bg-red-600 text-white hover:bg-red-700'
-                : 'bg-gray-300 text-gray-700 hover:bg-gray-400'
+            className={`px-4 py-2 rounded-lg transition-colors font-bold ${
+              selectedForLink.length === 2
+                ? 'bg-blue-600 text-white hover:bg-blue-700 shadow-md'
+                : 'bg-gray-200 text-gray-400 cursor-not-allowed'
             }`}
           >
             Draw Arrow {selectedForLink.length > 0 ? `(${selectedForLink.length}/2)` : ''}
