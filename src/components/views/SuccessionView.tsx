@@ -113,35 +113,6 @@ export function SuccessionView() {
 
   const getArrowCoords = (arrow: any) => {
     let fromX = 0, fromY = 0, toX = 0, toY = 0;
-
-    if (arrow.from_type === 'task') {
-      const from = taskPositions.find((p) => p.id === arrow.from_id);
-      if (from) {
-        fromX = from.x + TASK_BLOCK_WIDTH / 2;
-        fromY = from.y + TASK_BLOCK_HEIGHT;
-      }
-    } else {
-      const from = nodePositions.find((p) => p.id === arrow.from_id);
-      if (from) {
-        fromX = from.x;
-        fromY = from.y;
-      }
-    }
-
-    if (arrow.to_type === 'task') {
-      const to = taskPositions.find((p) => p.id === arrow.to_id);
-      if (to) {
-        toX = to.x + TASK_BLOCK_WIDTH / 2;
-        toY = to.y;
-      }
-    } else {
-      const to = nodePositions.find((p) => p.id === arrow.to_id);
-      if (to) {
-        toX = to.x;
-        toY = to.y;
-      }
-    }
-    return { fromX, fromY, toX, toY };
   };
   
   useEffect(() => {
