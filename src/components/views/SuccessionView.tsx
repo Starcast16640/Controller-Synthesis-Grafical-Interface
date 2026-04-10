@@ -127,6 +127,21 @@ export function SuccessionView() {
         fromY = from.y;
       }
     }
+
+    if (arrow.to_type === 'task') {
+      const to = taskPositions.find((p) => p.id === arrow.to_id);
+      if (to) {
+        toX = to.x + TASK_BLOCK_WIDTH / 2;
+        toY = to.y + TASK_BLOCK_HEIGHT / 2;
+      }
+    } else {
+      const to = nodePositions.find((p) => p.id === arrow.to_id);
+      if (to) {
+        toX = to.x;
+        toY = to.y;
+      }
+    }
+    
     if (fromX === 0 && fromY === 0 && toX === 0 && toY === 0) {
       return { fromX, fromY, toX, toY };
     }
