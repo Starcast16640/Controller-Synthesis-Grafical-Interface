@@ -146,36 +146,38 @@ export function SuccessionView() {
       return { fromX, fromY, toX, toY };
     }
     
-    const angle = Math.atan2(toY - fromY, toX - fromX);
-    if (arrow.from_type === 'task') {
-      const dx = TASK_BLOCK_WIDTH / 2;
-      const dy = TASK_BLOCK_HEIGHT / 2;
-      const absCos = Math.abs(Math.cos(angle));
-      const absSin = Math.abs(Math.sin(angle));
+    const dx = toX - fromX;
+    const dy = toY - fromY;
+    const angle = Math.atan2(dy, dx);
 
-      if (dx * absSin < dy * absCos) {
-        fromX += Math.sign(Math.cos(angle)) * dx;
-        fromY += Math.sign(Math.cos(angle)) * dx * Math.tan(angle);
+    if (arrow.from_type === 'task') {
+      const w = TASK_BLOCK_WIDTH / 2;
+      const h = TASK_BLOCK_HEIGHT / 2;
+      let tan = Math.tan(angle);
+
+      if (Math.abs(tan) <= h / w) {
+        fromX += Math.sign(dx) * w;
+        fromY += Math.sign(dx) * w * tan;
       } else {
-        fromX += Math.sign(Math.sin(angle)) * dy / Math.tan(angle);
-        fromY += Math.sign(Math.sin(angle)) * dy;
+        fromX += Math.sign(dy) * h / tan;
+        fromY += Math.sign(dy) * h;
       }
     } else {
       fromX += Math.cos(angle) * NODE_RADIUS;
       fromY += Math.sin(angle) * NODE_RADIUS;
     }
-    if (arrow.to_type === 'task') {
-      const dx = TASK_BLOCK_WIDTH / 2;
-      const dy = TASK_BLOCK_HEIGHT / 2;
-      const absCos = Math.abs(Math.cos(angle));
-      const absSin = Math.abs(Math.sin(angle));
 
-      if (dx * absSin < dy * absCos) {
-        toX -= Math.sign(Math.cos(angle)) * dx;
-        toY -= Math.sign(Math.cos(angle)) * dx * Math.tan(angle);
+    if (arrow.to_type === 'task') {
+      const w = TASK_BLOCK_WIDTH / 2;
+      const h = TASK_BLOCK_HEIGHT / 2;
+      let tan = Math.tan(angle);
+
+      if (Math.abs(tan) <= h / w) {
+        toX -= Math.sign(dx) * w;
+        toY -= Math.sign(dx) * w * tan;
       } else {
-        toX -= Math.sign(Math.sin(angle)) * dy / Math.tan(angle);
-        toY -= Math.sign(Math.sin(angle)) * dy;
+        toX -= Math.sign(dy) * h / tan;
+        toY -= Math.sign(dy) * h;
       }
     } else {
       toX -= Math.cos(angle) * NODE_RADIUS;
