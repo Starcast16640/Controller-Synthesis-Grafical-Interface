@@ -399,7 +399,7 @@ export function SuccessionView() {
                 : 'bg-gray-300 text-gray-700 hover:bg-gray-400'
             }`}
           >
-            {isDrawingArrow ? 'Cancel Arrow' : 'Draw Arrow'}
+            Draw Arrow {selectedForLink.length > 0 ? `(${selectedForLink.length}/2)` : ''}
           </button>
           <button
             onClick={() => {
