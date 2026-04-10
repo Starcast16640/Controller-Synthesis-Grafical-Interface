@@ -384,7 +384,8 @@ export function SuccessionView() {
       <div className="flex-1 relative bg-gray-50 rounded-lg border border-gray-200 overflow-hidden">
         <div
           ref={containerRef}
-          className="w-full h-full relative overflow-auto"
+          className={`w-full h-full relative overflow-auto ${isDeleteMode ? 'cursor-crosshair' : ''}`}
+          onMouseDown={handleContainerMouseDown}
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
           onMouseLeave={handleMouseUp}
