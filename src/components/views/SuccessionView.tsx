@@ -211,6 +211,29 @@ export function SuccessionView() {
   };
 
   const handleMouseMove = (e: React.MouseEvent) => {
+    const container = containerRef.current;
+    if (isDeleteMode && container && !draggingTaskId && !draggingNodeId) {
+      const rect = container.getBoundingClientRect();
+      const mouseX = e.clientX - rect.left + container.scrollLeft;
+      const mouseY = e.clientY - rect.top + container.scrollTop;
+
+      let foundArrowId = null;
+      for (const arrow of successionArrows) {
+        const { fromX, fromY, toX, toY } = getArrowCoords(arrow);
+        if (fromX && fromY && toX && toY) {
+          const dist = getDistanceToSegment(
+            { x: mouseX, y: mouseY }, { x: fromX, y: fromY }, { x: toX, y: toY }
+          );
+          if (dist < 10) {
+            foundArrowId = arrow.id;
+            break;
+          }
+        }
+      }
+      setHoveredArrowId(foundArrowId);
+    } else if (hoveredArrowId !== null) {
+      setHoveredArrowId(null);
+    }
     if (draggingTaskId) {
       const container = containerRef.current;
       if (!container) return;
