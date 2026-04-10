@@ -401,7 +401,6 @@ export function SuccessionView() {
                 setSelectedForLink([]);
               }
             }}
-            }}
             className={`px-4 py-2 rounded-lg transition-colors ${
               isDrawingArrow
                 ? 'bg-red-600 text-white hover:bg-red-700'
