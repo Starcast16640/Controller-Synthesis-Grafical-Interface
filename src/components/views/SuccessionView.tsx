@@ -208,7 +208,7 @@ export function SuccessionView() {
 
     successionArrows.forEach((arrow) => {
       const { fromX, fromY, toX, toY } = getArrowCoords(arrow);
-      if (fromX && fromY && toX && toY) {
+      if (fromX !== null && fromY !== null && toX !== null && toY !== null) {
         const isHovered = isDeleteMode && arrow.id === hoveredArrowId;
         const color = isHovered ? '#ef4444' : '#3b82f6';
         ctx.strokeStyle = color;
