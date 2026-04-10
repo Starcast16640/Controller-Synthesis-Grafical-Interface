@@ -50,6 +50,10 @@ export function SuccessionView() {
   const [nodeForm, setNodeForm] = useState({ name: '', expression: '', split_type: 'both' });
   const [editingNameId, setEditingNameId] = useState<string | null>(null);
   const [editingNameValue, setEditingNameValue] = useState('');
+  const [isDrawingArrow, setIsDrawingArrow] = useState(false);
+  const [arrowStart, setArrowStart] = useState<{ type: 'task' | 'node'; id: string; x: number; y: number } | null>(
+    null
+  );
   const [selectedForLink, setSelectedForLink] = useState<{ id: string; type: 'task' | 'node' }[]>([]);
   const [isDeleteMode, setIsDeleteMode] = useState(false);
   const [hoveredArrowId, setHoveredArrowId] = useState<string | null>(null);
