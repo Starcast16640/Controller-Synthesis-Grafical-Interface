@@ -391,7 +391,16 @@ export function SuccessionView() {
           </button>
           <button
             onClick={() => {
-
+              if (selectedForLink.length === 2) {
+                addSuccessionArrow({
+                  from_type: selectedForLink[0].type,
+                  from_id: selectedForLink[0].id,
+                  to_type: selectedForLink[1].type,
+                  to_id: selectedForLink[1].id,
+                });
+                setSelectedForLink([]);
+              }
+            }}
             }}
             className={`px-4 py-2 rounded-lg transition-colors ${
               isDrawingArrow
