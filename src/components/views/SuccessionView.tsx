@@ -469,7 +469,13 @@ export function SuccessionView() {
             return (
               <div
                 key={pos.id}
-                className="absolute flex items-center justify-center cursor-move"
+                className={`w-full h-full rounded-full flex items-center justify-center relative shadow-sm transition-all duration-200 ${
+                    isDeleteMode 
+                      ? 'bg-red-200 border-2 border-red-500 cursor-crosshair hover:bg-red-400 hover:scale-110' 
+                      : selectedForLink.find((s) => s.id === pos.id)
+                        ? 'bg-blue-200 border-4 border-blue-600 scale-110 shadow-lg'
+                        : 'bg-yellow-300 border-2 border-yellow-600 cursor-pointer hover:bg-yellow-400'
+                  }`}
                 style={{
                   left: `${pos.x - NODE_RADIUS}px`,
                   top: `${pos.y - NODE_RADIUS}px`,
