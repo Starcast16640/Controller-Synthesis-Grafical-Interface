@@ -148,8 +148,6 @@ export function SuccessionView() {
         const color = isHovered ? '#ef4444' : '#3b82f6';
         ctx.strokeStyle = color;
         ctx.lineWidth = isHovered ? 4 : 2;
-        ctx.strokeStyle = '#3b82f6';
-        ctx.lineWidth = 2;
         ctx.beginPath();
         ctx.moveTo(fromX, fromY);
         ctx.lineTo(toX, toY);
