@@ -174,7 +174,7 @@ export function SuccessionView() {
       ctx.stroke();
       ctx.setLineDash([]);
     }
-  }, [successionArrows, taskPositions, nodePositions, isDrawingArrow, arrowStart]);
+  }, [successionArrows, taskPositions, nodePositions, isDrawingArrow, arrowStart, isDeleteMode, hoveredArrowId]);
 
   const handleTaskMouseDown = (taskId: string, e: React.MouseEvent) => {
     const pos = taskPositions.find((p) => p.id === taskId);
