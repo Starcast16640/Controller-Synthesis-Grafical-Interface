@@ -351,7 +351,10 @@ export function SuccessionView() {
           <button
             onClick={() => {
               setIsDrawingArrow(false);
-              setArrowStart(null);
+              if (!isDrawingArrow) {
+                setArrowStart(null);
+                setIsDeleteMode(false);
+              }
             }}
             className={`px-4 py-2 rounded-lg transition-colors ${
               isDrawingArrow
