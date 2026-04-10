@@ -247,8 +247,8 @@ export function SuccessionView() {
       if (!container) return;
 
       const rect = container.getBoundingClientRect();
-      const newX = e.clientX - rect.left - dragOffset.x;
-      const newY = e.clientY - rect.top - dragOffset.y;
+      const newX = e.clientX - rect.left + container.scrollLeft - dragOffset.x;
+      const newY = e.clientY - rect.top + container.scrollTop - dragOffset.y;
 
       setTaskPositions((prev) =>
         prev.map((p) => (p.id === draggingTaskId ? { ...p, x: Math.max(0, newX), y: Math.max(0, newY) } : p))
@@ -260,8 +260,8 @@ export function SuccessionView() {
       if (!container) return;
 
       const rect = container.getBoundingClientRect();
-      const newX = e.clientX - rect.left - dragOffset.x;
-      const newY = e.clientY - rect.top - dragOffset.y;
+      const newX = e.clientX - rect.left + container.scrollLeft - dragOffset.x;
+      const newY = e.clientY - rect.top + container.scrollTop - dragOffset.y;
 
       setNodePositions((prev) =>
         prev.map((p) => (p.id === draggingNodeId ? { ...p, x: Math.max(0, newX), y: Math.max(0, newY) } : p))
