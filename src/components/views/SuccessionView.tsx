@@ -55,6 +55,7 @@ export function SuccessionView() {
     null
   );
   const [isDeleteMode, setIsDeleteMode] = useState(false);
+  const [hoveredArrowId, setHoveredArrowId] = useState<string | null>(null);
 
   const getElementName = (type: 'task' | 'node', id: string) => {
     if (type === 'task') {
@@ -192,7 +193,6 @@ export function SuccessionView() {
     e.stopPropagation();
     if (isDeleteMode) {
       deleteSuccessionNode(nodeId);
-      setIsDeleteMode(false);
       return;
     }
     
@@ -442,6 +442,7 @@ export function SuccessionView() {
                       : 'bg-yellow-300 border-2 border-yellow-600 cursor-pointer hover:bg-yellow-400'
                   }`}
                   onContextMenu={(e) => {
+                    if (isDeleteMode) return;
                     e.preventDefault();
                     setEditingNode(pos.id);
                     const defaultName = node.name || `N${nodeIndex + 1}`;
