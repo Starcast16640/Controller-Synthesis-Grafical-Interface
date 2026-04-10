@@ -203,6 +203,10 @@ export function SuccessionView() {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
+    const container = containerRef.current;
+    const scrollX = container ? container.scrollLeft : 0;
+    const scrollY = container ? container.scrollTop : 0;
+    
     const rect = canvas.getBoundingClientRect();
     ctx.clearRect(0, 0, rect.width, rect.height);
 
@@ -213,6 +217,12 @@ export function SuccessionView() {
         const color = isHovered ? '#ef4444' : '#3b82f6';
         ctx.strokeStyle = color;
         ctx.lineWidth = isHovered ? 4 : 2;
+
+        const startX = coords.fromX - scrollX;
+        const startY = coords.fromY - scrollY;
+        const endX = coords.toX - scrollX;
+        const endY = coords.toY - scrollY;
+        
         ctx.beginPath();
         ctx.moveTo(fromX, fromY);
         ctx.lineTo(toX, toY);
@@ -228,7 +238,7 @@ export function SuccessionView() {
         ctx.fill();
       }
     });
-  }, [successionArrows, taskPositions, nodePositions, isDrawingArrow, arrowStart, isDeleteMode, hoveredArrowId]);
+  }, [successionArrows, taskPositions, nodePositions, isDeleteMode, hoveredArrowId]);
 
   const handleTaskMouseDown = (taskId: string, e: React.MouseEvent) => {
     e.stopPropagation();
