@@ -190,6 +190,10 @@ export function SuccessionView() {
   }, [successionArrows, taskPositions, nodePositions, isDrawingArrow, arrowStart, isDeleteMode, hoveredArrowId]);
 
   const handleTaskMouseDown = (taskId: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!isDeleteMode) {
+      handleElementSelect(taskId, 'task');
+    }
     const pos = taskPositions.find((p) => p.id === taskId);
     if (!pos) return;
 
@@ -210,7 +214,7 @@ export function SuccessionView() {
       deleteSuccessionNode(nodeId);
       return;
     }
-    
+    handleElementSelect(nodeId, 'node');
     const pos = nodePositions.find((p) => p.id === nodeId);
     if (!pos) return;
 
@@ -435,7 +439,11 @@ export function SuccessionView() {
             return (
               <div
                 key={pos.id}
-                className="absolute rounded-lg p-2 border-2 border-gray-400 hover:border-gray-600 cursor-move"
+                className={`absolute rounded-lg p-2 border-2 cursor-move transition-all duration-200 ${
+                  selectedForLink.find((s) => s.id === pos.id)
+                    ? 'border-blue-500 ring-4 ring-blue-300 shadow-lg scale-105'
+                    : 'border-gray-400 hover:border-gray-600'
+                }`}
                 style={{
                   left: `${pos.x}px`,
                   top: `${pos.y}px`,
@@ -445,7 +453,6 @@ export function SuccessionView() {
                   userSelect: 'none',
                 }}
                 onMouseDown={(e) => handleTaskMouseDown(pos.id, e)}
-                onDoubleClick={() => handleTaskDoubleClick(pos.id)}
               >
                 <div className="text-xs font-bold text-gray-900 truncate">{task.name}</div>
                 <div className="text-xs text-gray-600 mt-1">{task.type.join(', ')}</div>
