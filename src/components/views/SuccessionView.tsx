@@ -259,7 +259,6 @@ export function SuccessionView() {
         
         if (dist < 10) {
           deleteSuccessionArrow(arrow.id);
-          setIsDeleteMode(false);
           break;
         }
       }
