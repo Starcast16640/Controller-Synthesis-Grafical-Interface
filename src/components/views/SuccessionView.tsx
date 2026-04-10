@@ -192,8 +192,8 @@ export function SuccessionView() {
     const rect = container.getBoundingClientRect();
     setDraggingTaskId(taskId);
     setDragOffset({
-      x: e.clientX - rect.left - pos.x,
-      y: e.clientY - rect.top - pos.y,
+      x: e.clientX - rect.left + container.scrollLeft - pos.x,
+      y: e.clientY - rect.top + container.scrollTop - pos.y,
     });
   };
 
