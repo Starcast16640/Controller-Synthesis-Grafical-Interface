@@ -113,6 +113,60 @@ export function SuccessionView() {
 
   const getArrowCoords = (arrow: any) => {
     let fromX = 0, fromY = 0, toX = 0, toY = 0;
+
+    if (arrow.from_type === 'task') {
+      const from = taskPositions.find((p) => p.id === arrow.from_id);
+      if (from) {
+        fromX = from.x + TASK_BLOCK_WIDTH / 2;
+        fromY = from.y + TASK_BLOCK_HEIGHT / 2;
+      }
+    } else {
+      const from = nodePositions.find((p) => p.id === arrow.from_id);
+      if (from) {
+        fromX = from.x;
+        fromY = from.y;
+      }
+    }
+    if (fromX === 0 && fromY === 0 && toX === 0 && toY === 0) {
+      return { fromX, fromY, toX, toY };
+    }
+    
+    const angle = Math.atan2(toY - fromY, toX - fromX);
+    if (arrow.from_type === 'task') {
+      const dx = TASK_BLOCK_WIDTH / 2;
+      const dy = TASK_BLOCK_HEIGHT / 2;
+      const absCos = Math.abs(Math.cos(angle));
+      const absSin = Math.abs(Math.sin(angle));
+
+      if (dx * absSin < dy * absCos) {
+        fromX += Math.sign(Math.cos(angle)) * dx;
+        fromY += Math.sign(Math.cos(angle)) * dx * Math.tan(angle);
+      } else {
+        fromX += Math.sign(Math.sin(angle)) * dy / Math.tan(angle);
+        fromY += Math.sign(Math.sin(angle)) * dy;
+      }
+    } else {
+      fromX += Math.cos(angle) * NODE_RADIUS;
+      fromY += Math.sin(angle) * NODE_RADIUS;
+    }
+    if (arrow.to_type === 'task') {
+      const dx = TASK_BLOCK_WIDTH / 2;
+      const dy = TASK_BLOCK_HEIGHT / 2;
+      const absCos = Math.abs(Math.cos(angle));
+      const absSin = Math.abs(Math.sin(angle));
+
+      if (dx * absSin < dy * absCos) {
+        toX -= Math.sign(Math.cos(angle)) * dx;
+        toY -= Math.sign(Math.cos(angle)) * dx * Math.tan(angle);
+      } else {
+        toX -= Math.sign(Math.sin(angle)) * dy / Math.tan(angle);
+        toY -= Math.sign(Math.sin(angle)) * dy;
+      }
+    } else {
+      toX -= Math.cos(angle) * NODE_RADIUS;
+      toY -= Math.sin(angle) * NODE_RADIUS;
+    }
+    return { fromX, fromY, toX, toY };
   };
   
   useEffect(() => {
