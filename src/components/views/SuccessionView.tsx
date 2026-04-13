@@ -196,19 +196,14 @@ export function SuccessionView() {
     return { fromX, fromY, toX, toY };
   };
   
-  useEffect(() => {
+ useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const container = containerRef.current;
-    const scrollX = container ? container.scrollLeft : 0;
-    const scrollY = container ? container.scrollTop : 0;
-    
-    const rect = canvas.getBoundingClientRect();
-    ctx.clearRect(0, 0, rect.width, rect.height);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     successionArrows.forEach((arrow) => {
       const { fromX, fromY, toX, toY } = getArrowCoords(arrow);
@@ -219,23 +214,18 @@ export function SuccessionView() {
         ctx.strokeStyle = color;
         ctx.lineWidth = isHovered ? 4 : 2;
 
-        const startX = fromX - scrollX;
-        const startY = fromY - scrollY;
-        const endX = toX - scrollX;
-        const endY = toY - scrollY;
-        
         ctx.beginPath();
-        ctx.moveTo(startX, startY);
-        ctx.lineTo(endX, endY);
+        ctx.moveTo(fromX, fromY);
+        ctx.lineTo(toX, toY);
         ctx.stroke();
-        
-        const angle = Math.atan2(endY - startY, endX - startX);
+
+        const angle = Math.atan2(toY - fromY, toX - fromX);
         const arrowSize = 15;
         ctx.fillStyle = color;
         ctx.beginPath();
-        ctx.moveTo(endX, endY);
-        ctx.lineTo(endX - arrowSize * Math.cos(angle - Math.PI / 6), endY - arrowSize * Math.sin(angle - Math.PI / 6));
-        ctx.lineTo(endX - arrowSize * Math.cos(angle + Math.PI / 6), endY - arrowSize * Math.sin(angle + Math.PI / 6));
+        ctx.moveTo(toX, toY);
+        ctx.lineTo(toX - arrowSize * Math.cos(angle - Math.PI / 6), toY - arrowSize * Math.sin(angle - Math.PI / 6));
+        ctx.lineTo(toX - arrowSize * Math.cos(angle + Math.PI / 6), toY - arrowSize * Math.sin(angle + Math.PI / 6));
         ctx.fill();
       }
     });
