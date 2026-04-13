@@ -218,10 +218,10 @@ export function SuccessionView() {
         ctx.strokeStyle = color;
         ctx.lineWidth = isHovered ? 4 : 2;
 
-        const startX = coords.fromX - scrollX;
-        const startY = coords.fromY - scrollY;
-        const endX = coords.toX - scrollX;
-        const endY = coords.toY - scrollY;
+        const startX = fromX - scrollX;
+        const startY = fromY - scrollY;
+        const endX = toX - scrollX;
+        const endY = toY - scrollY;
         
         ctx.beginPath();
         ctx.moveTo(fromX, fromY);
