@@ -129,26 +129,24 @@ export function SuccessionView() {
 
   const angle = Math.atan2(endY - startY, endX - startX);
 
-  const getBoxIntersection = (isFrom: boolean) => {
-    const dx = Math.cos(angle) * (isFrom ? 1 : -1);
-    const dy = Math.sin(angle) * (isFrom ? 1 : -1);
+  const getBoxIntersection = (cx: number, cy: number, isForward: boolean) => {
+    const ang = isForward ? angle : angle + Math.PI;
+    const cos = Math.cos(ang);
+    const sin = Math.sin(ang);
     const scale = Math.min(
-      Math.abs((TASK_BLOCK_WIDTH / 2) / dx),
-      Math.abs((TASK_BLOCK_HEIGHT / 2) / dy)
+      Math.abs((TASK_BLOCK_WIDTH / 2) / cos),
+      Math.abs((TASK_BLOCK_HEIGHT / 2) / sin)
     );
-    return {
-      x: (isFrom ? startX : endX) + dx * scale,
-      y: (isFrom ? startY : endY) + dy * scale
-    };
+    return { x: cx + cos * scale, y: cy + sin * scale };
   };
-
+    
   const from = arrow.from_type === 'node' 
     ? { x: startX + Math.cos(angle) * NODE_RADIUS, y: startY + Math.sin(angle) * NODE_RADIUS }
-    : getBoxIntersection(true);
+    : getBoxIntersection(startX, startY, true);
 
   const to = arrow.to_type === 'node'
     ? { x: endX - Math.cos(angle) * NODE_RADIUS, y: endY - Math.sin(angle) * NODE_RADIUS }
-    : getBoxIntersection(false);
+    : getBoxIntersection(endX, endY, false);
 
   return { fromX: from.x, fromY: from.y, toX: to.x, toY: to.y };
 };
