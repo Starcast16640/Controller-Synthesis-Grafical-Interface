@@ -119,15 +119,15 @@ export function SuccessionView() {
     if (arrow.from_type === 'task') {
       const from = taskPositions.find((p) => p.id === arrow.from_id);
       if (from) {
-        fromX = from.x + TASK_BLOCK_WIDTH / 2;
-        fromY = from.y + TASK_BLOCK_HEIGHT / 2;
+        fromX = Number(from.x) + TASK_BLOCK_WIDTH / 2;
+        fromY = Number(from.y) + TASK_BLOCK_HEIGHT / 2;
         fromFound = true;
       }
     } else {
       const from = nodePositions.find((p) => p.id === arrow.from_id);
       if (from) {
-        fromX = from.x;
-        fromY = from.y;
+        fromX = Number(from.x);
+        fromY = Number(from.y);
         fromFound = true;
       }
     }
@@ -135,15 +135,15 @@ export function SuccessionView() {
     if (arrow.to_type === 'task') {
       const to = taskPositions.find((p) => p.id === arrow.to_id);
       if (to) {
-        toX = to.x + TASK_BLOCK_WIDTH / 2;
-        toY = to.y + TASK_BLOCK_HEIGHT / 2;
+        toX = Number(to.x) + TASK_BLOCK_WIDTH / 2;
+        toY = Number(to.y) + TASK_BLOCK_HEIGHT / 2;
         toFound = true;
       }
     } else {
       const to = nodePositions.find((p) => p.id === arrow.to_id);
       if (to) {
-        toX = to.x;
-        toY = to.y;
+        toX = Number(to.x);
+        toY = Number(to.y);
         toFound = true;
       }
     }
@@ -212,6 +212,7 @@ export function SuccessionView() {
 
     successionArrows.forEach((arrow) => {
       const { fromX, fromY, toX, toY } = getArrowCoords(arrow);
+      
       if (fromX !== null && fromY !== null && toX !== null && toY !== null) {
         const isHovered = isDeleteMode && arrow.id === hoveredArrowId;
         const color = isHovered ? '#ef4444' : '#3b82f6';
@@ -224,17 +225,17 @@ export function SuccessionView() {
         const endY = toY - scrollY;
         
         ctx.beginPath();
-        ctx.moveTo(fromX, fromY);
-        ctx.lineTo(toX, toY);
+        ctx.moveTo(startX, startY);
+        ctx.lineTo(endX, endY);
         ctx.stroke();
-
-        const angle = Math.atan2(toY - fromY, toX - fromX);
+        
+        const angle = Math.atan2(endY - startY, endX - startX);
         const arrowSize = 15;
         ctx.fillStyle = color;
         ctx.beginPath();
-        ctx.moveTo(toX, toY);
-        ctx.lineTo(toX - arrowSize * Math.cos(angle - Math.PI / 6), toY - arrowSize * Math.sin(angle - Math.PI / 6));
-        ctx.lineTo(toX - arrowSize * Math.cos(angle + Math.PI / 6), toY - arrowSize * Math.sin(angle + Math.PI / 6));
+        ctx.moveTo(endX, endY);
+        ctx.lineTo(endX - arrowSize * Math.cos(angle - Math.PI / 6), endY - arrowSize * Math.sin(angle - Math.PI / 6));
+        ctx.lineTo(endX - arrowSize * Math.cos(angle + Math.PI / 6), endY - arrowSize * Math.sin(angle + Math.PI / 6));
         ctx.fill();
       }
     });
