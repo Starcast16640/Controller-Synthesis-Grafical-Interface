@@ -7,6 +7,12 @@ import type {
   SuccessionNode,
 } from './database.types';
 
+const CONTROLER_NAME = 'Cont';
+const PHYSICAL_SYSTEM_NAME ='Sys';
+const SUBDEFINED_SYSTEM_NAME = 'Sys';
+const SYSTEM_NAME = 'PB';
+const PROBLEM_NAME = 'ConvergenceStation';
+
 export function generateDEPS(
   sensors: Sensor[],
   observers: Observer[],
@@ -15,123 +21,197 @@ export function generateDEPS(
   successionArrows: SuccessionArrow[],
   successionNodes: SuccessionNode[]
 ): string {
-  let deps = '/*\n * DEPS Model\n * Auto-generated from Controller Synthesis Tool\n */\n\n';
+  let deps = 'Package ControlerSynthesisProblem ;\n \n Uses ControlerSynthesisGeneric,ControlerSynthesisBooleanSensorAndObserverAndActuator, ControlerSynthesisIntegerSensorAndObserver,ControlerSynthesisMultiActivationTask, ControlerSynthesisSimpleTask, ControlerSynthesisSuccessionConstraints, Universal; \n \n (*Auto-generated from Controller Synthesis Tool*)\n \n';
 
-  deps += '/* ========== SENSORS ========== */\n';
+  /*========Sensors==== Physical System =========*/
+  deps += 'Model PhysicalSystem( ) extends AbstractPhysicalSystem[]\n Constants \n Variables \n Elements \n';
+  deps += ` true : SensorAlwaysTrueValue();\n`;
+  
   sensors.forEach((sensor) => {
-    if (sensor.factory_io_address) {
-      deps += `/* MAPPING Factory I/O: ${sensor.factory_io_address} */\n`;
-    }
-    deps += `sensor ${sensor.name}: ${sensor.type} on_machine "${sensor.machine}";\n`;
+    deps += ` ${sensor.name} : Sensor${sensor.type}(); (*on_machine "${sensor.machine}"*)\n`;
   });
+  tasks.forEach((task) => {
+    if (task.final_condition === 'AUTO') {
+      deps += ` F${task.name} : SensorBoolean(); (*end of task "${task.name}"*)\n`;
+    }
+  })
+  deps += ' Collections \n Properties\nEnd\n \n';
 
-  deps += '\n/* ========== OBSERVERS ========== */\n';
-  observers.forEach((observer) => {
+
+  /*========Tasks and Observers==== Controler =========*/
+  deps += `Model Controler() extends AbstractControler[AbstractPhysicalSystem[]]\n Constants \n Variables \n Elements \n ${PHYSICAL_SYSTEM_NAME} : PhysicalSystem[]; redefine; \n`;
+  deps += '\n(* ========== TASK ========== *)\n';
+  tasks.forEach((task) => {
+    if (task.type.includes('reactivable')) {
+      deps += ` ${task.name} : TaskReactivable();\n`;
+    } else {
+      deps += ` ${task.name} : Task();\n`;
+    }
+  });
+  
+  deps += '\n(* ========== OBSERVERS ========== *)\n';
+  
+  deps += ` true : ObserverE(${PHYSICAL_SYSTEM_NAME}.true);\n`;
+  deps += ` false : ObserverN(${PHYSICAL_SYSTEM_NAME}.true);\n`;
+  
+  sensors.forEach((sensor) => {
+    if (sensor.type === 'Boolean') {
+      deps += ` ${sensor.name} : ObserverE(${PHYSICAL_SYSTEM_NAME}.${sensor.name});\n`;
+      deps += ` Not${sensor.name} : ObserverN(${PHYSICAL_SYSTEM_NAME}.${sensor.name});\n`;
+    }
+    /* Need to do the reste of others observer of sensor : Interger and Reeeal*/
+  });
+  tasks.forEach((task) => {
+    if (task.final_condition === 'AUTO') {
+      deps += ` F${task.name} : ObserverE(${PHYSICAL_SYSTEM_NAME}.F${task.name}); (*end of task "${task.name}"*)\n`;
+    }
+  })
+  observers.forEach((observer) => {  
     if (observer.type === 'expression') {
       const exprs = observer.expressions as { main?: string };
-      deps += `observer ${observer.name}: expression = ${exprs.main || 'true'};\n`;
+      deps += ` ${observer.name}: ObserverE(${exprs.main || 'true'});\n`;
     } else if (observer.type === 'counter') {
       const exprs = observer.expressions as { increase?: string; decrease?: string };
-      deps += `observer ${observer.name}: counter\n`;
-      deps += `  increase = ${exprs.increase || 'false'}\n`;
-      deps += `  decrease = ${exprs.decrease || 'false'};\n`;
+      deps += ` ${observer.name}: ObserverCounter(${exprs.increase || 'false'},${exprs.decrease || 'false'});\n`;
     } else if (observer.type === 'jk_flip_flop') {
       const exprs = observer.expressions as { set?: string; reset?: string };
-      deps += `observer ${observer.name}: jk_flip_flop\n`;
-      deps += `  set = ${exprs.set || 'false'}\n`;
-      deps += `  reset = ${exprs.reset || 'false'};\n`;
+      deps += ` ${observer.name}: ObserverJK(${exprs.set || 'false'},${exprs.reset || 'false'});\n`;
     }
-  });
+  })
 
-  deps += '\n/* ========== TASKS ========== */\n';
+  deps += '\n(* ========== OBSERVERS For Succession constraint========== *)\n';
+  successionArrows.forEach((arrow,idx) => {
+    if (arrow.from_type === 'task') {
+      const task = tasks.find((t) => t.id === arrow.from_id);
+      deps += ` Arrow${idx} : ObserverEndOfTask(${task?.name || 'unknown'});\n`;
+    } else {
+      deps += ` Arrow${idx} : ObserverElementOfSuccessionConstraint();\n`;
+    }
+  })
+    
+  deps += ' Collections \n Properties\nEnd\n \n';
+
+  
+  /*========= REQUIREMENT ==========*/
+  deps += `Model Requirement() extends AbstractRequirement[AbstractControler[AbstractPhysicalSystem[]]]\n Constants \n Variables \n Elements \n ${CONTROLER_NAME} : Controler[PhysicalSystem[]]; redefine; \n`;
+  deps += '\n(* ========== INTER-TASK CONSTRAINT ========== *)\n';
   tasks.forEach((task) => {
-    if (task.factory_io_address) {
-      deps += `/* MAPPING Factory I/O: ${task.factory_io_address} */\n`;
+    deps += ` ${task.name}InitialCondition : InitialCondition(${CONTROLER_NAME}.${task.authorization_expression || 'true'},Cont.${task.name}); \n`;
+    
+    if (task.final_condition === 'AUTO') {
+      deps += ` ${task.name}FinalCondition : FinalCondition(${CONTROLER_NAME}.F${task.name},${CONTROLER_NAME}.${task.name});\n`;
+    } else {
+      deps += ` ${task.name}FinalCondition : FinalCondition(${CONTROLER_NAME}.${task.final_condition},${CONTROLER_NAME}.${task.name});\n`;
     }
-    deps += `task ${task.name}\n`;
-    deps += `  types = [${task.type.join(', ')}]\n`;
-    deps += `  priority = ${task.priority}\n`;
-    deps += `  authorization = ${task.authorization_expression || 'true'}\n`;
-    deps += `  final_condition = ${task.final_condition}\n`;
+    
     if (task.type.includes('reactivable')) {
-      deps += `  max_simultaneous_executions = ${task.max_simultaneous_executions}\n`;
+      deps += ` ${task.name}MaxActivation : MaxActivation${task.max_simultaneous_executions}(${CONTROLER_NAME}.${task.name});\n`;
     }
-    deps += ';\n';
+    deps += '\n' 
   });
-
-  deps += '\n/* ========== INCOMPATIBILITIES ========== */\n';
+  
+  deps += '\n(* ========== INCOMPATIBILITIES ========== *)\n';
   incompatibilityLinks.forEach((link) => {
     const task1 = tasks.find((t) => t.id === link.task1_id);
     const task2 = tasks.find((t) => t.id === link.task2_id);
     if (task1 && task2) {
-      deps += `incompatible ${task1.name} <-> ${task2.name};\n`;
+      deps += ` Incompatible${task1.name}v${task2.name} : Incompatible(${CONTROLER_NAME}.${task1.name}, ${CONTROLER_NAME}.${task2.name});\n`;
     }
   });
 
-  deps += '\n/* ========== SUCCESSION CONSTRAINTS ========== */\n';
+  deps += '\n(* ========== SUCCESSION CONSTRAINTS ========== *)\n';
+  
+  
   successionNodes.forEach((node, idx) => {
-    deps += `node_${idx}\n`;
-    deps += `  expression = ${node.expression || 'true'}\n`;
-    deps += `  split_type = ${node.split_type}\n`;
-    deps += ';\n';
+    let inArrow = '';
+    let outArrow = '';
+    const nodeName = node.name || `node${idx}`
+    deps += ` ${nodeName} : SuccessionNode`;
+    /* not implemented yet deps += `  expression = ${node.expression || 'true'}\n`; */
+    if (node.split_type==='only_one') {
+       deps += `OnlyOne(`;
+    } else {
+      deps += `All(`;
+    }
+    successionArrows.forEach((arrow,idx) => {
+      if (arrow.to_id === node.id) {
+        inArrow += `${CONTROLER_NAME}.Arrow${idx},`;
+      }
+      if (arrow.from_id === node.id) {
+        outArrow += `,${CONTROLER_NAME}.Arrow${idx}`;
+      }
+    })
+   deps += `${inArrow}0${outArrow}); \n`; 
   });
 
-  successionArrows.forEach((arrow) => {
-    let fromLabel = '';
-    let toLabel = '';
-
-    if (arrow.from_type === 'task') {
-      const task = tasks.find((t) => t.id === arrow.from_id);
-      fromLabel = task?.name || 'unknown';
+  tasks.forEach((task) => {
+    deps +=` ${task.name}SuccessionContraint : SuccessionContraint(${CONTROLER_NAME}.${task.name}`;
+    successionArrows.forEach((arrow,idx) => {
+      if (arrow.to_id === task.id) {
+        deps += `,${CONTROLER_NAME}.Arrow${idx}`;
+      }   
+    })
+    deps +=`); \n`;
+  })
+  deps += ' Collections \n Properties\n'
+  let listofoptimisations ='';
+  let listoftasks='';
+  deps +=`\n`;
+  tasks.forEach((task,idx) => {
+    if (idx ===0) {
+      listofoptimisations+=`max`;
+      listoftasks+=`${CONTROLER_NAME}.${task.name}.Aut`;
     } else {
-      const node = successionNodes.find((n) => n.id === arrow.from_id);
-      fromLabel = `node_${successionNodes.indexOf(node || {} as SuccessionNode)}`;
-    }
+      listofoptimisations+=`,max`;
+      listoftasks+=`,${CONTROLER_NAME}.${task.name}.Aut`;
+    }     
+  })
+  deps +=`Blo ([${listofoptimisations}],[${listoftasks}]);\n`;
+  
+  deps += 'End\n \n';
 
-    if (arrow.to_type === 'task') {
-      const task = tasks.find((t) => t.id === arrow.to_id);
-      toLabel = task?.name || 'unknown';
-    } else {
-      const node = successionNodes.find((n) => n.id === arrow.to_id);
-      toLabel = `node_${successionNodes.indexOf(node || {} as SuccessionNode)}`;
-    }
 
-    deps += `precedence ${fromLabel} -> ${toLabel};\n`;
-  });
+  deps += 'Model SubDefinedSystem() extends AbstractSubDefinedSystem[] \n Constants\n Variables\n Elements\n';
+  deps += ` ${PHYSICAL_SYSTEM_NAME} : PhysicalSystem(); redefine; \n ${CONTROLER_NAME} : Controler(${PHYSICAL_SYSTEM_NAME}); redefine;\n`;
+  deps += ' Collections\n Properties\nEnd\n\n';
 
+  deps += 'Model System() extends AbstractSystem[] \n Constants\n Variables\n Elements\n';
+  deps += ` ${SUBDEFINED_SYSTEM_NAME} : SubDefinedSystem(); redefine;\n Requirement : Requirement (${SUBDEFINED_SYSTEM_NAME}.${CONTROLER_NAME}); redefine; \n`;
+  deps += ' Collections\n Properties\nEnd\n\n';
+
+  deps += `Problem ${PROBLEM_NAME}\n Constants\n Variables\n Elements\n`;
+  deps += `${SYSTEM_NAME} : System(); \n`
+  deps += ' Collections\n Properties\nEnd\n\n';
   return deps;
 }
 
 export function generateGRAFCET(tasks: Task[], successionArrows: SuccessionArrow[]): string {
-  let grafcet = 'graph grafcet {\n';
-  grafcet += '  rankdir=TB;\n';
-  grafcet += '  node [shape=box, style=rounded];\n\n';
-
-  grafcet += '  /* Steps */\n';
+  let grafcet ='<?xml version="1.0" encoding="UTF-8"?>\n<project>\n'
   tasks.forEach((task) => {
-    let label = task.name;
-    if (task.factory_io_address) {
-      label += `\\n[${task.factory_io_address}]`;
-    }
-    if (task.type.includes('reactivable')) {
-      label += ` (max: ${task.max_simultaneous_executions})`;
-    }
-    grafcet += `  "${task.id}" [label="${label}", color=`;
-    if (task.type.includes('pausable')) grafcet += 'yellow';
-    else if (task.type.includes('interruptible')) grafcet += 'red';
-    else grafcet += 'lightblue';
-    grafcet += '];\n';
-  });
-
-  grafcet += '\n  /* Transitions and Precedences */\n';
-  successionArrows.forEach((arrow) => {
-    let fromId = arrow.from_id;
-    let toId = arrow.to_id;
-    grafcet += `  "${fromId}" -> "${toId}";\n`;
-  });
-
-  grafcet += '}\n';
-  return grafcet;
+    grafcet +=`	<grafcet type="normal" owner="" name="GMemorisation${task.name}" comment="">\n`;
+    grafcet +='		<sequence id="1">\n'
+    grafcet +=`			<step type="initial" name="XOFF${task.name}"/>\n`;
+    grafcet +=`			<transition>\n				<condition>${task.name}T</condition>\n			</transition>\n`;
+    grafcet +=`			<step type="normal" name="${task.name}prevT" />\n`;
+    grafcet +=`			<transition>\n				<condition><cpl>${task.name}T</cpl></condition>\n			</transition>\n`;
+    grafcet +=`		</sequence>\n`;
+    grafcet +=`		<jump seqid_from="1" seqid_to="1" />\n`;
+    grafcet +=`	</grafcet>\n`;
+  })
+ successionArrows.forEach((arrow,idx) => {
+    grafcet +=`	<grafcet type="normal" owner="" name="GMemorisationArrow${idx}" comment="">\n`;
+    grafcet +='		<sequence id="1">\n'
+    grafcet +=`			<step type="initial" name="XOFFArrow${idx}"/>\n`;
+    grafcet +=`			<transition>\n				<condition>Arrow${idx}NextValue</condition>\n			</transition>\n`;
+    grafcet +=`			<step type="normal" name="Arrow${idx}PrevValue" />\n`;
+    grafcet +=`			<transition>\n				<condition><cpl>Arrow${idx}Value</cpl></condition>\n			</transition>\n`;
+    grafcet +=`		</sequence>\n`;
+    grafcet +=`		<jump seqid_from="1" seqid_to="1" />\n`;
+    grafcet +=`	</grafcet>\n`;
+  })
+  grafcet +='</project>\n';
+  
+  return grafcet; 
 }
 
 export function downloadFile(content: string, filename: string) {
@@ -143,13 +223,3 @@ export function downloadFile(content: string, filename: string) {
   element.click();
   document.body.removeChild(element);
 }
-
-const escapeSqlString = (str: string | null | undefined) => {
-  if (!str) return 'NULL';
-  return `'${str.replace(/'/g, "''")}'`;
-};
-
-const escapeSqlJson = (obj: any) => {
-  if (!obj) return 'NULL';
-  return `'${JSON.stringify(obj).replace(/'/g, "''")}'::jsonb`;
-};
