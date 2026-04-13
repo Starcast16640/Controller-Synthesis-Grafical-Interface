@@ -437,18 +437,18 @@ export function SuccessionView() {
           {nodePositions.map((pos) => {
             const node = successionNodes.find((n) => n.id === pos.id);
             if (!node) return null;
-            const nodeIndex = successionNodes.findIndex((n) => n.id === pos.id);
-            const nodeNumber = nodeIndex + 1;
+            const isSelected = selectedForLink.some((s) => s.id === pos.id);
+          
             return (
               <div
                 key={pos.id}
-                className={`rounded-full flex items-center justify-center relative shadow-sm transition duration-200 ${
-                    isDeleteMode 
-                      ? 'bg-red-200 border-2 border-red-500 cursor-crosshair hover:bg-red-400 hover:scale-110' 
-                      : selectedForLink.find((s) => s.id === pos.id)
-                        ? 'bg-blue-200 border-4 border-blue-600 scale-110 shadow-lg'
-                        : 'bg-yellow-300 border-2 border-yellow-600 cursor-pointer hover:bg-yellow-400'
-                  }`}
+                className={`absolute rounded-full flex items-center justify-center shadow-md transition-all z-10 ${
+                  isDeleteMode 
+                    ? 'bg-red-200 border-2 border-red-500 cursor-crosshair' 
+                    : isSelected
+                      ? 'bg-blue-200 border-4 border-blue-600 scale-110 shadow-lg'
+                      : 'bg-yellow-300 border-2 border-yellow-600 cursor-pointer hover:bg-yellow-400'
+                }`}
                 style={{
                   left: `${pos.x - NODE_RADIUS}px`,
                   top: `${pos.y - NODE_RADIUS}px`,
@@ -457,62 +457,48 @@ export function SuccessionView() {
                   userSelect: 'none',
                 }}
                 onMouseDown={(e) => handleNodeMouseDown(pos.id, e)}
+                onContextMenu={(e) => {
+                  if (isDeleteMode) return;
+                  e.preventDefault();
+                  setEditingNode(pos.id);
+                  setNodeForm({ 
+                    name: node.name || 'N', 
+                    expression: node.expression, 
+                    split_type: node.split_type 
+                  });
+                }}
               >
-                <div
-                  className={`w-full h-full rounded-full flex items-center justify-center relative shadow-sm transition-colors ${
-                    isDeleteMode 
-                      ? 'bg-red-200 border-2 border-red-500 cursor-crosshair hover:bg-red-400 hover:scale-110' 
-                      : 'bg-yellow-300 border-2 border-yellow-600 cursor-pointer hover:bg-yellow-400'
-                  }`}
-                  onContextMenu={(e) => {
-                    if (isDeleteMode) return;
-                    e.preventDefault();
-                    setEditingNode(pos.id);
-                    const defaultName = node.name || `N${nodeIndex + 1}`;
-                    setNodeForm({ name: defaultName, expression: node.expression, split_type: node.split_type });
-                  }}
-                  onDoubleClick={() => handleNodeDoubleClick(pos.id)}
-                >
-                  <span className="text-xs font-bold text-yellow-900">{node.split_type === 'both' ? '⊕' : '|'}</span>
-                </div>
+                <span className="text-sm font-bold text-yellow-900 pointer-events-none">
+                  {node.split_type === 'both' ? '⊕' : '|'}
+                </span>
                 <div className="absolute top-full mt-1 left-1/2 -translate-x-1/2">
                   {editingNameId === pos.id ? (
                     <input
                       autoFocus
+                      className="text-xs border border-blue-400 rounded px-1 w-16 text-center"
                       value={editingNameValue}
                       onChange={(e) => setEditingNameValue(e.target.value)}
                       onBlur={() => {
                         updateSuccessionNode(pos.id, { name: editingNameValue });
                         setEditingNameId(null);
                       }}
-                      onKeyDown={(e) => {
-                        if (e.key === 'Enter') {
-                          updateSuccessionNode(pos.id, { name: editingNameValue });
-                          setEditingNameId(null);
-                        }
-                        if (e.key === 'Escape') setEditingNameId(null);
-                      }}
-                      className="text-xs border border-blue-400 rounded px-1 w-20 text-center shadow-sm outline-none"
                     />
                   ) : (
-                    <span
-                      className="text-xs font-bold text-gray-700 bg-white/80 px-1 rounded cursor-text hover:bg-blue-100 transition-colors whitespace-nowrap"
-                      onMouseDown={(e) => e.stopPropagation()}
+                    <span 
+                      className="text-[10px] font-bold text-gray-600 bg-white/80 px-1 rounded whitespace-nowrap"
                       onDoubleClick={(e) => {
                         e.stopPropagation();
                         setEditingNameId(pos.id);
-                        setEditingNameValue(node.name || `Unamed`);
+                        setEditingNameValue(node.name || '');
                       }}
                     >
-                      {node.name || 'Unamed'}
+                      {node.name}
                     </span>
                   )}
                 </div>
               </div>
             );
           })}
-        </div>
-      </div>
 
       {editingNode && (
         <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
