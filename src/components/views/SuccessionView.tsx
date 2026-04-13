@@ -112,89 +112,46 @@ export function SuccessionView() {
   }, [successionNodes]);
 
   const getArrowCoords = (arrow: any) => {
-    let fromX = 0, fromY = 0, toX = 0, toY = 0;
-    let fromFound = false;
-    let toFound = false;
+  const fromPos = arrow.from_type === 'task' 
+    ? taskPositions.find(p => p.id === arrow.from_id)
+    : nodePositions.find(p => p.id === arrow.from_id);
     
-    if (arrow.from_type === 'task') {
-      const from = taskPositions.find((p) => p.id === arrow.from_id);
-      if (from) {
-        fromX = Number(from.x) + TASK_BLOCK_WIDTH / 2;
-        fromY = Number(from.y) + TASK_BLOCK_HEIGHT / 2;
-        fromFound = true;
-      }
-    } else {
-      const from = nodePositions.find((p) => p.id === arrow.from_id);
-      if (from) {
-        fromX = Number(from.x);
-        fromY = Number(from.y);
-        fromFound = true;
-      }
-    }
+  const toPos = arrow.to_type === 'task'
+    ? taskPositions.find(p => p.id === arrow.to_id)
+    : nodePositions.find(p => p.id === arrow.to_id);
 
-    if (arrow.to_type === 'task') {
-      const to = taskPositions.find((p) => p.id === arrow.to_id);
-      if (to) {
-        toX = Number(to.x) + TASK_BLOCK_WIDTH / 2;
-        toY = Number(to.y) + TASK_BLOCK_HEIGHT / 2;
-        toFound = true;
-      }
-    } else {
-      const to = nodePositions.find((p) => p.id === arrow.to_id);
-      if (to) {
-        toX = Number(to.x);
-        toY = Number(to.y);
-        toFound = true;
-      }
-    }
+  if (!fromPos || !toPos) return { fromX: null, fromY: null, toX: null, toY: null };
 
-    if (!fromFound || !toFound) {
-      return { fromX: null, fromY: null, toX: null, toY: null };
-    }
-    
-    if (fromX === 0 && fromY === 0 && toX === 0 && toY === 0) {
-      return { fromX, fromY, toX, toY };
-    }
-    
-    const dx = toX - fromX;
-    const dy = toY - fromY;
-    const angle = Math.atan2(dy, dx);
+  const startX = arrow.from_type === 'task' ? fromPos.x + TASK_BLOCK_WIDTH / 2 : fromPos.x;
+  const startY = arrow.from_type === 'task' ? fromPos.y + TASK_BLOCK_HEIGHT / 2 : fromPos.y;
+  const endX = arrow.to_type === 'task' ? toPos.x + TASK_BLOCK_WIDTH / 2 : toPos.x;
+  const endY = arrow.to_type === 'task' ? toPos.y + TASK_BLOCK_HEIGHT / 2 : toPos.y;
 
-    if (arrow.from_type === 'task') {
-      const w = TASK_BLOCK_WIDTH / 2;
-      const h = TASK_BLOCK_HEIGHT / 2;
-      let tan = Math.tan(angle);
+  const angle = Math.atan2(endY - startY, endX - startX);
 
-      if (Math.abs(tan) <= h / w) {
-        fromX += Math.sign(dx) * w;
-        fromY += Math.sign(dx) * w * tan;
-      } else {
-        fromX += Math.sign(dy) * h / tan;
-        fromY += Math.sign(dy) * h;
-      }
-    } else {
-      fromX += Math.cos(angle) * NODE_RADIUS;
-      fromY += Math.sin(angle) * NODE_RADIUS;
-    }
-
-    if (arrow.to_type === 'task') {
-      const w = TASK_BLOCK_WIDTH / 2;
-      const h = TASK_BLOCK_HEIGHT / 2;
-      let tan = Math.tan(angle);
-
-      if (Math.abs(tan) <= h / w) {
-        toX -= Math.sign(dx) * w;
-        toY -= Math.sign(dx) * w * tan;
-      } else {
-        toX -= Math.sign(dy) * h / tan;
-        toY -= Math.sign(dy) * h;
-      }
-    } else {
-      toX -= Math.cos(angle) * NODE_RADIUS;
-      toY -= Math.sin(angle) * NODE_RADIUS;
-    }
-    return { fromX, fromY, toX, toY };
+  const getBoxIntersection = (isFrom: boolean) => {
+    const dx = Math.cos(angle) * (isFrom ? 1 : -1);
+    const dy = Math.sin(angle) * (isFrom ? 1 : -1);
+    const scale = Math.min(
+      Math.abs((TASK_BLOCK_WIDTH / 2) / dx),
+      Math.abs((TASK_BLOCK_HEIGHT / 2) / dy)
+    );
+    return {
+      x: (isFrom ? startX : endX) + dx * scale,
+      y: (isFrom ? startY : endY) + dy * scale
+    };
   };
+
+  const from = arrow.from_type === 'node' 
+    ? { x: startX + Math.cos(angle) * NODE_RADIUS, y: startY + Math.sin(angle) * NODE_RADIUS }
+    : getBoxIntersection(true);
+
+  const to = arrow.to_type === 'node'
+    ? { x: endX - Math.cos(angle) * NODE_RADIUS, y: endY - Math.sin(angle) * NODE_RADIUS }
+    : getBoxIntersection(false);
+
+  return { fromX: from.x, fromY: from.y, toX: to.x, toY: to.y };
+};
   
  useEffect(() => {
     const canvas = canvasRef.current;
