@@ -317,38 +317,6 @@ export function SuccessionView() {
     setDraggingTaskId(null);
     setDraggingNodeId(null);
   };
-
-  const handleTaskDoubleClick = (taskId: string) => {
-    if (!arrowStart) {
-      setArrowStart({ type: 'task', id: taskId, x: 0, y: 0 });
-      setIsDrawingArrow(true);
-    } else {
-      addSuccessionArrow({
-        from_type: arrowStart.type,
-        from_id: arrowStart.id,
-        to_type: 'task',
-        to_id: taskId,
-      });
-      setIsDrawingArrow(false);
-      setArrowStart(null);
-    }
-  };
-
-  const handleNodeDoubleClick = (nodeId: string) => {
-    if (!arrowStart) {
-      setArrowStart({ type: 'node', id: nodeId, x: 0, y: 0 });
-      setIsDrawingArrow(true);
-    } else {
-      addSuccessionArrow({
-        from_type: arrowStart.type,
-        from_id: arrowStart.id,
-        to_type: 'node',
-        to_id: nodeId,
-      });
-      setIsDrawingArrow(false);
-      setArrowStart(null);
-    }
-  };
   
   const handleCreateNode = () => {
     let maxNumber = 0;
