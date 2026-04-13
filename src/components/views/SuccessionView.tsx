@@ -442,7 +442,7 @@ export function SuccessionView() {
             return (
               <div
                 key={pos.id}
-                className={`absolute rounded-full flex items-center justify-center shadow-md transition-all z-10 ${
+                className={`absolute rounded-full flex items-center justify-center shadow-md transition z-10 ${
                   isDeleteMode 
                     ? 'bg-red-200 border-2 border-red-500 cursor-crosshair' 
                     : isSelected
