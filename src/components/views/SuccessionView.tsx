@@ -497,7 +497,10 @@ export function SuccessionView() {
                 <span className="text-sm font-bold text-yellow-900 pointer-events-none">
                   {node.split_type === 'both' ? '⊕' : '|'}
                 </span>
-                <div className="absolute top-full mt-1 left-1/2 -translate-x-1/2">
+                <div 
+                  className="absolute top-full mt-1 left-1/2 -translate-x-1/2"
+                  onMouseDown={(e) => e.stopPropagation()}
+                  >
                   {editingNameId === pos.id ? (
                     <input
                       autoFocus
