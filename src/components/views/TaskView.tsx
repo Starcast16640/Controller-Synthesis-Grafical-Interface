@@ -304,7 +304,7 @@ export function TaskView() {
                         {task.type.map((t) => (
                           <span key={t} className="px-2 py-1 bg-purple-100 text-purple-800 rounded text-xs">
                             {t}
-                          </span>
+                          </span> 
                         ))}
                       </div>
                     </td>
@@ -313,7 +313,7 @@ export function TaskView() {
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-500">
                       <code className="text-xs bg-gray-100 px-2 py-1 rounded truncate block max-w-xs">
-                        {task.authorization_expression || 'TRUE'}
+                        {task.authorization_expression || ''}
                       </code>
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-500">
