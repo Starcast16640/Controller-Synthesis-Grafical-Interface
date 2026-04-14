@@ -49,6 +49,15 @@ export function TaskView() {
     e.preventDefault();
     if (!formData.name) return;
 
+    const nameExists = tasks.some(
+      (t) => t.name.toLowerCase() === formData.name.toLowerCase() && t.id !== editingId
+    );
+
+    if (nameExists) {
+      alert(`The task name "${formData.name}" already exists. Please choose a unique name.`);
+      return;
+    }
+
     if (editingId) {
       await updateTask(editingId, formData);
       setEditingId(null);
