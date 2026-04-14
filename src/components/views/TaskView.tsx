@@ -205,12 +205,11 @@ export function TaskView() {
                 ))}
               </div>
             </div>
-
+            <label className="block text-xs font-bold text-gray-500 uppercase mb-1 mt-4">Final Condition</label>
             <div className="flex gap-2">
               <input
                 type="text"
                 placeholder="Final Condition (or 'AUTO')"
-                value={formData.final_condition}
                 onChange={(e) => setFormData({ ...formData, final_condition: e.target.value })}
                 className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
