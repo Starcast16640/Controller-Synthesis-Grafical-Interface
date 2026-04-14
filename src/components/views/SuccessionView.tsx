@@ -309,6 +309,12 @@ export function SuccessionView() {
   };
 
   const handleMouseUp = () => {
+    if (draggingTaskId) {
+      const pos = taskPositions.find((p) => p.id === draggingTaskId);
+      if (pos) {
+        updateTask(draggingTaskId, { position_x: pos.x, position_y: pos.y });
+      }
+    }
     if (draggingNodeId) {
       const finalPos = nodePositions.find((p) => p.id === draggingNodeId);
       if (finalPos) {
