@@ -170,7 +170,7 @@ export function TaskView() {
                 ))}
               </div>
             </div>
-
+            <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Authorization Logic</label>
             <textarea
               ref={authRef}
               placeholder="Authorization Expression (e.g., sensor1 AND observer2)"
