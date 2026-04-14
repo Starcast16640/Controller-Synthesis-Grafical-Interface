@@ -83,16 +83,35 @@ export function SuccessionView() {
   };
 
   useEffect(() => {
-    if (taskPositions.length === 0 && tasks.length > 0) {
-      const cols = Math.ceil(Math.sqrt(tasks.length));
-      const newPositions = tasks.map((task, idx) => ({
-        id: task.id,
-        x: (idx % cols) * (TASK_BLOCK_WIDTH + 40) + 20,
-        y: Math.floor(idx / cols) * (TASK_BLOCK_HEIGHT + 40) + 20,
-      }));
-      setTaskPositions(newPositions);
-    }
-  }, [tasks, taskPositions.length]);
+    setTaskPositions((prevPositions) => {
+      const validPositions = prevPositions.filter(pos => 
+        tasks.some(task => task.id === pos.id)
+      );
+      
+      const newPositions = [...validPositions];
+      let hasChanges = validPositions.length !== prevPositions.length;
+
+      tasks.forEach((task, idx) => {
+        if (!newPositions.some((p) => p.id === task.id)) {
+          const hasDBPos = task.position_x !== null && task.position_x !== undefined && task.position_x !== 0;
+          
+          if (hasDBPos) {
+            newPositions.push({ id: task.id, x: task.position_x!, y: task.position_y! });
+          } else {
+            const cols = Math.ceil(Math.sqrt(tasks.length)) || 5;
+            newPositions.push({
+              id: task.id,
+              x: (idx % cols) * (TASK_BLOCK_WIDTH + 40) + 20,
+              y: Math.floor(idx / cols) * (TASK_BLOCK_HEIGHT + 40) + 20,
+            });
+          }
+          hasChanges = true;
+        }
+      });
+
+      return hasChanges ? newPositions : prevPositions;
+    });
+  }, [tasks]);
 
   useEffect(() => {
     setNodePositions((prevPositions) => {
