@@ -58,6 +58,11 @@ export function TaskView() {
       return;
     }
 
+    const dataToSubmit = {
+      ...formData,
+      authorization_expression: formData.authorization_expression.trim() || 'true'
+    };
+
     if (editingId) {
       await updateTask(editingId, formData);
       setEditingId(null);
