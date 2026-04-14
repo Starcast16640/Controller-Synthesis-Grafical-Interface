@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useData } from '../../contexts/DataContext';
 import { Plus, Trash2, Edit, X } from 'lucide-react';
 import type { Task } from '../../lib/database.types';
@@ -16,7 +16,7 @@ interface TaskFormData {
 const TASK_TYPES = ['simple', 'reactivable', 'pausable', 'interruptible'];
 
 export function TaskView() {
-  const { tasks, addTask, updateTask, deleteTask } = useData();
+  const { tasks, sensors, observers, addTask, updateTask, deleteTask } = useData();
   const [editingId, setEditingId] = useState<string | null>(null);
   const [formData, setFormData] = useState<TaskFormData>({
     name: '',
@@ -27,6 +27,23 @@ export function TaskView() {
     priority: 0,
     factory_io_address: '',
   });
+
+  const authRef = useRef<HTMLTextAreaElement>(null);
+
+  const insertAtCursor = (value: string) => {
+    const textarea = authRef.current;
+    if (!textarea) return;
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const text = formData.authorization_expression;
+    const newText = text.substring(0, start) + value + text.substring(end);
+    
+    setFormData({ ...formData, authorization_expression: newText });
+    setTimeout(() => {
+      textarea.focus();
+      textarea.setSelectionRange(start + value.length, start + value.length);
+    }, 0);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -145,20 +162,56 @@ export function TaskView() {
             </div>
 
             <textarea
+              ref={authRef}
               placeholder="Authorization Expression (e.g., sensor1 AND observer2)"
               value={formData.authorization_expression}
               onChange={(e) => setFormData({ ...formData, authorization_expression: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 font-mono text-sm"
               rows={2}
             />
+            
+            <div className="mt-2 p-3 bg-gray-50 rounded-lg border border-gray-200">
+              <div className="flex flex-wrap gap-2 mb-3">
+                {['AND', 'OR', 'NOT', '[', ']', 'XOR', '>', '<'].map(op => (
+                  <button key={op} type="button" onClick={() => insertAtCursor(` ${op} `)}
+                    className="px-2 py-1 bg-white hover:bg-gray-100 rounded text-[10px] font-bold text-gray-600 border border-gray-300">
+                    {op}
+                  </button>
+                ))}
+              </div>
+              
+              <div className="flex flex-wrap gap-2">
+                {sensors.map(s => (
+                  <button key={s.id} type="button" onClick={() => insertAtCursor(s.name)}
+                    className="px-2 py-1 bg-green-50 text-green-700 rounded text-[10px] border border-green-200 hover:bg-green-100">
+                    {s.name}
+                  </button>
+                ))}
+                {observers.map(o => (
+                  <button key={o.id} type="button" onClick={() => insertAtCursor(o.name)}
+                    className="px-2 py-1 bg-blue-50 text-blue-700 rounded text-[10px] border border-blue-200 hover:bg-blue-100">
+                    {o.name}
+                  </button>
+                ))}
+              </div>
+            </div>
 
-            <input
-              type="text"
-              placeholder="Final Condition (or 'AUTO')"
-              value={formData.final_condition}
-              onChange={(e) => setFormData({ ...formData, final_condition: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
+            <div className="flex gap-2">
+              <input
+                type="text"
+                placeholder="Final Condition (or 'AUTO')"
+                value={formData.final_condition}
+                onChange={(e) => setFormData({ ...formData, final_condition: e.target.value })}
+                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+              <button 
+                type="button" 
+                onClick={() => setFormData({ ...formData, final_condition: 'AUTO' })}
+                className="px-4 py-2 bg-orange-100 text-orange-700 rounded-lg text-xs font-bold border border-orange-200 hover:bg-orange-200 transition-colors"
+              >
+                SET AUTO
+              </button>
+            </div>
 
             <div className="flex gap-2">
               <button
