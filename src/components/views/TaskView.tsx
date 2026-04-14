@@ -210,6 +210,7 @@ export function TaskView() {
               <input
                 type="text"
                 placeholder="Final Condition (or 'AUTO')"
+                value={formData.final_condition}
                 onChange={(e) => setFormData({ ...formData, final_condition: e.target.value })}
                 className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
