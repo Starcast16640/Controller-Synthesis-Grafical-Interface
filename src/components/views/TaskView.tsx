@@ -111,37 +111,47 @@ export function TaskView() {
           </h3>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-4 gap-4">
-              <input
-                type="text"
-                placeholder="Task Name"
-                value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                required
-              />
-              <input
-                type="number"
-                placeholder="Priority"
-                value={formData.priority}
-                onChange={(e) => setFormData({ ...formData, priority: parseInt(e.target.value) || 0 })}
-                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
-              <input
-                type="number"
-                placeholder="Max Simultaneous Executions"
-                value={formData.max_simultaneous_executions}
-                onChange={(e) =>
-                  setFormData({ ...formData, max_simultaneous_executions: parseInt(e.target.value) || 1 })
-                }
-                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
-              <input
-                type="text"
-                placeholder="Address Mapping"
-                value={formData.factory_io_address}
-                onChange={(e) => setFormData({ ...formData, factory_io_address: e.target.value })}
-                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
+              <div>
+                <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Task Name</label>
+                <input
+                  type="text"
+                  placeholder="e.g. Move Robot"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Priority</label>
+                <input
+                  type="number"
+                  placeholder="0"
+                  value={formData.priority}
+                  onChange={(e) => setFormData({ ...formData, priority: parseInt(e.target.value) || 0 })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Max Executions</label>
+                <input
+                  type="number"
+                  placeholder="1"
+                  value={formData.max_simultaneous_executions}
+                  onChange={(e) => setFormData({ ...formData, max_simultaneous_executions: parseInt(e.target.value) || 1 })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Address Mapping</label>
+                <input
+                  type="text"
+                  placeholder="%MW100"
+                  value={formData.factory_io_address}
+                  onChange={(e) => setFormData({ ...formData, factory_io_address: e.target.value })}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
             </div>
 
             <div className="space-y-2">
