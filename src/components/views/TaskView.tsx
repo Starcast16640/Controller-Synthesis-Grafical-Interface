@@ -74,10 +74,10 @@ export function TaskView() {
     };
 
     if (editingId) {
-      await updateTask(editingId, formData);
+      await updateTask(editingId, dataToSubmit);
       setEditingId(null);
     } else {
-      await addTask(formData as Omit<Task, 'id' | 'created_at'>);
+      await addTask(dataToSubmit as Omit<Task, 'id' | 'created_at'>);
     }
 
     setFormData({
@@ -168,16 +168,25 @@ export function TaskView() {
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                 />
               </div>
-              <div>
-                <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Max Executions</label>
-                <input
-                  type="number"
-                  placeholder="1"
-                  value={formData.max_simultaneous_executions}
-                  onChange={(e) => setFormData({ ...formData, max_simultaneous_executions: parseInt(e.target.value) || 1 })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-                />
-              </div>
+              {formData.type.includes('reactivable') ? (
+                <div>
+                  <label className="block text-xs font-bold text-gray-500 uppercase mb-1 text-blue-600">
+                    Max Simultaneous Executions (Reactivable)
+                  </label>
+                  <input
+                    type="number"
+                    min="1"
+                    value={formData.max_simultaneous_executions}
+                    onChange={(e) => setFormData({ ...formData, max_simultaneous_executions: parseInt(e.target.value) || 1 })}
+                    className="w-full px-4 py-2 border-2 border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+                ) : (
+                <div className="opacity-40 cursor-not-allowed">
+                  <label className="block text-xs font-bold text-gray-400 uppercase mb-1">Max Exec. (Locked)</label>
+                  <input type="text" disabled value="1" className="w-full px-4 py-2 bg-gray-100 border border-gray-200 rounded-lg cursor-not-allowed" />
+                </div>
+              )}
               <div>
                 <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Address Mapping</label>
                 <input
@@ -218,9 +227,15 @@ export function TaskView() {
             
             <div className="mt-2 p-3 bg-gray-50 rounded-lg border border-gray-200">
               <div className="flex flex-wrap gap-2 mb-3">
-                {['AND', 'OR', 'NOT', '[', ']', 'XOR', '>', '<'].map(op => (
+                {['AND', 'OR', 'NOT', 'XOR'].map(op => (
                   <button key={op} type="button" onClick={() => insertAtCursor(` ${op} `)}
                     className="px-2 py-1 bg-white hover:bg-gray-100 rounded text-[10px] font-bold text-gray-600 border border-gray-300">
+                    {op}
+                  </button>
+                ))}
+                {['[', ']', '>', '<'].map(op => (
+                  <button key={op} type="button" onClick={() => insertAtCursor(op)}
+                    className="px-3 py-1 bg-blue-50 hover:bg-blue-100 rounded text-[10px] font-bold text-blue-600 border border-blue-200">
                     {op}
                   </button>
                 ))}
