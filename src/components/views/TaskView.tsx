@@ -22,7 +22,7 @@ export function TaskView() {
     name: '',
     type: ['simple'],
     authorization_expression: '',
-    final_condition: 'AUTO',
+    final_condition: '',
     max_simultaneous_executions: 1,
     priority: 0,
     factory_io_address: '',
@@ -86,7 +86,7 @@ export function TaskView() {
       name: '',
       type: ['simple'],
       authorization_expression: '',
-      final_condition: 'AUTO',
+      final_condition: '',
       max_simultaneous_executions: 1,
       priority: 0,
       factory_io_address: ''
