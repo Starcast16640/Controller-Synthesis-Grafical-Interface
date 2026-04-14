@@ -49,12 +49,12 @@ export function TaskView() {
     e.preventDefault();
     if (!formData.name) return;
 
-    const nameExists = tasks.some(
-      (t) => t.name.toLowerCase() === formData.name.toLowerCase() && t.id !== editingId
-    );
+    const nameUsedInTasks = tasks.some(t => t.name.toLowerCase() === formData.name.toLowerCase() && t.id !== editingId);
+    const nameUsedInSensors = sensors.some(s => s.name.toLowerCase() === formData.name.toLowerCase());
+    const nameUsedInObservers = observers.some(o => o.name.toLowerCase() === formData.name.toLowerCase());
 
-    if (nameExists) {
-      alert(`The task name "${formData.name}" already exists. Please choose a unique name.`);
+    if (nameUsedInTasks || nameUsedInSensors || nameUsedInObservers) {
+      alert(`The name "${formData.name}" is already used by another element (Task, Sensor or Observer).`);
       return;
     }
 
