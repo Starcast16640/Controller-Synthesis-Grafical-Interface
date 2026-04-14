@@ -151,7 +151,7 @@ export function TaskView() {
                 <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Task Name</label>
                 <input
                   type="text"
-                  placeholder="e.g. Move Robot"
+                  placeholder="MoveRobot"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -191,7 +191,7 @@ export function TaskView() {
                 <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Address Mapping</label>
                 <input
                   type="text"
-                  placeholder="%MW100"
+                  placeholder="100"
                   value={formData.factory_io_address}
                   onChange={(e) => setFormData({ ...formData, factory_io_address: e.target.value })}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
