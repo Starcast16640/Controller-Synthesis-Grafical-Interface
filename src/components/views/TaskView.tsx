@@ -58,6 +58,12 @@ export function TaskView() {
       return;
     }
 
+    const priorityExists = tasks.some(t => t.priority === formData.priority && t.id !== editingId);
+    if (priorityExists) {
+      alert(`Priority ${formData.priority} is already assigned to another task. Priorities must be unique.`);
+      return;
+    }
+
     const finalExpression = formData.authorization_expression.trim() === '' 
       ? 'true' 
       : formData.authorization_expression.trim();
