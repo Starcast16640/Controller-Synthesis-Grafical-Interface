@@ -58,9 +58,13 @@ export function TaskView() {
       return;
     }
 
+    const finalExpression = formData.authorization_expression.trim() === '' 
+      ? 'true' 
+      : formData.authorization_expression.trim();
+
     const dataToSubmit = {
       ...formData,
-      authorization_expression: formData.authorization_expression.trim() || 'true'
+      authorization_expression: finalExpression
     };
 
     if (editingId) {
@@ -108,10 +112,22 @@ export function TaskView() {
   };
 
   const toggleTaskType = (typeToToggle: string) => {
-    const newTypes = formData.type.includes(typeToToggle)
-      ? formData.type.filter((t) => t !== typeToToggle)
-      : [...formData.type, typeToToggle];
-    setFormData({ ...formData, type: newTypes.length > 0 ? newTypes : ['simple'] });
+    let newTypes = [...formData.type];
+
+    if (typeToToggle === 'simple') {
+      newTypes = ['simple'];
+    } else {
+      if (newTypes.includes(typeToToggle)) {
+        newTypes = newTypes.filter((t) => t !== typeToToggle);
+        if (newTypes.length === 0) {
+          newTypes = ['simple'];
+        }
+      } else {
+        newTypes = newTypes.filter((t) => t !== 'simple');
+        newTypes.push(typeToToggle);
+      }
+    }
+    setFormData({ ...formData, type: newTypes });
   };
 
   return (
