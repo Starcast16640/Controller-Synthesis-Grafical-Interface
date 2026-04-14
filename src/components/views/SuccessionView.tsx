@@ -29,6 +29,7 @@ const getDistanceToSegment = (p: { x: number; y: number }, v: { x: number; y: nu
 export function SuccessionView() {
   const {
     tasks,
+    updateTask,
     successionArrows,
     successionNodes,
     addSuccessionArrow,
