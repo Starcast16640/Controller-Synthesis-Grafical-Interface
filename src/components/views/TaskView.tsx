@@ -35,12 +35,7 @@ export function TaskView() {
   
 
   const authRef = useRef<HTMLTextAreaElement>(null);
-  const finalRef = useRef<HTMLInputElement>(null);
-  useEffect(() => {
-    if (!editingId) {
-      setFormData(prev => ({ ...prev, priority: getNextPriority() }));
-    }
-  }, [tasks.length, editingId]);
+  const finalRef = useRef<HTMLTextAreaElement>(null);
 
   const insertAtCursor = (value: string) => {
     if (!activeField) return;
@@ -48,7 +43,7 @@ export function TaskView() {
     const fieldName = activeField === 'auth' ? 'authorization_expression' : 'final_condition';
     
     const input = targetRef.current;
-    if (!input) return;
+    if (!textarea || document.activeElement !== textarea) return;
 
     const start = input.selectionStart || 0;
     const end = input.selectionEnd || 0;
@@ -267,13 +262,21 @@ export function TaskView() {
             <div className="mt-2 p-3 bg-gray-50 rounded-lg border border-gray-200">
               <div className="flex flex-wrap gap-2 mb-3">
                 {['AND', 'OR', 'NOT', 'XOR', '>', '<'].map(op => (
-                  <button key={op} type="button" onClick={() => insertAtCursor(` ${op} `)}
+                  <button 
+                    key={op} 
+                    type="button" 
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => insertAtCursor(` ${op} `)}
                     className="px-2 py-1 bg-white hover:bg-gray-100 rounded text-[10px] font-bold text-gray-600 border border-gray-300">
                     {op}
                   </button>
                 ))}
                 {['(', ')', '[', ']', '↑', '↓'].map(op => (
-                  <button key={op} type="button" onClick={() => insertAtCursor(op)}
+                  <button 
+                    key={op} 
+                    type="button" 
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => insertAtCursor(op)}
                     className="px-3 py-1 bg-blue-50 hover:bg-blue-100 rounded text-[10px] font-bold text-blue-600 border border-blue-200">
                     {op}
                   </button>
