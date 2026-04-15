@@ -218,7 +218,33 @@ export function ObserverView() {
                 />
               </div>
             )}
-
+            <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
+              <label className="block text-[10px] font-bold text-gray-400 uppercase mb-2">Helper Tools</label>
+              <div className="flex flex-wrap gap-2 mb-3">
+                {['AND', 'OR', 'NOT', 'XOR', '>', '<'].map(op => (
+                  <button key={op} type="button" onClick={() => insertVariable(` ${op} `)}
+                    className="px-2 py-1 bg-white border border-gray-300 rounded text-[10px] font-bold text-gray-500 hover:bg-gray-100">
+                    {op}
+                  </button>
+                ))}
+                {['[', ']'].map(op => (
+                  <button key={op} type="button" onClick={() => insertVariable(op)}
+                    className="px-3 py-1 bg-blue-50 border border-blue-200 rounded text-[10px] font-bold text-blue-600 hover:bg-blue-100">
+                    {op}
+                  </button>
+                ))}
+              </div>
+              
+              <div className="flex flex-wrap gap-2">
+                {sensors.map(s => (
+                  <button key={s.id} type="button" onClick={() => insertVariable(s.name)}
+                    className="px-2 py-1 bg-green-50 text-green-700 rounded text-[10px] border border-green-200 hover:bg-green-100">
+                    {s.name}
+                  </button>
+                ))}
+              </div>
+            </div>
+            
             <div className="flex gap-2">
               <button
                 type="submit"
