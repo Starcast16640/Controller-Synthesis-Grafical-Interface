@@ -85,7 +85,7 @@ export function TaskView() {
     }
 
     const finalExpression = formData.authorization_expression.trim() === '' 
-      ? 'true' 
+      ? 'TRUE' 
       : formData.authorization_expression.trim();
 
     const dataToSubmit = {
