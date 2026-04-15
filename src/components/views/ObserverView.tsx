@@ -117,22 +117,22 @@ export function ObserverView() {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Observer Name</label>
+                <label className="block text-[10px] font-bold text-gray-400 uppercase mb-1">Observer Name</label>
                 <input
                   type="text"
                   placeholder="Observer Name"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                   required
                 />
               </div>
               <div>
-                <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Observer Type</label>
+                <label className="block text-[10px] font-bold text-gray-400 uppercase mb-1">Observer Type</label>
                 <select
                   value={formData.type}
                   onChange={(e) => handleTypeChange(e.target.value as ObserverType)}
-                  className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="expression">Expression</option>
                   <option value="counter">Counter</option>
