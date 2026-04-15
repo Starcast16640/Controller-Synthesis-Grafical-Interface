@@ -159,32 +159,39 @@ export function ObserverView() {
 
             {formData.type === 'counter' && (
               <div className="grid grid-cols-2 gap-4">
-                <input
-                  type="text"
-                  placeholder="Increase Expression"
-                  onFocus={() => setActiveField('increase')}
-                  value={formData.expressions.increase || ''}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      expressions: { ...formData.expressions, increase: e.target.value },
-                    })
-                  }
-                  className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
-                <input
-                  type="text"
-                  placeholder="Decrease Expression"
-                  onFocus={() => setActiveField('decrease')}
-                  value={formData.expressions.decrease || ''}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      expressions: { ...formData.expressions, decrease: e.target.value },
-                    })
-                  }
-                  className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
+                <div>
+                  <label className="block text-[10px] font-bold text-green-600 uppercase mb-1">Increase (+)</label>
+                  <input
+                    type="text"
+                    placeholder="Increase Expression"
+                    onFocus={() => setActiveField('increase')}
+                    value={formData.expressions.increase || ''}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        expressions: { ...formData.expressions, increase: e.target.value },
+                      })
+                    }
+                    className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[10px] font-bold text-red-600 uppercase mb-1">Decrease (-)</label>
+                  <input
+                    type="text"
+                    placeholder="Decrease Expression"
+                    onFocus={() => setActiveField('decrease')}
+                    value={formData.expressions.decrease || ''}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        expressions: { ...formData.expressions, decrease: e.target.value },
+                      })
+                    }
+                    className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
               </div>
             )}
 
