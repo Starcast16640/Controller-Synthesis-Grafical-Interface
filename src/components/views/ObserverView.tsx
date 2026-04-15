@@ -27,7 +27,7 @@ export function ObserverView() {
   });
   const [activeField, setActiveField] = useState<string>('main');
 
-  onst insertVariable = (value: string) => {
+  const insertVariable = (value: string) => {
     setFormData({
       ...formData,
       expressions: {
