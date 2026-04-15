@@ -285,7 +285,7 @@ export function TaskView() {
                     type="button" 
                     onMouseDown={(e) => e.preventDefault()}
                     onClick={() => insertAtCursor(op)}
-                    className="px-3 py-1 bg-blue-50 hover:bg-blue-100 rounded text-[10px] font-bold text-blue-600 border border-blue-200">
+                    className="px-3 py-1 bg-white border border-gray-300 rounded text-[10px] font-bold text-gray-600 hover:bg-gray-100">
                     {op}
                   </button>
                 ))}
