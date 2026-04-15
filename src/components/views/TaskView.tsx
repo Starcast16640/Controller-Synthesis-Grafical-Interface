@@ -231,6 +231,24 @@ export function TaskView() {
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 font-mono text-sm"
               rows={2}
             />
+
+            <label className="block text-xs font-bold text-gray-500 uppercase mb-1 mt-4">Final Condition</label>
+            <div className="flex gap-2">
+              <input
+                type="text"
+                placeholder="Final Condition (or 'AUTO')"
+                value={formData.final_condition}
+                onChange={(e) => setFormData({ ...formData, final_condition: e.target.value })}
+                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+              <button 
+                type="button" 
+                onClick={() => setFormData({ ...formData, final_condition: 'AUTO' })}
+                className="px-4 py-2 bg-orange-100 text-orange-700 rounded-lg text-xs font-bold border border-orange-200 hover:bg-orange-200 transition-colors"
+              >
+                SET AUTO
+              </button>
+            </div>
             
             <div className="mt-2 p-3 bg-gray-50 rounded-lg border border-gray-200">
               <div className="flex flex-wrap gap-2 mb-3">
@@ -246,24 +264,6 @@ export function TaskView() {
                     {op}
                   </button>
                 ))}
-              </div>
-
-              <label className="block text-xs font-bold text-gray-500 uppercase mb-1 mt-4">Final Condition</label>
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  placeholder="Final Condition (or 'AUTO')"
-                  value={formData.final_condition}
-                  onChange={(e) => setFormData({ ...formData, final_condition: e.target.value })}
-                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
-                <button 
-                  type="button" 
-                  onClick={() => setFormData({ ...formData, final_condition: 'AUTO' })}
-                  className="px-4 py-2 bg-orange-100 text-orange-700 rounded-lg text-xs font-bold border border-orange-200 hover:bg-orange-200 transition-colors"
-                >
-                  SET AUTO
-                </button>
               </div>
               
               <div className="flex flex-wrap gap-2">
