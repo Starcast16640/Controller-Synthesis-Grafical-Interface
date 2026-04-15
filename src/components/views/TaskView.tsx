@@ -18,19 +18,26 @@ const TASK_TYPES = ['simple', 'reactivable', 'pausable', 'interruptible'];
 export function TaskView() {
   const { tasks, sensors, observers, addTask, updateTask, deleteTask } = useData();
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [activeField, setActiveField] = useState<'auth' | 'final' | null>(null);
+  const getNextPriority = () => {
+  if (tasks.length === 0) return 0;
+  return Math.max(...tasks.map(t => t.priority)) + 1;
+  };
   const [formData, setFormData] = useState<TaskFormData>({
     name: '',
     type: ['simple'],
     authorization_expression: '',
     final_condition: '',
     max_simultaneous_executions: 1,
-    priority: 0,
+    priority: getNextPriority(),
     factory_io_address: '',
   });
+  
 
   const authRef = useRef<HTMLTextAreaElement>(null);
 
   const insertAtCursor = (value: string) => {
+    if (!activeField) return;
     const textarea = authRef.current;
     if (!textarea) return;
     const start = textarea.selectionStart;
@@ -86,7 +93,7 @@ export function TaskView() {
       authorization_expression: '',
       final_condition: '',
       max_simultaneous_executions: 1,
-      priority: 0,
+      priority: getNextPriority(),
       factory_io_address: '',
     });
   };
@@ -112,7 +119,7 @@ export function TaskView() {
       authorization_expression: '',
       final_condition: '',
       max_simultaneous_executions: 1,
-      priority: 0,
+      priority: getNextPriority(),
       factory_io_address: ''
     });
   };
@@ -233,12 +240,30 @@ export function TaskView() {
                     {op}
                   </button>
                 ))}
-                {['[', ']'].map(op => (
+                {['(', ')', '[', ']', '↑', '↓'].map(op => (
                   <button key={op} type="button" onClick={() => insertAtCursor(op)}
                     className="px-3 py-1 bg-blue-50 hover:bg-blue-100 rounded text-[10px] font-bold text-blue-600 border border-blue-200">
                     {op}
                   </button>
                 ))}
+              </div>
+
+              <label className="block text-xs font-bold text-gray-500 uppercase mb-1 mt-4">Final Condition</label>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  placeholder="Final Condition (or 'AUTO')"
+                  value={formData.final_condition}
+                  onChange={(e) => setFormData({ ...formData, final_condition: e.target.value })}
+                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
+                <button 
+                  type="button" 
+                  onClick={() => setFormData({ ...formData, final_condition: 'AUTO' })}
+                  className="px-4 py-2 bg-orange-100 text-orange-700 rounded-lg text-xs font-bold border border-orange-200 hover:bg-orange-200 transition-colors"
+                >
+                  SET AUTO
+                </button>
               </div>
               
               <div className="flex flex-wrap gap-2">
@@ -256,24 +281,7 @@ export function TaskView() {
                 ))}
               </div>
             </div>
-            <label className="block text-xs font-bold text-gray-500 uppercase mb-1 mt-4">Final Condition</label>
-            <div className="flex gap-2">
-              <input
-                type="text"
-                placeholder="Final Condition (or 'AUTO')"
-                value={formData.final_condition}
-                onChange={(e) => setFormData({ ...formData, final_condition: e.target.value })}
-                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
-              <button 
-                type="button" 
-                onClick={() => setFormData({ ...formData, final_condition: 'AUTO' })}
-                className="px-4 py-2 bg-orange-100 text-orange-700 rounded-lg text-xs font-bold border border-orange-200 hover:bg-orange-200 transition-colors"
-              >
-                SET AUTO
-              </button>
-            </div>
-
+            
             <div className="flex gap-2">
               <button
                 type="submit"
