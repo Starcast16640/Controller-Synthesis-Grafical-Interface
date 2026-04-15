@@ -35,20 +35,26 @@ export function TaskView() {
   
 
   const authRef = useRef<HTMLTextAreaElement>(null);
+  const finalRef = useRef<HTMLInputElement>(null);
 
   const insertAtCursor = (value: string) => {
     if (!activeField) return;
-    const textarea = authRef.current;
-    if (!textarea) return;
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
-    const text = formData.authorization_expression;
-    const newText = text.substring(0, start) + value + text.substring(end);
+    const targetRef = activeField === 'auth' ? authRef : finalRef;
+    const fieldName = activeField === 'auth' ? 'authorization_expression' : 'final_condition';
     
-    setFormData({ ...formData, authorization_expression: newText });
+    const input = targetRef.current;
+    if (!input) return;
+
+    const start = input.selectionStart || 0;
+    const end = input.selectionEnd || 0;
+    const currentText = formData[fieldName];
+    const newText = currentText.substring(0, start) + value + currentText.substring(end);
+    
+    setFormData({ ...formData, [fieldName]: newText });
     setTimeout(() => {
-      textarea.focus();
-      textarea.setSelectionRange(start + value.length, start + value.length);
+      input.focus();
+      const newPos = start + value.length;
+      input.setSelectionRange(newPos, newPos);
     }, 0);
   };
 
@@ -225,6 +231,7 @@ export function TaskView() {
             <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Authorization Logic</label>
             <textarea
               ref={authRef}
+              onFocus={() => setActiveField('auth')}
               placeholder="Authorization Expression"
               value={formData.authorization_expression}
               onChange={(e) => setFormData({ ...formData, authorization_expression: e.target.value })}
@@ -235,6 +242,8 @@ export function TaskView() {
             <label className="block text-xs font-bold text-gray-500 uppercase mb-1 mt-4">Final Condition</label>
             <div className="flex gap-2">
               <input
+                ref={finalRef}
+                onFocus={() => setActiveField('final')}
                 type="text"
                 placeholder="Final Condition (or 'AUTO')"
                 value={formData.final_condition}
