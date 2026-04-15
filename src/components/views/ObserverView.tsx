@@ -116,25 +116,29 @@ export function ObserverView() {
           </h3>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
-              <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Observer Name</label>
-              <input
-                type="text"
-                placeholder="Observer Name"
-                value={formData.name}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                required
-              />
-              <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Observer Type</label>
-              <select
-                value={formData.type}
-                onChange={(e) => handleTypeChange(e.target.value as ObserverType)}
-                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >
-                <option value="expression">Expression</option>
-                <option value="counter">Counter</option>
-                <option value="jk_flip_flop">JK Flip-Flop</option>
-              </select>
+              <div>
+                <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Observer Name</label>
+                <input
+                  type="text"
+                  placeholder="Observer Name"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Observer Type</label>
+                <select
+                  value={formData.type}
+                  onChange={(e) => handleTypeChange(e.target.value as ObserverType)}
+                  className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  <option value="expression">Expression</option>
+                  <option value="counter">Counter</option>
+                  <option value="jk_flip_flop">JK Flip-Flop</option>
+                </select>
+              </div>
             </div>
 
             {formData.type === 'expression' && (
