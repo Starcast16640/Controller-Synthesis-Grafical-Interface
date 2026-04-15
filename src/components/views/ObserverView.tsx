@@ -197,32 +197,39 @@ export function ObserverView() {
 
             {formData.type === 'jk_flip_flop' && (
               <div className="grid grid-cols-2 gap-4">
-                <input
-                  type="text"
-                  placeholder="Set Expression"
-                  onFocus={() => setActiveField('set')}
-                  value={formData.expressions.set || ''}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      expressions: { ...formData.expressions, set: e.target.value },
-                    })
-                  }
-                  className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
-                <input
-                  type="text"
-                  placeholder="Reset Expression"
-                  onFocus={() => setActiveField('reset')}
-                  value={formData.expressions.reset || ''}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      expressions: { ...formData.expressions, reset: e.target.value },
-                    })
-                  }
-                  className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                />
+                <div>
+                  <label className="block text-[10px] font-bold text-blue-600 uppercase mb-1">Set (1)</label>
+                  <input
+                    type="text"
+                    placeholder="Set Expression"
+                    onFocus={() => setActiveField('set')}
+                    value={formData.expressions.set || ''}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        expressions: { ...formData.expressions, set: e.target.value },
+                      })
+                    }
+                    className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-[10px] font-bold text-orange-600 uppercase mb-1">Reset (0)</label>
+                  <input
+                    type="text"
+                    placeholder="Reset Expression"
+                    onFocus={() => setActiveField('reset')}
+                    value={formData.expressions.reset || ''}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        expressions: { ...formData.expressions, reset: e.target.value },
+                      })
+                    }
+                    className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  />
+                </div>
               </div>
             )}
             <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
@@ -247,6 +254,12 @@ export function ObserverView() {
                   <button key={s.id} type="button" onClick={() => insertVariable(s.name)}
                     className="px-2 py-1 bg-green-50 text-green-700 rounded text-[10px] border border-green-200 hover:bg-green-100">
                     {s.name}
+                  </button>
+                ))}
+                {observers.filter(o => o.id !== editingId).map(o => (
+                  <button key={o.id} type="button" onClick={() => insertVariable(o.name)}
+                    className="px-2 py-1 bg-blue-50 text-blue-700 rounded text-[10px] border border-blue-200 hover:bg-blue-100 transition-colors">
+                    {o.name}
                   </button>
                 ))}
               </div>
