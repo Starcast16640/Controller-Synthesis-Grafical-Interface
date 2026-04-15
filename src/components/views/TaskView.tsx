@@ -269,7 +269,7 @@ export function TaskView() {
             
             <div className="mt-2 p-3 bg-gray-50 rounded-lg border border-gray-200">
               <div className="flex flex-wrap gap-2 mb-3">
-                {['AND', 'OR', 'NOT', 'XOR', '>', '<'].map(op => (
+                {['AND', 'OR', 'NOT', 'XOR'].map(op => (
                   <button 
                     key={op} 
                     type="button" 
@@ -279,7 +279,7 @@ export function TaskView() {
                     {op}
                   </button>
                 ))}
-                {['(', ')', '[', ']', '↑', '↓'].map(op => (
+                {['(', ')', '↑', '↓', '>', '<', '[', ']'].map(op => (
                   <button 
                     key={op} 
                     type="button" 
