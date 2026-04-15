@@ -262,7 +262,7 @@ export function ObserverView() {
                   <button key={op} type="button" 
                     onMouseDown={(e) => e.preventDefault()}
                     onClick={() => insertVariable(op)}
-                    className="px-3 py-1.5 bg-white border-2 border-gray-300 rounded-md text-[10px] font-black text-gray-700 hover:bg-gray-50 hover:border-gray-400 shadow-sm">
+                    className="px-3 py-1.5 bg-white border-2 border-gray-300 rounded-md text-[10px] font-black text-gray-700 hover:bg-gray-50 hover:border-gray-400 shadow-sm transition-all"
                     {op}
                   </button>
                 ))}
