@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useData } from '../../contexts/DataContext';
 import { Plus, Trash2, Edit, X } from 'lucide-react';
 import type { Task } from '../../lib/database.types';
@@ -37,24 +37,31 @@ export function TaskView() {
   const authRef = useRef<HTMLTextAreaElement>(null);
   const finalRef = useRef<HTMLTextAreaElement>(null);
 
+  useEffect(() => {
+    if (!editingId) {
+      setFormData(prev => ({ ...prev, priority: getNextPriority() }));
+    }
+  }, [tasks, editingId]);
+
   const insertAtCursor = (value: string) => {
     if (!activeField) return;
     const targetRef = activeField === 'auth' ? authRef : finalRef;
     const fieldName = activeField === 'auth' ? 'authorization_expression' : 'final_condition';
     
-    const input = targetRef.current;
+    const textarea = targetRef.current;
     if (!textarea || document.activeElement !== textarea) return;
 
-    const start = input.selectionStart || 0;
-    const end = input.selectionEnd || 0;
+    const start = textarea.selectionStart || 0;
+    const end = textarea.selectionEnd || 0;
     const currentText = formData[fieldName];
     const newText = currentText.substring(0, start) + value + currentText.substring(end);
     
     setFormData({ ...formData, [fieldName]: newText });
+    
     setTimeout(() => {
-      input.focus();
+      textarea.focus();
       const newPos = start + value.length;
-      input.setSelectionRange(newPos, newPos);
+      textarea.setSelectionRange(newPos, newPos);
     }, 0);
   };
 
@@ -240,24 +247,25 @@ export function TaskView() {
             />
 
             <label className="block text-xs font-bold text-gray-500 uppercase mb-1 mt-4">Final Condition</label>
-            <div className="flex gap-2">
-              <input
-                ref={finalRef}
-                onFocus={() => setActiveField('final')}
-                type="text"
-                placeholder="Final Condition (or 'AUTO')"
-                value={formData.final_condition}
-                onChange={(e) => setFormData({ ...formData, final_condition: e.target.value })}
-                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
-              <button 
-                type="button" 
-                onClick={() => setFormData({ ...formData, final_condition: 'AUTO' })}
-                className="px-4 py-2 bg-orange-100 text-orange-700 rounded-lg text-xs font-bold border border-orange-200 hover:bg-orange-200 transition-colors"
-              >
-                SET AUTO
-              </button>
-            </div>
+              <div className="flex gap-2">
+                <textarea
+                  ref={finalRef}
+                  onFocus={() => setActiveField('final')}
+                  placeholder="Final Condition (or 'AUTO')"
+                  value={formData.final_condition}
+                  onChange={(e) => setFormData({ ...formData, final_condition: e.target.value })}
+                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 font-mono text-sm"
+                  rows={2}
+                />
+                <button 
+                  type="button" 
+                  onMouseDown={(e) => e.preventDefault()}
+                  onClick={() => setFormData({ ...formData, final_condition: 'AUTO' })}
+                  className="px-4 py-2 bg-orange-100 text-orange-700 rounded-lg text-xs font-bold border border-orange-200 hover:bg-orange-200 h-fit"
+                >
+                  SET AUTO
+                </button>
+              </div>
             
             <div className="mt-2 p-3 bg-gray-50 rounded-lg border border-gray-200">
               <div className="flex flex-wrap gap-2 mb-3">
@@ -285,13 +293,21 @@ export function TaskView() {
               
               <div className="flex flex-wrap gap-2">
                 {sensors.map(s => (
-                  <button key={s.id} type="button" onClick={() => insertAtCursor(s.name)}
+                  <button 
+                    key={s.id} 
+                    type="button" 
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => insertAtCursor(s.name)}
                     className="px-2 py-1 bg-green-50 text-green-700 rounded text-[10px] border border-green-200 hover:bg-green-100">
                     {s.name}
                   </button>
                 ))}
                 {observers.map(o => (
-                  <button key={o.id} type="button" onClick={() => insertAtCursor(o.name)}
+                  <button 
+                    key={o.id} 
+                    type="button" 
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => insertAtCursor(o.name)}
                     className="px-2 py-1 bg-blue-50 text-blue-700 rounded text-[10px] border border-blue-200 hover:bg-blue-100">
                     {o.name}
                   </button>
