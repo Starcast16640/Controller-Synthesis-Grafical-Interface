@@ -36,6 +36,11 @@ export function TaskView() {
 
   const authRef = useRef<HTMLTextAreaElement>(null);
   const finalRef = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    if (!editingId) {
+      setFormData(prev => ({ ...prev, priority: getNextPriority() }));
+    }
+  }, [tasks.length, editingId]);
 
   const insertAtCursor = (value: string) => {
     if (!activeField) return;
