@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useData } from '../../contexts/DataContext';
 import { Plus, Trash2, Edit } from 'lucide-react';
 import type { Observer } from '../../lib/database.types';
@@ -18,17 +18,38 @@ interface ObserverFormData {
 }
 
 export function ObserverView() {
-  const { observers, addObserver, updateObserver, deleteObserver } = useData();
+  const { observers, sensors, tasks, addObserver, updateObserver, deleteObserver } = useData();
   const [editingId, setEditingId] = useState<string | null>(null);
   const [formData, setFormData] = useState<ObserverFormData>({
     name: '',
     type: 'expression',
     expressions: { main: '' },
   });
+  const [activeField, setActiveField] = useState<string>('main');
+
+  onst insertVariable = (value: string) => {
+    setFormData({
+      ...formData,
+      expressions: {
+        ...formData.expressions,
+        [activeField]: (formData.expressions[activeField as keyof typeof formData.expressions] || '') + value
+      }
+    });
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name) return;
+
+    const nameUsed = 
+      observers.some(o => o.name.toLowerCase() === formData.name.toLowerCase() && o.id !== editingId) ||
+      sensors.some(s => s.name.toLowerCase() === formData.name.toLowerCase()) ||
+      tasks.some(t => t.name.toLowerCase() === formData.name.toLowerCase());
+    
+    if (nameUsed) {
+      alert(`The name "${formData.name}" is already used in the model (Task, Sensor or Observer).`);
+      return;
+    }
 
     const observerData = {
       name: formData.name,
@@ -95,6 +116,7 @@ export function ObserverView() {
           </h3>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
+              <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Observer Name</label>
               <input
                 type="text"
                 placeholder="Observer Name"
@@ -103,6 +125,7 @@ export function ObserverView() {
                 className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 required
               />
+              <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Observer Type</label>
               <select
                 value={formData.type}
                 onChange={(e) => handleTypeChange(e.target.value as ObserverType)}
@@ -118,6 +141,7 @@ export function ObserverView() {
               <input
                 type="text"
                 placeholder="Expression"
+                onFocus={() => setActiveField('main')}
                 value={formData.expressions.main || ''}
                 onChange={(e) =>
                   setFormData({
@@ -134,6 +158,7 @@ export function ObserverView() {
                 <input
                   type="text"
                   placeholder="Increase Expression"
+                  onFocus={() => setActiveField('increase')}
                   value={formData.expressions.increase || ''}
                   onChange={(e) =>
                     setFormData({
@@ -146,6 +171,7 @@ export function ObserverView() {
                 <input
                   type="text"
                   placeholder="Decrease Expression"
+                  onFocus={() => setActiveField('decrease')}
                   value={formData.expressions.decrease || ''}
                   onChange={(e) =>
                     setFormData({
@@ -163,6 +189,7 @@ export function ObserverView() {
                 <input
                   type="text"
                   placeholder="Set Expression"
+                  onFocus={() => setActiveField('set')}
                   value={formData.expressions.set || ''}
                   onChange={(e) =>
                     setFormData({
@@ -175,6 +202,7 @@ export function ObserverView() {
                 <input
                   type="text"
                   placeholder="Reset Expression"
+                  onFocus={() => setActiveField('reset')}
                   value={formData.expressions.reset || ''}
                   onChange={(e) =>
                     setFormData({
