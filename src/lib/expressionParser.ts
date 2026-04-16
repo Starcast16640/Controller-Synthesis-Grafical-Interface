@@ -13,9 +13,9 @@ export interface ParseResult {
 }
 
 export function analyzeExpression(expr: string): ParseResult {
-  if (!expr || expr.trim() === '') return { isValid: true, errorMessage: null, errorPos: null };
-  const regex = /([A-Za-z0-9_]+)|(AND|OR|XOR|NOT|↑|↓|>|<)|(\(|\)|\[|\])|(\s+)|(.)/gi;
+  if (!expr || expr.trim() === '' || expr.toUpperCase() === 'TRUE') return { isValid: true, errorMessage: null, errorPos: null };
   
+  const regex = /([A-Za-z0-9_]+)|(AND|OR|XOR|NOT|↑|↓|>|<)|(\(|\)|\[|\])|(\s+)|(.)/gi;
   let match;
   const tokens: Token[] = [];
 
@@ -31,5 +31,18 @@ export function analyzeExpression(expr: string): ParseResult {
       return { isValid: false, errorMessage: `Caractère non reconnu : ${unknown}`, errorPos: pos };
     }
   }
+
+  const lastToken = tokens[tokens.length - 1];
+  if (lastToken && lastToken.type === 'OPERATOR') {
+    const binaryOps = ['AND', 'OR', 'XOR', '>', '<'];
+    if (binaryOps.includes(lastToken.value)) {
+      return { 
+        isValid: false, 
+        errorMessage: `L'expression ne peut pas se terminer par l'opérateur "${lastToken.value}"`, 
+        errorPos: lastToken.pos 
+      };
+    }
+  }
+  
   return { isValid: true, errorMessage: null, errorPos: null };
 }
