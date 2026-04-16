@@ -331,7 +331,13 @@ export function TaskView() {
                   </button>
                 ))}
               </div>
-              
+
+              {!diag.isValid && (
+                <div className="mt-2 p-2 bg-red-50 border-l-4 border-red-500 text-red-700 text-[11px] flex items-center gap-2">
+                  <span className="font-black underline">DIAGNOSTIC :</span>
+                  <span>{diag.errorMessage} (Position: {diag.errorPos})</span>
+                </div>
+              )}
               <div className="flex flex-wrap gap-2">
                 {sensors.map(s => (
                   <button 
