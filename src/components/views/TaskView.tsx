@@ -70,6 +70,16 @@ export function TaskView() {
     }, 0);
   };
 
+  useEffect(() => {
+    const target = activeField === 'auth' ? formData.authorization_expression : formData.final_condition;
+    const result = analyzeExpression(target);
+    setDiag({ 
+      isValid: result.isValid, 
+      errorMessage: result.errorMessage || "", 
+      errorPos: result.errorPos || 0 
+    });
+  }, [formData.authorization_expression, formData.final_condition, activeField]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name) return;
