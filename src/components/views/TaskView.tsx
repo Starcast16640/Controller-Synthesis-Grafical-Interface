@@ -268,6 +268,7 @@ export function TaskView() {
               </div>
             
             <div className="mt-2 p-3 bg-gray-50 rounded-lg border border-gray-200">
+              <label className="block text-[10px] font-bold text-gray-400 uppercase mb-2">Helper Tools</label>
               <div className="flex flex-wrap gap-2 mb-3">
                 {['AND', 'OR', 'NOT', 'XOR'].map(op => (
                   <button 
