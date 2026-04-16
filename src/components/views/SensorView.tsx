@@ -86,13 +86,16 @@ export function SensorView() {
                 required
               />
             </div>
-            <input
-              type="text"
-              placeholder="Address Mapping"
-              value={formData.factory_io_address || ''}
-              onChange={(e) => setFormData({ ...formData, factory_io_address: e.target.value })}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
+            <div>
+              <label className="block text-[10px] font-bold text-gray-400 uppercase mb-1">Address Mapping</label>
+              <input
+                type="text"
+                placeholder="100"
+                value={formData.factory_io_address || ''}
+                onChange={(e) => setFormData({ ...formData, factory_io_address: e.target.value })}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              />
+            </div>
             <div className="flex gap-2">
               <button
                 type="submit"
