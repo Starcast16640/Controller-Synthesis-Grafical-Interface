@@ -24,7 +24,7 @@ export function analyzeExpression(expr: string): ParseResult {
   const tokens: Token[] = [];
 
   while ((match = regex.exec(expr)) !== null) {
-    const [full, word, sym, ws, unknown] = match;
+    const [full, word, paren, symbol, ws, unknown] = match;
     const pos = match.index;
     if (ws) continue;
     if (word) {
@@ -34,11 +34,45 @@ export function analyzeExpression(expr: string): ParseResult {
       } else {
         tokens.push({ type: 'ID', value: word, pos });
       }
-    } else if (sym) {
-      tokens.push({ type: 'PAREN', value: sym, pos });
-    } else if (unknown) {
+    } 
+    else if (paren) {
+      tokens.push({ type: 'PAREN', value: paren, pos });
+    } 
+    else if (symbol) {
+      tokens.push({ type: 'OPERATOR', value: symbol, pos });
+    } 
+    else if (unknown) {
       return { isValid: false, errorMessage: `Caractère non reconnu : ${unknown}`, errorPos: pos };
     }
+  }
+
+  const stack = [];
+  const pairs: { [key: string]: string } = { ')': '(', ']': '[' };
+
+  for (const token of tokens) {
+    if (token.type === 'PAREN') {
+      if (['(', '['].includes(token.value)) {
+        stack.push(token);
+      } else {
+        const lastOpen = stack.pop();
+        if (!lastOpen || lastOpen.value !== pairs[token.value]) {
+          return { 
+            isValid: false, 
+            errorMessage: `Symbole fermant "${token.value}" sans ouverture correspondante`, 
+            errorPos: token.pos 
+          };
+        }
+      }
+    }
+  }
+
+  if (stack.length > 0) {
+    const last = stack.pop();
+    return { 
+      isValid: false, 
+      errorMessage: `Le symbole "${last?.value}" n'est pas refermé`, 
+      errorPos: last?.pos || 0 
+    };
   }
 
   if (tokens.length === 0) return { isValid: true, errorMessage: null, errorPos: null };
