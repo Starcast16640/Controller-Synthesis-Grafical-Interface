@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useData } from '../../contexts/DataContext';
 import { Plus, Trash2, Edit, X } from 'lucide-react';
 import type { Task } from '../../lib/database.types';
+import { analyzeExpression } from '../../lib/expressionParser';
 
 interface TaskFormData {
   name: string;
