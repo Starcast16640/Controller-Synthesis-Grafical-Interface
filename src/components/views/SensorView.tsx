@@ -4,8 +4,10 @@ import { Plus, Trash2, Edit } from 'lucide-react';
 import type { Sensor } from '../../lib/database.types';
 
 export function SensorView() {
-  const { sensors, addSensor, updateSensor, deleteSensor } = useData();
+  const { sensors, tasks, observers, addSensor, updateSensor, deleteSensor } = useData();
   const [editingId, setEditingId] = useState<string | null>(null);
+  const nameInputRef = useRef<HTMLInputElement>(null);
+  const addressInputRef = useRef<HTMLInputElement>(null);
   const [formData, setFormData] = useState<Partial<Sensor>>({
     name: '',
     type: 'Boolean',
@@ -17,6 +19,29 @@ export function SensorView() {
     e.preventDefault();
     if (!formData.name || !formData.type || !formData.machine) return;
 
+    const nameUsed = 
+      sensors.some(s => s.name.toLowerCase() === formData.name?.toLowerCase() && s.id !== editingId) ||
+      tasks.some(t => t.name.toLowerCase() === formData.name?.toLowerCase()) ||
+      observers.some(o => o.name.toLowerCase() === formData.name?.toLowerCase());
+
+    if (nameUsed) {
+      nameInputRef.current?.setCustomValidity("Ce nom est déjà utilisé par un autre élément du modèle (Tâche, Capteur ou Observer).");
+      nameInputRef.current?.reportValidity();
+      return;
+    }
+    
+    if (formData.factory_io_address) {
+      const addrUsed = 
+        sensors.some(s => s.factory_io_address === formData.factory_io_address && s.id !== editingId) ||
+        tasks.some(t => t.factory_io_address === formData.factory_io_address);
+
+      if (addrUsed) {
+        addressInputRef.current?.setCustomValidity("Cette adresse mapping est déjà assignée à un autre élément.");
+        addressInputRef.current?.reportValidity();
+        return;
+      }
+    }
+    
     if (editingId) {
       await updateSensor(editingId, formData);
       setEditingId(null);
@@ -55,11 +80,15 @@ export function SensorView() {
             <div>
               <label className="block text-[10px] font-bold text-gray-400 uppercase mb-1">Sensor Name</label>
               <input
+                ref={nameInputRef}
                 type="text"
                 placeholder="Ex : AtEntry1"
                 value={formData.name || ''}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                onChange={(e) => {
+                  e.target.setCustomValidity("");
+                  setFormData({ ...formData, name: e.target.value });
+                }}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
                 required
               />
             </div>
@@ -89,11 +118,15 @@ export function SensorView() {
             <div>
               <label className="block text-[10px] font-bold text-gray-400 uppercase mb-1">Address Mapping</label>
               <input
+                ref={addressInputRef}
                 type="text"
                 placeholder="100"
                 value={formData.factory_io_address || ''}
-                onChange={(e) => setFormData({ ...formData, factory_io_address: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                onChange={(e) => {
+                  e.target.setCustomValidity("");
+                  setFormData({ ...formData, factory_io_address: e.target.value });
+                }}
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
               />
             </div>
             <div className="flex gap-2 h-[42px]">
