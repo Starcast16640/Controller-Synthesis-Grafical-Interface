@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef  } from 'react';
 import { useData } from '../../contexts/DataContext';
 import { Plus, Trash2, Edit } from 'lucide-react';
 import type { Sensor } from '../../lib/database.types';
