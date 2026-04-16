@@ -63,15 +63,18 @@ export function SensorView() {
                 required
               />
             </div>
-            <select
-              value={formData.type || 'Boolean'}
-              onChange={(e) => setFormData({ ...formData, type: e.target.value as Sensor['type'] })}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            >
-              <option value="Boolean">Boolean</option>
-              <option value="Integer">Integer</option>
-              <option value="Real">Real</option>
-            </select>
+            <div>
+              <label className="block text-[10px] font-bold text-gray-400 uppercase mb-1">Sensor Type</label>
+              <select
+                value={formData.type || 'Boolean'}
+                onChange={(e) => setFormData({ ...formData, type: e.target.value as Sensor['type'] })}
+                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                <option value="Boolean">Boolean</option>
+                <option value="Integer">Integer</option>
+                <option value="Real">Real</option>
+              </select>
+            </div>
             <input
               type="text"
               placeholder="Machine Name"
