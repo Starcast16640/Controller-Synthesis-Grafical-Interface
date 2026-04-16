@@ -33,6 +33,7 @@ export function TaskView() {
     priority: getNextPriority(),
     factory_io_address: '',
   });
+  const [diag, setDiag] = useState({ isValid: true, errorMessage: "", errorPos: 0 });
   
 
   const authRef = useRef<HTMLTextAreaElement>(null);
