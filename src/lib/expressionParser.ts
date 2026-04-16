@@ -19,7 +19,7 @@ export function analyzeExpression(expr: string): ParseResult {
   
   const BINARY_OPS = ['AND', 'OR', 'XOR', '>', '<'];
   const UNARY_OPS = ['NOT', '↑', '↓'];
-  const regex = /([A-Za-z0-9_↑↓]+)|(\(|\)|\[|\])|(\s+)|(.)/gi;
+  const regex = /([A-Za-z0-9_↑↓]+)|(\(|\)|\[|\])|(>|<)|(\s+)|(.)/gi;
   let match;
   const tokens: Token[] = [];
 
