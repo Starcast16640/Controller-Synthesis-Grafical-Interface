@@ -75,14 +75,17 @@ export function SensorView() {
                 <option value="Real">Real</option>
               </select>
             </div>
-            <input
-              type="text"
-              placeholder="Machine Name"
-              value={formData.machine || ''}
-              onChange={(e) => setFormData({ ...formData, machine: e.target.value })}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              required
-            />
+            <div>
+              <label className="block text-[10px] font-bold text-gray-400 uppercase mb-1">Machine Name</label>
+              <input
+                type="text"
+                placeholder="ConvergeStation"
+                value={formData.machine || ''}
+                onChange={(e) => setFormData({ ...formData, machine: e.target.value })}
+                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                required
+              />
+            </div>
             <input
               type="text"
               placeholder="Address Mapping"
