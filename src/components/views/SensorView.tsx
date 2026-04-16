@@ -52,15 +52,17 @@ export function SensorView() {
             {editingId ? 'Edit Sensor' : 'Add New Sensor'}
           </h3>
           <form onSubmit={handleSubmit} className="grid grid-cols-5 gap-4">
-            <label className="block text-[10px] font-bold text-gray-400 uppercase mb-1">Sensor Name</label>
-            <input
-              type="text"
-              placeholder="Sensor Name"
-              value={formData.name || ''}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              required
-            />
+            <div>
+              <label className="block text-[10px] font-bold text-gray-400 uppercase mb-1">Sensor Name</label>
+              <input
+                type="text"
+                placeholder="Ex : AtEntry1"
+                value={formData.name || ''}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                required
+              />
+            </div>
             <select
               value={formData.type || 'Boolean'}
               onChange={(e) => setFormData({ ...formData, type: e.target.value as Sensor['type'] })}
