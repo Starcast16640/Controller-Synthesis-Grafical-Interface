@@ -51,7 +51,7 @@ export function SensorView() {
           <h3 className="text-lg font-semibold text-gray-800 mb-4">
             {editingId ? 'Edit Sensor' : 'Add New Sensor'}
           </h3>
-          <form onSubmit={handleSubmit} className="grid grid-cols-5 gap-4">
+          <form onSubmit={handleSubmit} className="grid grid-cols-5 gap-4 items-end">
             <div>
               <label className="block text-[10px] font-bold text-gray-400 uppercase mb-1">Sensor Name</label>
               <input
