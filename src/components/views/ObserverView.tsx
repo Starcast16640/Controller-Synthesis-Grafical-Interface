@@ -20,6 +20,7 @@ interface ObserverFormData {
 export function ObserverView() {
   const { observers, sensors, tasks, addObserver, updateObserver, deleteObserver } = useData();
   const [editingId, setEditingId] = useState<string | null>(null);
+  const nameInputRef = useRef<HTMLInputElement>(null);
   const [formData, setFormData] = useState<ObserverFormData>({
     name: '',
     type: 'expression',
@@ -61,7 +62,8 @@ export function ObserverView() {
       tasks.some(t => t.name.toLowerCase() === formData.name.toLowerCase());
     
     if (nameUsed) {
-      alert(`The name "${formData.name}" is already used in the model (Task, Sensor or Observer).`);
+      nameInputRef.current?.setCustomValidity("Ce nom est déjà utilisé par un autre élément (Tâche, Capteur ou Observer).");
+      nameInputRef.current?.reportValidity();
       return;
     }
 
@@ -133,6 +135,7 @@ export function ObserverView() {
               <div>
                 <label className="block text-[10px] font-bold text-gray-400 uppercase mb-1">Observer Name</label>
                 <input
+                  ref={nameInputRef}
                   type="text"
                   placeholder="Observer Name"
                   value={formData.name}
