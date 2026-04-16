@@ -38,6 +38,7 @@ export function TaskView() {
   const finalRef = useRef<HTMLTextAreaElement>(null);
   const nameInputRef = useRef<HTMLInputElement>(null);
   const addressInputRef = useRef<HTMLInputElement>(null);
+  const priorityInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!editingId) {
@@ -76,13 +77,26 @@ export function TaskView() {
     const nameUsedInObservers = observers.some(o => o.name.toLowerCase() === formData.name.toLowerCase());
 
     if (nameUsedInTasks || nameUsedInSensors || nameUsedInObservers) {
-      alert(`The name "${formData.name}" is already used by another element (Task, Sensor or Observer).`);
+      nameInputRef.current?.setCustomValidity("Ce nom est déjà utilisé par un autre élément (Tâche, Capteur ou Observer).");
+      nameInputRef.current?.reportValidity();
       return;
+    }
+
+    if (formData.factory_io_address) {
+      const addrUsedInTasks = tasks.some(t => t.factory_io_address === formData.factory_io_address && t.id !== editingId);
+      const addrUsedInSensors = sensors.some(s => s.factory_io_address === formData.factory_io_address);
+
+      if (addrUsedInTasks || addrUsedInSensors) {
+        addressInputRef.current?.setCustomValidity("Cette adresse mapping est déjà assignée à un autre élément.");
+        addressInputRef.current?.reportValidity();
+        return;
+      }
     }
 
     const priorityExists = tasks.some(t => t.priority === formData.priority && t.id !== editingId);
     if (priorityExists) {
-      alert(`Priority ${formData.priority} is already assigned to another task. Priorities must be unique.`);
+      priorityInputRef.current?.setCustomValidity(`La priorité ${formData.priority} est déjà utilisée par une autre tâche.`);
+      priorityInputRef.current?.reportValidity();
       return;
     }
 
@@ -172,10 +186,14 @@ export function TaskView() {
               <div>
                 <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Task Name</label>
                 <input
+                  ref={nameInputRef}
                   type="text"
                   placeholder="MoveRobot"
                   value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  onChange={(e) => {
+                    e.target.setCustomValidity("");
+                    setFormData({ ...formData, name: e.target.value });
+                  }}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   required
                 />
@@ -183,10 +201,14 @@ export function TaskView() {
               <div>
                 <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Priority</label>
                 <input
+                  ref={priorityInputRef}
                   type="number"
                   placeholder="0"
                   value={formData.priority}
-                  onChange={(e) => setFormData({ ...formData, priority: parseInt(e.target.value) || 0 })}
+                  onChange={(e) => {
+                    e.target.setCustomValidity("");
+                    setFormData({ ...formData, priority: parseInt(e.target.value) || 0 });
+                  }}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                 />
               </div>
@@ -212,10 +234,14 @@ export function TaskView() {
               <div>
                 <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Address Mapping</label>
                 <input
+                  ref={addressInputRef}
                   type="text"
                   placeholder="100"
                   value={formData.factory_io_address}
-                  onChange={(e) => setFormData({ ...formData, factory_io_address: e.target.value })}
+                  onChange={(e) => {
+                    e.target.setCustomValidity("");
+                    setFormData({ ...formData, factory_io_address: e.target.value });
+                  }}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                 />
               </div>
