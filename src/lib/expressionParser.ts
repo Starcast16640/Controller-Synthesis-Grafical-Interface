@@ -10,6 +10,7 @@ export interface ParseResult {
   isValid: boolean;
   errorMessage: string | null;
   errorPos: number | null;
+  tokens: Token[];
 }
 
 export function analyzeExpression(expr: string, validNames: string[]): ParseResult {
@@ -132,7 +133,17 @@ export function analyzeExpression(expr: string, validNames: string[]): ParseResu
           errorPos: next.pos 
         };
       }
-    } 
+    }
+    
+    if (current.type === 'PAREN' && ['(', '['].includes(current.value)) {
+      if (next.type === 'PAREN' && [')', ']'].includes(next.value)) {
+        return { 
+          isValid: false, 
+          errorMessage: `Les parenthèses ou crochets ne peuvent pas être vides`, 
+          errorPos: current.pos 
+        };
+      }
+    }
   }
 
   if (tokens.length === 0) return { isValid: true, errorMessage: null, errorPos: null };
@@ -153,5 +164,24 @@ export function analyzeExpression(expr: string, validNames: string[]): ParseResu
     };
   }
   
-  return { isValid: true, errorMessage: null, errorPos: null };
+  return { isValid: true, errorMessage: null, errorPos: null, tokens: tokens };
+}
+
+export function normalizeExpression(tokens: Token[]): string {
+  let result = "";
+  for (let i = 0; i < tokens.length; i++) {
+    const token = tokens[i];
+    const next = tokens[i + 1];
+
+    result += token.value;
+    if (next) {
+      const isCurrentPunctuation = ['(', '[', '↑', '↓', 'NOT'].includes(token.value);
+      const isNextPunctuation = [')', ']', ',', '.'].includes(next.value);
+      
+      if (!isCurrentPunctuation && !isNextPunctuation) {
+        result += " ";
+      }
+    }
+  }
+  return result.trim();
 }
