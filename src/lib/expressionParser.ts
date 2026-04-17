@@ -75,6 +75,27 @@ export function analyzeExpression(expr: string): ParseResult {
     };
   }
 
+  for (let i = 0; i < tokens.length - 1; i++) {
+    const current = tokens[i];
+    const next = tokens[i + 1];
+    if (current.type === 'OPERATOR') {
+      if (next.type === 'PAREN' && [')', ']'].includes(next.value)) {
+        return { 
+          isValid: false, 
+          errorMessage: `L'opérateur "${current.value}" ne peut pas être suivi d'une fermeture`, 
+          errorPos: current.pos 
+        };
+      }
+      if (BINARY_OPS.includes(current.value) && BINARY_OPS.includes(next.value)) {
+        return { 
+          isValid: false, 
+          errorMessage: `L'opérateur "${current.value}" ne peut pas être suivi de "${next.value}"`, 
+          errorPos: next.pos 
+        };
+      }
+    }
+  }
+
   if (tokens.length === 0) return { isValid: true, errorMessage: null, errorPos: null };
   const firstToken = tokens[0];
   const lastToken = tokens[tokens.length - 1];
