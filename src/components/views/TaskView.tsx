@@ -71,14 +71,21 @@ export function TaskView() {
   };
 
   useEffect(() => {
+    const allValidNames = [
+      ...sensors.map(s => s.name),
+      ...observers.map(o => o.name),
+      ...tasks.map(t => t.name),
+      'TRUE', 'FALSE', 'AUTO'
+    ];
     const target = activeField === 'auth' ? formData.authorization_expression : formData.final_condition;
-    const result = analyzeExpression(target);
+    const result = analyzeExpression(target, allValidNames);
+    
     setDiag({ 
       isValid: result.isValid, 
       errorMessage: result.errorMessage || "", 
       errorPos: result.errorPos || 0 
     });
-  }, [formData.authorization_expression, formData.final_condition, activeField]);
+  }, [formData.authorization_expression, formData.final_condition, activeField, sensors, observers, tasks]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
