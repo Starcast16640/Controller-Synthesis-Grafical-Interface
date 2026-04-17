@@ -106,6 +106,30 @@ export function analyzeExpression(expr: string, validNames: string[]): ParseResu
           errorPos: next.pos 
         };
       }
+      if (current.type === 'ID') {
+      if (next.type === 'ID') {
+        return { 
+          isValid: false, 
+          errorMessage: `Il manque un opérateur entre "${current.value}" et "${next.value}"`, 
+          errorPos: next.pos 
+        };
+      }
+      if (next.type === 'PAREN' && ['(', '['].includes(next.value)) {
+        return { 
+          isValid: false, 
+          errorMessage: `Il manque un opérateur avant "${next.value}"`, 
+          errorPos: next.pos 
+        };
+      }
+    }
+    if (current.type === 'PAREN' && [')', ']'].includes(current.value)) {
+      if (next.type === 'ID') {
+        return { 
+          isValid: false, 
+          errorMessage: `Il manque un opérateur après "${current.value}"`, 
+          errorPos: next.pos 
+        };
+      }
     }
   }
 
