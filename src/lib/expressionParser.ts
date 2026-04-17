@@ -12,7 +12,7 @@ export interface ParseResult {
   errorPos: number | null;
 }
 
-export function analyzeExpression(expr: string): ParseResult {
+export function analyzeExpression(expr: string, validNames: string[]): ParseResult {
   if (!expr || expr.trim() === '' || expr.toUpperCase() === 'TRUE') {
     return { isValid: true, errorMessage: null, errorPos: null };
   }
@@ -75,6 +75,19 @@ export function analyzeExpression(expr: string): ParseResult {
     };
   }
 
+  for (const token of tokens) {
+    if (token.type === 'ID') {
+      const isNumeric = /^\d+$/.test(token.value);
+      if (!isNumeric && !validNames.includes(token.value)) {
+        return { 
+          isValid: false, 
+          errorMessage: `L'élément "${token.value}" n'existe pas dans le modèle`, 
+          errorPos: token.pos 
+        };
+      }
+    }
+  }
+  
   for (let i = 0; i < tokens.length - 1; i++) {
     const current = tokens[i];
     const next = tokens[i + 1];
