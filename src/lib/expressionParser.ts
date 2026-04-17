@@ -106,7 +106,9 @@ export function analyzeExpression(expr: string, validNames: string[]): ParseResu
           errorPos: next.pos 
         };
       }
-      if (current.type === 'ID') {
+    }
+
+    if (current.type === 'ID') {
       if (next.type === 'ID') {
         return { 
           isValid: false, 
@@ -130,7 +132,7 @@ export function analyzeExpression(expr: string, validNames: string[]): ParseResu
           errorPos: next.pos 
         };
       }
-    }
+    } 
   }
 
   if (tokens.length === 0) return { isValid: true, errorMessage: null, errorPos: null };
