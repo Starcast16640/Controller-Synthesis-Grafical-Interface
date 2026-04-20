@@ -18,9 +18,9 @@ export function analyzeExpression(expr: string, validNames: string[]): ParseResu
     return { isValid: true, errorMessage: null, errorPos: null };
   }
   
-  const BINARY_OPS = ['AND', 'OR', 'XOR', '>', '<', '='];
+  const BINARY_OPS = ['AND', 'OR', 'XOR', '>=', '<=', '>', '<', '=', '!='];
   const UNARY_OPS = ['NOT', '↑', '↓'];
-  const regex = /([A-Za-z0-9_]+)|(\(|\)|\[|\])|(↑|↓|>|<|=)|(\s+)|(.)/gi;
+  const regex = /([A-Za-z0-9_]+)|(\(|\)|\[|\])|(>=|<=|!=|↑|↓|>|<|=)|(\s+)|(.)/gi;
   let match;
   const tokens: Token[] = [];
 
@@ -108,7 +108,7 @@ export function analyzeExpression(expr: string, validNames: string[]): ParseResu
     if (current.value === '[') isInsideBrackets = true;
     if (current.value === ']') isInsideBrackets = false;
     if (!isInsideBrackets) {
-      if (['>', '<', '='].includes(current.value)) {
+      if (['>', '<', '=', '!=', '>=', '<='].includes(current.value)) {
         return { 
           isValid: false, 
           errorMessage: `L'opérateur "${current.value}" n'est autorisé qu'à l'intérieur de crochets [ ]`, 
