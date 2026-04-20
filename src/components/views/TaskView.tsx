@@ -36,8 +36,8 @@ export function TaskView() {
   const [diag, setDiag] = useState({ isValid: true, errorMessage: "", errorPos: 0 });
   
 
-  const authRef = useRef<HTMLTextAreaElement>(null);
-  const finalRef = useRef<HTMLTextAreaElement>(null);
+  const authRef = useRef<HTMLInputElement>(null);
+  const finalRef = useRef<HTMLInputElement>(null);
   const nameInputRef = useRef<HTMLInputElement>(null);
   const addressInputRef = useRef<HTMLInputElement>(null);
   const priorityInputRef = useRef<HTMLInputElement>(null);
