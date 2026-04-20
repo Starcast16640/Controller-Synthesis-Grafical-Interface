@@ -295,7 +295,7 @@ export function TaskView() {
               value={formData.authorization_expression}
               onChange={(e) => setFormData({ ...formData, authorization_expression: e.target.value })}
               className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 font-mono text-sm transition-all ${
-                activeField === 'auth' && !diag.isValid 
+                activeField === 'auth' && !diag.isValid  
                   ? 'border-red-500 bg-red-50 focus:ring-red-500 text-red-900' 
                   : 'border-gray-300 focus:ring-blue-500'
               }`}
