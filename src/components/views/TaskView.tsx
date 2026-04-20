@@ -53,20 +53,20 @@ export function TaskView() {
     const targetRef = activeField === 'auth' ? authRef : finalRef;
     const fieldName = activeField === 'auth' ? 'authorization_expression' : 'final_condition';
     
-    const input = targetRef.current;
-    if (!input || document.activeElement !== input) return;
+    const element = targetRef.current;
+    if (!element || document.activeElement !== element) return;
 
-    const start = input.selectionStart || 0;
-    const end = input.selectionEnd || 0;
+    const start = element.selectionStart || 0;
+    const end = element.selectionEnd || 0;
     const currentText = formData[fieldName];
     const newText = currentText.substring(0, start) + value + currentText.substring(end);
     
     setFormData({ ...formData, [fieldName]: newText });
     
     setTimeout(() => {
-      textarea.focus();
+      element.focus();
       const newPos = start + value.length;
-      textarea.setSelectionRange(newPos, newPos);
+      element.setSelectionRange(newPos, newPos);
     }, 0);
   };
 
