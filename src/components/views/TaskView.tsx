@@ -446,7 +446,7 @@ export function TaskView() {
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-500">
                       <code className="text-xs bg-gray-100 px-2 py-1 rounded truncate block max-w-xs">
-                        {(task.authorization_expression || 'TRUE').toUpperCase()}
+                        {(task.authorization_expression || 'TRUE')}
                       </code>
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-500">
