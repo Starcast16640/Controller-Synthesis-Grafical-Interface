@@ -104,6 +104,18 @@ export function analyzeExpression(expr: string, validNames: string[]): ParseResu
         };
       }
     }
+
+    if (current.value === '=') {
+      if (next && (next.value === '>' || next.value === '<' || next.value === '!')) {
+        let correctSymbol = next.value === '!' ? '!=' : next.value + '=';
+        return { 
+          isValid: false, 
+          errorMessage: `Erreur de syntaxe : le signe "=" doit être à droite (ex: ${correctSymbol})`, 
+          errorPos: current.pos,
+          tokens: [] 
+        };
+      }
+    }
     
     if (current.value === '[') isInsideBrackets = true;
     if (current.value === ']') isInsideBrackets = false;
