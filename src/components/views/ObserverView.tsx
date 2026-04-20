@@ -2,6 +2,7 @@ import { useState, useRef } from 'react';
 import { useData } from '../../contexts/DataContext';
 import { Plus, Trash2, Edit } from 'lucide-react';
 import type { Observer } from '../../lib/database.types';
+import { analyzeExpression } from '../../lib/expressionParser';
 
 type ObserverType = 'expression' | 'counter' | 'jk_flip_flop';
 
@@ -27,7 +28,7 @@ export function ObserverView() {
     expressions: { main: '' },
   });
   const [activeField, setActiveField] = useState<string>('main');
-
+  const [diag, setDiag] = useState({ isValid: true, errorMessage: "", errorPos: 0 });
   const insertVariable = (value: string) => {
     const activeEl = document.activeElement as HTMLInputElement;
     if (!activeEl || activeEl.tagName !== 'INPUT') return;
@@ -52,9 +53,31 @@ export function ObserverView() {
     }, 0);
   };
 
+  useEffect(() => {
+    const allValidNames = [
+      ...sensors.map(s => s.name),
+      ...observers.map(o => o.name),
+      ...tasks.map(t => t.name),
+      'TRUE', 'FALSE'
+    ];
+
+    const currentExpr = formData.expressions[activeField as keyof typeof formData.expressions] || '';
+    const result = analyzeExpression(currentExpr, allValidNames);
+
+    setDiag({
+      isValid: result.isValid,
+      errorMessage: result.errorMessage || "",
+      errorPos: result.errorPos || 0
+    });
+  }, [formData.expressions, activeField, sensors, observers, tasks]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name) return;
+
+    if (!diag.isValid) {
+      return;
+    }
 
     const nameUsed = 
       observers.some(o => o.name.toLowerCase() === formData.name.toLowerCase() && o.id !== editingId) ||
@@ -173,7 +196,11 @@ export function ObserverView() {
                     expressions: { ...formData.expressions, main: e.target.value },
                   })
                 }
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className={`w-full px-4 py-2 border rounded-lg focus:ring-2 font-mono text-sm transition-colors ${
+                  activeField === 'main' && !diag.isValid 
+                    ? 'border-red-500 bg-red-50 focus:ring-red-500 text-red-900' 
+                    : 'border-gray-300 focus:ring-blue-500'
+                }`}
               />
             )}
 
@@ -192,7 +219,11 @@ export function ObserverView() {
                         expressions: { ...formData.expressions, increase: e.target.value },
                       })
                     }
-                    className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 font-mono text-sm transition-colors ${
+                      activeField === 'increase' && !diag.isValid 
+                        ? 'border-red-500 bg-red-50 focus:ring-red-500 text-red-900' 
+                        : 'border-gray-300 focus:ring-blue-500'
+                    }`}
                   />
                 </div>
 
@@ -209,7 +240,11 @@ export function ObserverView() {
                         expressions: { ...formData.expressions, decrease: e.target.value },
                       })
                     }
-                    className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 font-mono text-sm transition-colors ${
+                      activeField === 'decrease' && !diag.isValid 
+                        ? 'border-red-500 bg-red-50 focus:ring-red-500 text-red-900' 
+                        : 'border-gray-300 focus:ring-blue-500'
+                    }`}
                   />
                 </div>
               </div>
@@ -230,7 +265,11 @@ export function ObserverView() {
                         expressions: { ...formData.expressions, set: e.target.value },
                       })
                     }
-                    className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 font-mono text-sm transition-colors ${
+                      activeField === 'set' && !diag.isValid 
+                        ? 'border-red-500 bg-red-50 focus:ring-red-500 text-red-900' 
+                        : 'border-gray-300 focus:ring-blue-500'
+                    }`}
                   />
                 </div>
 
@@ -247,7 +286,11 @@ export function ObserverView() {
                         expressions: { ...formData.expressions, reset: e.target.value },
                       })
                     }
-                    className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 font-mono text-sm transition-colors ${
+                      activeField === 'reset' && !diag.isValid 
+                        ? 'border-red-500 bg-red-50 focus:ring-red-500 text-red-900' 
+                        : 'border-gray-300 focus:ring-blue-500'
+                    }`}
                   />
                 </div>
               </div>
@@ -302,6 +345,13 @@ export function ObserverView() {
                 ))}
               </div>
             </div>
+
+            {!diag.isValid && (
+              <div className="mt-2 p-2 bg-red-50 border-l-4 border-red-500 text-red-700 text-[11px] flex items-center gap-2">
+                <span className="font-black underline">DIAGNOSTIC :</span>
+                <span>{diag.errorMessage} (Position: {diag.errorPos})</span>
+              </div>
+            )}
             
             <div className="flex gap-2">
               <button
