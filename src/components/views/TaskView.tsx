@@ -309,7 +309,11 @@ export function TaskView() {
                   placeholder="Final Condition (or 'AUTO')"
                   value={formData.final_condition}
                   onChange={(e) => setFormData({ ...formData, final_condition: e.target.value })}
-                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 font-mono text-sm"
+                  className={`flex-1 px-4 py-2 border rounded-lg focus:ring-2 font-mono text-sm transition-colors ${
+                    activeField === 'final' && !diag.isValid 
+                      ? 'border-red-500 bg-red-50 focus:ring-red-500 text-red-900' 
+                      : 'border-gray-300 focus:ring-blue-500'
+                  }`}
                   rows={2}
                 />
                 <button 
