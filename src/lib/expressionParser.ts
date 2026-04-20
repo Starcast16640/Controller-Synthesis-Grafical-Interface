@@ -20,7 +20,7 @@ export function analyzeExpression(expr: string, validNames: string[]): ParseResu
   
   const BINARY_OPS = ['AND', 'OR', 'XOR', '>', '<', '='];
   const UNARY_OPS = ['NOT', '↑', '↓'];
-  const regex = /([A-Za-z0-9_↑↓]+)|(\(|\)|\[|\])|(>|<|=)|(\s+)|(.)/gi;
+  const regex = /([A-Za-z0-9_]+)|(\(|\)|\[|\])|(↑|↓|>|<|=)|(\s+)|(.)/gi;
   let match;
   const tokens: Token[] = [];
 
@@ -94,6 +94,22 @@ export function analyzeExpression(expr: string, validNames: string[]): ParseResu
   for (let i = 0; i < tokens.length; i++) {
     const current = tokens[i];
     const next = tokens[i + 1];
+
+    for (let i = 0; i < tokens.length - 1; i++) {
+    const current = tokens[i];
+    const next = tokens[i + 1];
+
+    if (UNARY_OPS.includes(current.value)) {
+      if (next.pos > (current.pos + current.value.length)) {
+        return { 
+          isValid: false, 
+          errorMessage: `L'opérateur "${current.value}" doit être collé à son élément (pas d'espace)`, 
+          errorPos: current.pos,
+          tokens: [] 
+        };
+      }
+    }
+    
     if (current.value === '[') isInsideBrackets = true;
     if (current.value === ']') isInsideBrackets = false;
     if (!isInsideBrackets) {
