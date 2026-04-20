@@ -90,12 +90,7 @@ export function analyzeExpression(expr: string, validNames: string[]): ParseResu
   }
   
   let isInsideBrackets = false;
-
-  for (let i = 0; i < tokens.length; i++) {
-    const current = tokens[i];
-    const next = tokens[i + 1];
-
-    for (let i = 0; i < tokens.length - 1; i++) {
+  for (let i = 0; i < tokens.length - 1; i++) {
     const current = tokens[i];
     const next = tokens[i + 1];
 
