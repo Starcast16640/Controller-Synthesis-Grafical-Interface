@@ -53,11 +53,11 @@ export function TaskView() {
     const targetRef = activeField === 'auth' ? authRef : finalRef;
     const fieldName = activeField === 'auth' ? 'authorization_expression' : 'final_condition';
     
-    const textarea = targetRef.current;
-    if (!textarea || document.activeElement !== textarea) return;
+    const input = targetRef.current;
+    if (!input || document.activeElement !== input) return;
 
-    const start = textarea.selectionStart || 0;
-    const end = textarea.selectionEnd || 0;
+    const start = input.selectionStart || 0;
+    const end = input.selectionEnd || 0;
     const currentText = formData[fieldName];
     const newText = currentText.substring(0, start) + value + currentText.substring(end);
     
@@ -287,7 +287,7 @@ export function TaskView() {
               </div>
             </div>
             <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Authorization Logic</label>
-            <textarea
+            <input
               ref={authRef}
               onFocus={() => setActiveField('auth')}
               placeholder="Authorization Expression"
@@ -303,7 +303,7 @@ export function TaskView() {
 
             <label className="block text-xs font-bold text-gray-500 uppercase mb-1 mt-4">Final Condition</label>
               <div className="flex gap-2">
-                <textarea
+                <input
                   ref={finalRef}
                   onFocus={() => setActiveField('final')}
                   placeholder="Final Condition (or 'AUTO')"
