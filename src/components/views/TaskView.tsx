@@ -91,6 +91,10 @@ export function TaskView() {
     e.preventDefault();
     if (!formData.name) return;
 
+    if (!diag.isValid) {
+      return;
+    }
+
     const nameUsedInTasks = tasks.some(t => t.name.toLowerCase() === formData.name.toLowerCase() && t.id !== editingId);
     const nameUsedInSensors = sensors.some(s => s.name.toLowerCase() === formData.name.toLowerCase());
     const nameUsedInObservers = observers.some(o => o.name.toLowerCase() === formData.name.toLowerCase());
