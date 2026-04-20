@@ -327,7 +327,7 @@ export function TaskView() {
                     {op}
                   </button>
                 ))}
-                {['(', ')', '↑', '↓', '>', '<', '[', ']'].map(op => (
+                {['(', ')', '↑', '↓', '>', '<', '=', '[', ']'].map(op => (
                   <button 
                     key={op} 
                     type="button" 
