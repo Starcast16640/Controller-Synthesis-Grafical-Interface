@@ -307,7 +307,7 @@ export function ObserverView() {
                   </button>
                 ))}
                 
-                {['(', ')', '↑', '↓', '>', '<', '[', ']'].map(op => (
+                {['(', ')', '↑', '↓', '>', '<', '=', '!=', '[', ']'].map(op => (
                   <button key={op} type="button" 
                     onMouseDown={(e) => e.preventDefault()}
                     onClick={() => insertVariable(op)}
