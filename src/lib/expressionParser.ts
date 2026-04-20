@@ -18,9 +18,9 @@ export function analyzeExpression(expr: string, validNames: string[]): ParseResu
     return { isValid: true, errorMessage: null, errorPos: null };
   }
   
-  const BINARY_OPS = ['AND', 'OR', 'XOR', '>', '<'];
+  const BINARY_OPS = ['AND', 'OR', 'XOR', '>', '<', '='];
   const UNARY_OPS = ['NOT', '↑', '↓'];
-  const regex = /([A-Za-z0-9_↑↓]+)|(\(|\)|\[|\])|(>|<)|(\s+)|(.)/gi;
+  const regex = /([A-Za-z0-9_↑↓]+)|(\(|\)|\[|\])|(>|<|=)|(\s+)|(.)/gi;
   let match;
   const tokens: Token[] = [];
 
@@ -89,59 +89,38 @@ export function analyzeExpression(expr: string, validNames: string[]): ParseResu
     }
   }
   
-  for (let i = 0; i < tokens.length - 1; i++) {
+  let isInsideBrackets = false;
+
+  for (let i = 0; i < tokens.length; i++) {
     const current = tokens[i];
     const next = tokens[i + 1];
-    if (current.type === 'OPERATOR') {
-      if (next.type === 'PAREN' && [')', ']'].includes(next.value)) {
+    if (current.value === '[') isInsideBrackets = true;
+    if (current.value === ']') isInsideBrackets = false;
+    if (!isInsideBrackets) {
+      if (['>', '<', '='].includes(current.value)) {
         return { 
           isValid: false, 
-          errorMessage: `L'opérateur "${current.value}" ne peut pas être suivi d'une fermeture`, 
-          errorPos: current.pos 
+          errorMessage: `L'opérateur "${current.value}" n'est autorisé qu'à l'intérieur de crochets [ ]`, 
+          errorPos: current.pos, tokens: [] 
         };
       }
-      if (BINARY_OPS.includes(current.value) && BINARY_OPS.includes(next.value)) {
+      if (current.type === 'ID' && /^\d+$/.test(current.value)) {
         return { 
           isValid: false, 
-          errorMessage: `L'opérateur "${current.value}" ne peut pas être suivi de "${next.value}"`, 
-          errorPos: next.pos 
-        };
-      }
-    }
-
-    if (current.type === 'ID') {
-      if (next.type === 'ID') {
-        return { 
-          isValid: false, 
-          errorMessage: `Il manque un opérateur entre "${current.value}" et "${next.value}"`, 
-          errorPos: next.pos 
-        };
-      }
-      if (next.type === 'PAREN' && ['(', '['].includes(next.value)) {
-        return { 
-          isValid: false, 
-          errorMessage: `Il manque un opérateur avant "${next.value}"`, 
-          errorPos: next.pos 
+          errorMessage: `Les valeurs numériques doivent être placées dans des crochets [ ]`, 
+          errorPos: current.pos, tokens: [] 
         };
       }
     }
-    if (current.type === 'PAREN' && [')', ']'].includes(current.value)) {
-      if (next.type === 'ID') {
-        return { 
-          isValid: false, 
-          errorMessage: `Il manque un opérateur après "${current.value}"`, 
-          errorPos: next.pos 
-        };
+    if (next) {
+      if (current.type === 'OPERATOR' && next.type === 'PAREN' && [')', ']'].includes(next.value)) {
+        return { isValid: false, errorMessage: `L'opérateur "${current.value}" attend une suite`, errorPos: current.pos, tokens: [] };
       }
-    }
-    
-    if (current.type === 'PAREN' && ['(', '['].includes(current.value)) {
-      if (next.type === 'PAREN' && [')', ']'].includes(next.value)) {
-        return { 
-          isValid: false, 
-          errorMessage: `Les parenthèses ou crochets ne peuvent pas être vides`, 
-          errorPos: current.pos 
-        };
+      if (current.type === 'ID' && next.type === 'ID') {
+        return { isValid: false, errorMessage: `Opérateur manquant entre "${current.value}" et "${next.value}"`, errorPos: next.pos, tokens: [] };
+      }
+      if (current.type === 'PAREN' && ['(', '['].includes(current.value) && [')', ']'].includes(next.value)) {
+        return { isValid: false, errorMessage: `Les parenthèses ou crochets ne peuvent pas être vides`, errorPos: current.pos, tokens: [] };
       }
     }
   }
