@@ -294,7 +294,7 @@ export function TaskView() {
               placeholder="Authorization Expression"
               value={formData.authorization_expression}
               onChange={(e) => setFormData({ ...formData, authorization_expression: e.target.value })}
-              className={`flex-1 px-4 py-2 border rounded-lg focus:ring-2 font-mono text-sm transition-colors resize-none ${
+              className={`flex-1 px-4 py-2 border rounded-lg focus:ring-2 font-mono text-sm transition-colors ${
                 activeField === 'final' && !diag.isValid 
                       ? 'border-red-500 bg-red-50 focus:ring-red-500 text-red-900' 
                       : 'border-gray-300 focus:ring-blue-500'
