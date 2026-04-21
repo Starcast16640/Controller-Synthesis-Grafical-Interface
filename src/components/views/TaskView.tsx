@@ -53,20 +53,20 @@ export function TaskView() {
     const targetRef = activeField === 'auth' ? authRef : finalRef;
     const fieldName = activeField === 'auth' ? 'authorization_expression' : 'final_condition';
     
-    const input = targetRef.current;
-    if (!input || document.activeElement !== input) return;
+    const element = targetRef.current;
+    if (!element || document.activeElement !== element) return;
 
-    const start = input.selectionStart || 0;
-    const end = input.selectionEnd || 0;
+    const start = element.selectionStart || 0;
+    const end = element.selectionEnd || 0;
     const currentText = formData[fieldName];
     const newText = currentText.substring(0, start) + value + currentText.substring(end);
     
     setFormData({ ...formData, [fieldName]: newText });
     
     setTimeout(() => {
-      input.focus();
+      element.focus();
       const newPos = start + value.length;
-      input.setSelectionRange(newPos, newPos);
+      element.setSelectionRange(newPos, newPos);
     }, 0);
   };
 
@@ -288,18 +288,18 @@ export function TaskView() {
             </div>
             <label className="block text-xs font-bold text-gray-500 uppercase mb-1">Authorization Logic</label>
             <input
-              ref={authRef}
-              onFocus={() => setActiveField('auth')}
-              type="text"
-              placeholder="Authorization Expression"
-              value={formData.authorization_expression}
-              onChange={(e) => setFormData({ ...formData, authorization_expression: e.target.value })}
-              className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 font-mono text-sm transition-all ${
-                activeField === 'auth' && !diag.isValid   
-                  ? 'border-red-500 bg-red-50 focus:ring-red-500 text-red-900 shadow-sm' 
-                  : 'border-gray-300 focus:ring-blue-500 shadow-none'
-              }`}
-            />
+                  ref={authRef}
+                  onFocus={() => setActiveField('auth')}
+                  type="text"
+                  placeholder="Authorization Expression"
+                  value={formData.authorization_expression}
+                  onChange={(e) => setFormData({ ...formData, authorization_expression: e.target.value })}
+                  className={`w-full px-4 py-2 border rounded-lg focus:outline-none font-mono text-sm transition-all ${
+                    activeField === 'auth' && !diag.isValid   
+                      ? 'border-red-500 bg-red-50 focus:ring-2 focus:ring-red-200 text-red-900 shadow-sm' 
+                      : 'border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 shadow-none'
+                  }`}
+                />
 
             <label className="block text-xs font-bold text-gray-500 uppercase mb-1 mt-4">Final Condition</label>
               <div className="flex gap-2">
