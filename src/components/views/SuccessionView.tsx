@@ -246,6 +246,7 @@ export function SuccessionView() {
   };
 
   const handleNodeMouseDown = (nodeId: string, e: React.MouseEvent) => {
+    if (e.button !== 0) return;
     e.stopPropagation();
     if (isDeleteMode) {
       deleteSuccessionNode(nodeId);
