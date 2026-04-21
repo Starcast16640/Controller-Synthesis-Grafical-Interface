@@ -567,6 +567,30 @@ export function SuccessionView() {
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent mb-4"
               rows={3}
             />
+            <div className="mt-2 p-2 bg-gray-50 rounded border border-gray-200">
+              <div className="flex flex-wrap gap-1 mb-2">
+                {['AND', 'OR', 'NOT', 'XOR', '(', ')', '[', ']', '↑', '↓', '>', '<', '=', '!='].map(op => (
+                  <button key={op} type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => insertInModal(op.length > 1 ? ` ${op} ` : op)}
+                    className="px-2 py-1 bg-white border border-gray-300 rounded text-[9px] font-bold text-gray-600 hover:bg-gray-100">
+                    {op}
+                  </button>
+                ))}
+              </div>
+              <div className="flex flex-wrap gap-1 max-h-24 overflow-y-auto">
+                {sensors.map(s => (
+                  <button key={s.id} type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => insertInModal(s.name)}
+                    className="px-2 py-1 bg-green-50 text-green-700 rounded text-[9px] border border-green-200">
+                    {s.name}
+                  </button>
+                ))}
+                {observers.map(o => (
+                  <button key={o.id} type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => insertInModal(o.name)}
+                    className="px-2 py-1 bg-blue-50 text-blue-700 rounded text-[9px] border border-blue-200">
+                    {o.name}
+                  </button>
+                ))}
+              </div>
+            </div>
             <select
               value={nodeForm.split_type}
               onChange={(e) => setNodeForm({ ...nodeForm, split_type: e.target.value as 'both' | 'only_one' })}
