@@ -305,7 +305,10 @@ export function TaskView() {
               />
             </div>
 
-            <label className="block text-xs font-bold text-gray-500 uppercase mb-1 mt-4">Final Condition</label>
+            <div>
+              <label className="block text-xs font-bold text-gray-500 uppercase mb-1">
+                Final Condition
+              </label>
               <div className="flex gap-2">
                 <input
                   ref={finalRef}
@@ -319,6 +322,7 @@ export function TaskView() {
                       : 'border-gray-300 focus:ring-blue-500'
                   }`}
                 />
+              </div>
                 <button 
                   type="button" 
                   onMouseDown={(e) => e.preventDefault()}
