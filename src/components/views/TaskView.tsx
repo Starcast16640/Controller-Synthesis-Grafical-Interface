@@ -322,7 +322,6 @@ export function TaskView() {
                       : 'border-gray-300 focus:ring-blue-500'
                   }`}
                 />
-              </div>
                 <button 
                   type="button" 
                   onMouseDown={(e) => e.preventDefault()}
@@ -332,6 +331,7 @@ export function TaskView() {
                   SET AUTO
                 </button>
               </div>
+            </div>
             
             <div className="mt-2 p-3 bg-gray-50 rounded-lg border border-gray-200">
               <label className="block text-[10px] font-bold text-gray-400 uppercase mb-2">Helper Tools</label>
