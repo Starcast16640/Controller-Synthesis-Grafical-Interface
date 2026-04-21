@@ -567,26 +567,101 @@ export function SuccessionView() {
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent mb-4"
               rows={3}
             />
-            <div className="mt-2 p-2 bg-gray-50 rounded border border-gray-200">
-              <div className="flex flex-wrap gap-1 mb-2">
-                {['AND', 'OR', 'NOT', 'XOR', '(', ')', '[', ']', '↑', '↓', '>', '<', '=', '!='].map(op => (
-                  <button key={op} type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => insertInModal(op.length > 1 ? ` ${op} ` : op)}
-                    className="px-2 py-1 bg-white border border-gray-300 rounded text-[9px] font-bold text-gray-600 hover:bg-gray-100">
+            <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
+              <label className="block text-[10px] font-bold text-gray-400 uppercase mb-2">Helper Tools</label>
+              <div className="flex flex-wrap gap-2 mb-3">
+                {['AND', 'OR', 'NOT', 'XOR'].map(op => (
+                  <button key={op} type="button" 
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => insertVariable(` ${op} `)}
+                    className="px-2 py-1 bg-white border border-gray-300 rounded text-[10px] font-bold text-gray-500 hover:bg-gray-100">
+                    {op}
+                  </button>
+                ))}
+                
+                {['(', ')', '↑', '↓', '>', '<', '=', '!=', '[', ']'].map(op => (
+                  <button key={op} type="button" 
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => insertVariable(op)}
+                    className="px-3 py-1 bg-white border border-gray-300 rounded text-[10px] font-bold text-gray-600 hover:bg-gray-100">
                     {op}
                   </button>
                 ))}
               </div>
-              <div className="flex flex-wrap gap-1 max-h-24 overflow-y-auto">
+              
+              <div className="flex flex-wrap gap-2">
                 {sensors.map(s => (
-                  <button key={s.id} type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => insertInModal(s.name)}
-                    className="px-2 py-1 bg-green-50 text-green-700 rounded text-[9px] border border-green-200">
+                  <button key={s.id} type="button" 
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => insertVariable(s.name)}
+                    className="px-2 py-1 bg-green-50 text-green-700 rounded text-[10px] border border-green-200 hover:bg-green-100">
                     {s.name}
                   </button>
                 ))}
-                {observers.map(o => (
-                  <button key={o.id} type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => insertInModal(o.name)}
-                    className="px-2 py-1 bg-blue-50 text-blue-700 rounded text-[9px] border border-blue-200">
+                
+                {observers.filter(o => o.id !== editingId).map(o => (
+                  <button key={o.id} type="button" 
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => insertVariable(o.name)}
+                    className="px-2 py-1 bg-blue-50 text-blue-700 rounded text-[10px] border border-blue-200 hover:bg-blue-100">
                     {o.name}
+                  </button>
+                ))}
+                {tasks.map(t => (
+                  <button key={t.id} type="button" 
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => insertVariable(t.name)}
+                    className="px-2 py-1 bg-purple-50 text-purple-700 rounded text-[10px] border border-purple-200 hover:bg-purple-100">
+                    {t.name}
+                  </button>
+                ))}
+              </div>
+            </div><div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
+              <label className="block text-[10px] font-bold text-gray-400 uppercase mb-2">Helper Tools</label>
+              <div className="flex flex-wrap gap-2 mb-3">
+                {['AND', 'OR', 'NOT', 'XOR'].map(op => (
+                  <button key={op} type="button" 
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => insertVariable(` ${op} `)}
+                    className="px-2 py-1 bg-white border border-gray-300 rounded text-[10px] font-bold text-gray-500 hover:bg-gray-100">
+                    {op}
+                  </button>
+                ))}
+                
+                {['(', ')', '↑', '↓', '>', '<', '=', '!=', '[', ']'].map(op => (
+                  <button key={op} type="button" 
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => insertVariable(op)}
+                    className="px-3 py-1 bg-white border border-gray-300 rounded text-[10px] font-bold text-gray-600 hover:bg-gray-100">
+                    {op}
+                  </button>
+                ))}
+              </div>
+              
+              <div className="flex flex-wrap gap-2">
+                {sensors.map(s => (
+                  <button key={s.id} type="button" 
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => insertVariable(s.name)}
+                    className="px-2 py-1 bg-green-50 text-green-700 rounded text-[10px] border border-green-200 hover:bg-green-100">
+                    {s.name}
+                  </button>
+                ))}
+                
+                {observers.filter(o => o.id !== editingId).map(o => (
+                  <button key={o.id} type="button" 
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => insertVariable(o.name)}
+                    className="px-2 py-1 bg-blue-50 text-blue-700 rounded text-[10px] border border-blue-200 hover:bg-blue-100">
+                    {o.name}
+                  </button>
+                ))}
+                {tasks.map(t => (
+                  <button key={t.id} type="button" 
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => insertVariable(t.name)}
+                    className="px-2 py-1 bg-purple-50 text-purple-700 rounded text-[10px] border border-purple-200 hover:bg-purple-100">
+                    {t.name}
                   </button>
                 ))}
               </div>
