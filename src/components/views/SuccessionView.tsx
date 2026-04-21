@@ -566,7 +566,7 @@ export function SuccessionView() {
               placeholder="Node Expression"
               value={nodeForm.expression}
               onChange={(e) => setNodeForm({ ...nodeForm, expression: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent mb-4"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 font-mono text-sm mb-4 resize-none"
               rows={3}
             />
             <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
