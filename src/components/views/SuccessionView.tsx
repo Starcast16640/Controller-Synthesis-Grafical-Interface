@@ -433,10 +433,7 @@ export function SuccessionView() {
             <input 
               ref={initialBtnRef} 
               type="text" 
-              className="absolute inset-0 opacity-0 pointer-events-none" 
-              required
-              onInvalid={(e) => (e.target as HTMLInputElement).setCustomValidity("")}
-              onChange={() => initialBtnRef.current?.setCustomValidity("")} 
+              className="absolute inset-0 opacity-0 pointer-events-none"
             />
             <button
               onClick={handleCreateInitialState}
