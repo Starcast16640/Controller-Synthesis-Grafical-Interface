@@ -429,11 +429,13 @@ export function SuccessionView() {
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-bold text-gray-900">Succession View</h2>
         <div className="flex gap-2">
-          <div className="relative inline-block">
+          <div className="relative inline-block"
             <input 
               ref={initialBtnRef} 
               type="text" 
-              className="absolute opacity-0 w-0 h-0 top-1/2 left-1/2" 
+              className="absolute inset-0 opacity-0 pointer-events-none" 
+              required
+              onInvalid={(e) => e.preventDefault()}
               onChange={() => initialBtnRef.current?.setCustomValidity("")} 
             />
             <button
@@ -531,7 +533,8 @@ export function SuccessionView() {
             if (!node) return null;
             const isSelected = selectedForLink.some((s) => s.id === pos.id);
             const isInit = node.name === 'INIT';
-          
+            const isInit = node.name?.trim().toUpperCase() === 'INIT';
+
             return (
               <div
                 key={pos.id}
@@ -541,7 +544,7 @@ export function SuccessionView() {
                     : isSelected
                       ? 'bg-blue-200 border-4 border-blue-600 scale-110 shadow-lg' 
                       : isInit 
-                        ? 'bg-emerald-400 border-2 border-emerald-600'
+                        ? 'bg-emerald-400 border-double border-4 border-emerald-700'
                         : 'bg-yellow-300 border-2 border-yellow-600 cursor-pointer hover:bg-yellow-400'
                 }`}
                 style={{
@@ -563,8 +566,8 @@ export function SuccessionView() {
                   });
                 }}
               >
-                <span className="text-sm font-bold text-yellow-900 pointer-events-none">
-                  {node.split_type === 'both' ? '⊕' : '|'}
+                <span className={`font-bold pointer-events-none ${isInit ? 'text-[9px] text-emerald-900' : 'text-sm text-yellow-900'}`}>
+                  {isInit ? 'INIT' : (node.split_type === 'both' ? '⊕' : '|')}
                 </span>
                 <div 
                   className="absolute top-full mt-1 left-1/2 -translate-x-1/2"
@@ -607,7 +610,6 @@ export function SuccessionView() {
             );
           })}
           </div>
-        </div>
 
       {editingNode && (
         <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
