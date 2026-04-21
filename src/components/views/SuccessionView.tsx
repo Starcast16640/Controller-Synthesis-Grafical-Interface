@@ -45,6 +45,7 @@ export function SuccessionView() {
   const containerRef = useRef<HTMLDivElement>(null);
   const initialErrorRef = useRef<HTMLInputElement>(null);
   const clickStartPos = useRef({ x: 0, y: 0 });
+  const initialBtnRef = useRef<HTMLInputElement>(null);
   const [taskPositions, setTaskPositions] = useState<TaskPosition[]>([]);
   const [nodePositions, setNodePositions] = useState<NodePosition[]>([]);
   const [selectedElements, setSelectedElements] = useState<{ type: 'task' | 'node'; id: string } | null>(null);
@@ -405,16 +406,14 @@ export function SuccessionView() {
     const hasInit = successionNodes.some(n => n.name === 'INIT');
     
     if (hasInit) {
-      initialErrorRef.current?.setCustomValidity("Il ne peut y avoir qu'un seul état initial.");
-      initialErrorRef.current?.reportValidity();
+      initialBtnRef.current?.setCustomValidity("Il ne peut y avoir qu'un seul état initial.");
+      initialBtnRef.current?.reportValidity();
       return;
     }
+
     addSuccessionNode({ 
-      name: 'INIT', 
-      expression: 'TRUE', 
-      split_type: 'both', 
-      position_x: 50, 
-      position_y: 50 
+      name: 'INIT', expression: 'TRUE', split_type: 'both', 
+      position_x: 50, position_y: 50 
     });
   };
 
@@ -432,10 +431,10 @@ export function SuccessionView() {
         <div className="flex gap-2">
           <div className="relative inline-block">
             <input 
-              ref={initialErrorRef} 
+              ref={initialBtnRef} 
               type="text" 
-              className="absolute opacity-0 w-0 h-0 pointer-events-none" 
-              onChange={() => initialErrorRef.current?.setCustomValidity("")} 
+              className="absolute opacity-0 w-0 h-0 top-1/2 left-1/2" 
+              onChange={() => initialBtnRef.current?.setCustomValidity("")} 
             />
             <button
               onClick={handleCreateInitialState}
