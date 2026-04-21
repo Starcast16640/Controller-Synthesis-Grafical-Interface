@@ -65,15 +65,16 @@ export function SuccessionView() {
   const insertInModal = (value: string) => {
     const el = modalExprRef.current;
     if (!el) return;
+
     const start = el.selectionStart || 0;
     const end = el.selectionEnd || 0;
     const currentText = nodeForm.expression || '';
     const newText = currentText.substring(0, start) + value + currentText.substring(end);
-    
     setNodeForm({ ...nodeForm, expression: newText });
     setTimeout(() => {
       el.focus();
-      el.setSelectionRange(start + value.length, start + value.length);
+      const newPos = start + value.length;
+      el.setSelectionRange(newPos, newPos);
     }, 0);
   };
 
