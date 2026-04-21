@@ -533,8 +533,6 @@ export function SuccessionView() {
             if (!node) return null;
             const isSelected = selectedForLink.some((s) => s.id === pos.id);
             const isInit = node.name === 'INIT';
-            const isInit = node.name?.trim().toUpperCase() === 'INIT';
-
             return (
               <div
                 key={pos.id}
