@@ -43,6 +43,7 @@ export function SuccessionView() {
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const initialErrorRef = useRef<HTMLInputElement>(null);
   const [taskPositions, setTaskPositions] = useState<TaskPosition[]>([]);
   const [nodePositions, setNodePositions] = useState<NodePosition[]>([]);
   const [selectedElements, setSelectedElements] = useState<{ type: 'task' | 'node'; id: string } | null>(null);
@@ -384,6 +385,23 @@ export function SuccessionView() {
     });
   };
 
+  const handleCreateInitialState = () => {
+    const hasInit = successionNodes.some(n => n.name === 'INIT');
+    
+    if (hasInit) {
+      initialErrorRef.current?.setCustomValidity("Il ne peut y avoir qu'un seul état initial.");
+      initialErrorRef.current?.reportValidity();
+      return;
+    }
+    addSuccessionNode({ 
+      name: 'INIT', 
+      expression: 'TRUE', 
+      split_type: 'both', 
+      position_x: 50, 
+      position_y: 50 
+    });
+  };
+
   const getTaskTypeColor = (type: string[]) => {
     if (type.includes('reactivable')) return '#dcfce7';
     if (type.includes('pausable')) return '#fef3c7';
@@ -396,6 +414,20 @@ export function SuccessionView() {
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-bold text-gray-900">Succession View</h2>
         <div className="flex gap-2">
+          <div className="relative inline-block">
+            <input 
+              ref={initialErrorRef} 
+              type="text" 
+              className="absolute opacity-0 w-0 h-0 pointer-events-none" 
+              onChange={() => initialErrorRef.current?.setCustomValidity("")} 
+            />
+            <button
+              onClick={handleCreateInitialState}
+              className="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-all font-bold shadow-md"
+            >
+              Add Initial State
+            </button>
+          </div>
           <button
             onClick={handleCreateNode}
             className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
