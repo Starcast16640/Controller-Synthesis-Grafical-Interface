@@ -29,6 +29,8 @@ const getDistanceToSegment = (p: { x: number; y: number }, v: { x: number; y: nu
 export function SuccessionView() {
   const {
     tasks,
+    sensors,
+    observers,
     updateTask,
     successionArrows,
     successionNodes,
@@ -58,6 +60,22 @@ export function SuccessionView() {
   const [selectedForLink, setSelectedForLink] = useState<{ id: string; type: 'task' | 'node' }[]>([]);
   const [isDeleteMode, setIsDeleteMode] = useState(false);
   const [hoveredArrowId, setHoveredArrowId] = useState<string | null>(null);
+  const modalExprRef = useRef<HTMLTextAreaElement>(null);
+
+  const insertInModal = (value: string) => {
+    const el = modalExprRef.current;
+    if (!el) return;
+    const start = el.selectionStart || 0;
+    const end = el.selectionEnd || 0;
+    const currentText = nodeForm.expression || '';
+    const newText = currentText.substring(0, start) + value + currentText.substring(end);
+    
+    setNodeForm({ ...nodeForm, expression: newText });
+    setTimeout(() => {
+      el.focus();
+      el.setSelectionRange(start + value.length, start + value.length);
+    }, 0);
+  };
 
   const getElementName = (type: 'task' | 'node', id: string) => {
     if (type === 'task') {
