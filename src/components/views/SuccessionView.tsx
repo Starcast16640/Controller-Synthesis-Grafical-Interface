@@ -429,7 +429,7 @@ export function SuccessionView() {
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-bold text-gray-900">Succession View</h2>
         <div className="flex gap-2">
-          <div className="relative inline-block"
+          <div className="relative inline-block">
             <input 
               ref={initialBtnRef} 
               type="text" 
