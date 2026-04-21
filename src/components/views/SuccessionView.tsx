@@ -44,6 +44,7 @@ export function SuccessionView() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const initialErrorRef = useRef<HTMLInputElement>(null);
+  const clickStartPos = useRef({ x: 0, y: 0 });
   const [taskPositions, setTaskPositions] = useState<TaskPosition[]>([]);
   const [nodePositions, setNodePositions] = useState<NodePosition[]>([]);
   const [selectedElements, setSelectedElements] = useState<{ type: 'task' | 'node'; id: string } | null>(null);
@@ -228,9 +229,7 @@ export function SuccessionView() {
 
   const handleTaskMouseDown = (taskId: string, e: React.MouseEvent) => {
     e.stopPropagation();
-    if (!isDeleteMode) {
-      handleElementSelect(taskId, 'task');
-    }
+    clickStartPos.current = { x: e.clientX, y: e.clientY };
     const pos = taskPositions.find((p) => p.id === taskId);
     if (!pos) return;
 
@@ -251,7 +250,7 @@ export function SuccessionView() {
       deleteSuccessionNode(nodeId);
       return;
     }
-    handleElementSelect(nodeId, 'node');
+    clickStartPos.current = { x: e.clientX, y: e.clientY };
     const pos = nodePositions.find((p) => p.id === nodeId);
     if (!pos) return;
 
@@ -347,21 +346,38 @@ export function SuccessionView() {
     }
   };
 
-  const handleMouseUp = () => {
-    if (draggingTaskId) {
-      const pos = taskPositions.find((p) => p.id === draggingTaskId);
-      if (pos) {
-        updateTask(draggingTaskId, { position_x: pos.x, position_y: pos.y });
-      }
+  const handleMouseUp = (e: React.MouseEvent) => {
+    const distance = Math.sqrt(
+      Math.pow(e.clientX - clickStartPos.current.x, 2) + 
+      Math.pow(e.clientY - clickStartPos.current.y, 2)
+    );
+    if (distance < 5) {
+      if (draggingTaskId) handleElementSelect(draggingTaskId, 'task');
+      if (draggingNodeId) handleElementSelect(draggingNodeId, 'node');
     }
-    if (draggingNodeId) {
-      const finalPos = nodePositions.find((p) => p.id === draggingNodeId);
-      if (finalPos) {
-        updateSuccessionNode(draggingNodeId, { position_x: finalPos.x, position_y: finalPos.y });
+    try {
+      if (draggingTaskId) {
+        const pos = taskPositions.find((p) => p.id === draggingTaskId);
+        if (pos) {
+          updateTask(draggingTaskId, { 
+            position_x: Math.round(pos.x), 
+            position_y: Math.round(pos.y) 
+          });
+        }
       }
+      if (draggingNodeId) {
+        const finalPos = nodePositions.find((p) => p.id === draggingNodeId);
+        if (finalPos) {
+          updateSuccessionNode(draggingNodeId, { 
+            position_x: Math.round(finalPos.x), 
+            position_y: Math.round(finalPos.y) 
+          });
+        }
+      }
+    } finally {
+      setDraggingTaskId(null);
+      setDraggingNodeId(null);
     }
-    setDraggingTaskId(null);
-    setDraggingNodeId(null);
   };
   
   const handleCreateNode = () => {
