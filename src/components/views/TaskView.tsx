@@ -314,7 +314,6 @@ export function TaskView() {
                       ? 'border-red-500 bg-red-50 focus:ring-red-500 text-red-900' 
                       : 'border-gray-300 focus:ring-blue-500'
                   }`}
-                  rows={2}
                 />
                 <button 
                   type="button" 
