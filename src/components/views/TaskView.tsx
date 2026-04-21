@@ -286,10 +286,7 @@ export function TaskView() {
                 ))}
               </div>
             </div>
-            <div className="mb-4">
-              <label className="block text-xs font-bold text-gray-500 uppercase mb-1">
-                Authorization Logic
-              </label>
+
               <input
                 ref={authRef}
                 onFocus={() => setActiveField('auth')}
@@ -303,7 +300,6 @@ export function TaskView() {
                     : 'border-gray-300 focus:ring-blue-500'
                 }`}
               />
-            </div>
 
             <div>
               <label className="block text-xs font-bold text-gray-500 uppercase mb-1">
