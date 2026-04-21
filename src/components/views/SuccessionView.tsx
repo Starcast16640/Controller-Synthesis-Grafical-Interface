@@ -403,7 +403,7 @@ export function SuccessionView() {
   };
 
   const handleCreateInitialState = () => {
-    const hasInit = successionNodes.some(n => n.name === 'INIT');
+    const hasInit = successionNodes.some(n => n.name?.trim().toUpperCase() === 'INIT');
     
     if (hasInit) {
       initialBtnRef.current?.setCustomValidity("Il ne peut y avoir qu'un seul état initial.");
@@ -435,7 +435,7 @@ export function SuccessionView() {
               type="text" 
               className="absolute inset-0 opacity-0 pointer-events-none" 
               required
-              onInvalid={(e) => e.preventDefault()}
+              onInvalid={(e) => (e.target as HTMLInputElement).setCustomValidity("")}
               onChange={() => initialBtnRef.current?.setCustomValidity("")} 
             />
             <button
