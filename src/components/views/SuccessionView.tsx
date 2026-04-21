@@ -581,6 +581,15 @@ export function SuccessionView() {
                         updateSuccessionNode(pos.id, { name: editingNameValue });
                         setEditingNameId(null);
                       }}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          updateSuccessionNode(pos.id, { name: editingNameValue });
+                          setEditingNameId(null);
+                        }
+                        if (e.key === 'Escape') {
+                          setEditingNameId(null);
+                        }
+                      }}
                     />
                   ) : (
                     <span 
