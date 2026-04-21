@@ -719,5 +719,6 @@ export function SuccessionView() {
         </div>
       )}      
     </div>
+    </div>
   );
 }
