@@ -562,7 +562,7 @@ export function SuccessionView() {
                 }}
               >
                 <span className={`font-bold pointer-events-none ${isInit ? 'text-[9px] text-emerald-900' : 'text-sm text-yellow-900'}`}>
-                  {isInit ? 'INIT' : (node.split_type === 'both' ? '⊕' : '|')}
+                  {(node.split_type === 'both' ? '⊕' : '|')}
                 </span>
                 <div 
                   className="absolute top-full mt-1 left-1/2 -translate-x-1/2"
