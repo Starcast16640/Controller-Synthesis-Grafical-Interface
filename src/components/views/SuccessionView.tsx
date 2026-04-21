@@ -515,6 +515,7 @@ export function SuccessionView() {
             const node = successionNodes.find((n) => n.id === pos.id);
             if (!node) return null;
             const isSelected = selectedForLink.some((s) => s.id === pos.id);
+            const isInit = node.name === 'INIT';
           
             return (
               <div
@@ -523,8 +524,10 @@ export function SuccessionView() {
                   isDeleteMode 
                     ? 'bg-red-200 border-2 border-red-500 cursor-crosshair' 
                     : isSelected
-                      ? 'bg-blue-200 border-4 border-blue-600 scale-110 shadow-lg'
-                      : 'bg-yellow-300 border-2 border-yellow-600 cursor-pointer hover:bg-yellow-400'
+                      ? 'bg-blue-200 border-4 border-blue-600 scale-110 shadow-lg' 
+                      : isInit 
+                        ? 'bg-emerald-400 border-2 border-emerald-600'
+                        : 'bg-yellow-300 border-2 border-yellow-600 cursor-pointer hover:bg-yellow-400'
                 }`}
                 style={{
                   left: `${pos.x - NODE_RADIUS}px`,
