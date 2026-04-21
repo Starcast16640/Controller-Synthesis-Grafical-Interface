@@ -554,6 +554,7 @@ export function SuccessionView() {
         <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg shadow-lg p-6 max-w-md w-full">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Edit Node</h3>
+            <label className="block text-[10px] font-bold text-gray-400 uppercase mb-1">Node Name</label>
             <input
               type="text"
               placeholder="Node Name"
@@ -561,6 +562,7 @@ export function SuccessionView() {
               onChange={(e) => setNodeForm({ ...nodeForm, name: e.target.value })}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent mb-4"
             />
+            <label className="block text-[10px] font-bold text-gray-400 uppercase mb-1">Authorization Logic</label>
             <textarea
               ref={modalExprRef}
               placeholder="Node Expression"
@@ -619,6 +621,7 @@ export function SuccessionView() {
                 ))}
               </div>
             </div>
+            <label className="block text-[10px] font-bold text-gray-400 uppercase mb-1">Split Type (Execution Mode)</label>
             <select
               value={nodeForm.split_type}
               onChange={(e) => setNodeForm({ ...nodeForm, split_type: e.target.value as 'both' | 'only_one' })}
