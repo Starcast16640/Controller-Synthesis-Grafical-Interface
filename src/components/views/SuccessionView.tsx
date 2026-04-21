@@ -569,7 +569,7 @@ export function SuccessionView() {
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 font-mono text-sm mb-4 resize-none"
               rows={3}
             />
-            <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
+            <div className="p-3 bg-gray-50 rounded-lg border border-gray-200 mb-4">
               <label className="block text-[10px] font-bold text-gray-400 uppercase mb-2">Helper Tools</label>
               <div className="flex flex-wrap gap-2 mb-3">
                 {['AND', 'OR', 'NOT', 'XOR'].map(op => (
@@ -595,7 +595,7 @@ export function SuccessionView() {
                 {sensors.map(s => (
                   <button key={s.id} type="button" 
                     onMouseDown={(e) => e.preventDefault()}
-                    onClick={() => insertVariable(s.name)}
+                    onClick={() => insertInModal(s.name)}
                     className="px-2 py-1 bg-green-50 text-green-700 rounded text-[10px] border border-green-200 hover:bg-green-100">
                     {s.name}
                   </button>
@@ -604,7 +604,7 @@ export function SuccessionView() {
                 {observers.filter(o => o.id !== editingNode).map(o => (
                   <button key={o.id} type="button" 
                     onMouseDown={(e) => e.preventDefault()}
-                    onClick={() => insertVariable(o.name)}
+                    onClick={() => insertInModal(o.name)}
                     className="px-2 py-1 bg-blue-50 text-blue-700 rounded text-[10px] border border-blue-200 hover:bg-blue-100">
                     {o.name}
                   </button>
@@ -612,7 +612,7 @@ export function SuccessionView() {
                 {tasks.map(t => (
                   <button key={t.id} type="button" 
                     onMouseDown={(e) => e.preventDefault()}
-                    onClick={() => insertVariable(t.name)}
+                    onClick={() => insertInModal(t.name)}
                     className="px-2 py-1 bg-purple-50 text-purple-700 rounded text-[10px] border border-purple-200 hover:bg-purple-100">
                     {t.name}
                   </button>
