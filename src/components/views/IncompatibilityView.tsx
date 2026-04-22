@@ -46,6 +46,13 @@ export function IncompatibilityView() {
     setGroup2([]);
   };
 
+  const formatGroupNames = (ids: string[]) => {
+    return ids.map(id => {
+      const task = tasks.find(t => t.id === id);
+      return task ? task.name : '?';
+    }).join(' - ');
+  };
+
   const getTaskName = (id: string) => {
     const task = tasks.find((t) => t.id === id);
     return task ? task.name : 'Deleted Task';
@@ -118,28 +125,19 @@ export function IncompatibilityView() {
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {incompatibilityLinks.length === 0 ? (
-              <tr>
-                <td colSpan={4} className="px-6 py-8 text-center text-gray-500">
-                  No incompatibilities defined yet.
-                </td>
-              </tr>
+              <tr><td colSpan={4} className="px-6 py-8 text-center text-gray-500">No incompatibilities defined yet.</td></tr>
             ) : (
               incompatibilityLinks.map((link) => (
                 <tr key={link.id} className="hover:bg-blue-50/50">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-black-600">
-                    {getTaskName(link.task1_id)}
+                  <td className="px-6 py-4 text-sm font-bold text-gray-900">
+                    {formatGroupNames(link.task1_ids)}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-center text-blue-500 font-bold">
-                    ✕
+                  <td className="px-6 py-4 text-sm text-center text-blue-500 font-black">✕</td>
+                  <td className="px-6 py-4 text-sm font-bold text-gray-900">
+                    {formatGroupNames(link.task2_ids)}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-black-600">
-                    {getTaskName(link.task2_id)}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm">
-                    <button
-                      onClick={() => deleteIncompatibilityLink(link.id)}
-                      className="text-red-600 hover:text-red-900 bg-red-50 p-2 rounded-full"
-                    >
+                  <td className="px-6 py-4 text-right">
+                    <button onClick={() => deleteIncompatibilityLink(link.id)} className="text-red-500 hover:text-red-700 p-2">
                       <Trash2 className="w-4 h-4" />
                     </button>
                   </td>
