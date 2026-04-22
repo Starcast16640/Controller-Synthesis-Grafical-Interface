@@ -6,6 +6,8 @@ interface ToolbarProps {
   currentView: ViewType;
   onViewChange: (view: ViewType) => void;
   onExport: () => void;
+  onJsonExport: () => void;
+  onJsonImport: (file: File) => void;
 }
 
 export function Toolbar({ currentView, onViewChange, onExport }: ToolbarProps) {
