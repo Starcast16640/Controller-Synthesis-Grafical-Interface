@@ -43,9 +43,7 @@ export function SuccessionView() {
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const initialErrorRef = useRef<HTMLInputElement>(null);
   const clickStartPos = useRef({ x: 0, y: 0 });
-  const initialBtnRef = useRef<HTMLInputElement>(null);
   const [taskPositions, setTaskPositions] = useState<TaskPosition[]>([]);
   const [nodePositions, setNodePositions] = useState<NodePosition[]>([]);
   const [selectedElements, setSelectedElements] = useState<{ type: 'task' | 'node'; id: string } | null>(null);
@@ -53,7 +51,7 @@ export function SuccessionView() {
   const [draggingNodeId, setDraggingNodeId] = useState<string | null>(null);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const [editingNode, setEditingNode] = useState<string | null>(null);
-  const [nodeForm, setNodeForm] = useState({ name: '', expression: '', split_type: 'both' });
+  const [nodeForm, setNodeForm] = useState({ name: '', expression: '', split_type: 'both', is_initial: false });
   const [editingNameId, setEditingNameId] = useState<string | null>(null);
   const [editingNameValue, setEditingNameValue] = useState('');
   const [isDrawingArrow, setIsDrawingArrow] = useState(false);
@@ -403,21 +401,6 @@ export function SuccessionView() {
     });
   };
 
-  const handleCreateInitialState = () => {
-    const hasInit = successionNodes.some(n => n.name?.trim().toUpperCase() === 'INIT');
-    
-    if (hasInit) {
-      initialBtnRef.current?.setCustomValidity("Il ne peut y avoir qu'un seul état initial.");
-      initialBtnRef.current?.reportValidity();
-      return;
-    }
-
-    addSuccessionNode({ 
-      name: 'INIT', expression: 'TRUE', split_type: 'both', 
-      position_x: 50, position_y: 50 
-    });
-  };
-
   const getTaskTypeColor = (type: string[]) => {
     if (type.includes('reactivable')) return '#dcfce7';
     if (type.includes('pausable')) return '#fef3c7';
@@ -430,19 +413,6 @@ export function SuccessionView() {
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-bold text-gray-900">Succession View</h2>
         <div className="flex gap-2">
-          <div className="relative inline-block">
-            <input 
-              ref={initialBtnRef} 
-              type="text" 
-              className="absolute inset-0 opacity-0 pointer-events-none"
-            />
-            <button
-              onClick={handleCreateInitialState}
-              className="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-all font-bold shadow-md"
-            >
-              Add Initial State
-            </button>
-          </div>
           <button
             onClick={handleCreateNode}
             className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
@@ -530,7 +500,7 @@ export function SuccessionView() {
             const node = successionNodes.find((n) => n.id === pos.id);
             if (!node) return null;
             const isSelected = selectedForLink.some((s) => s.id === pos.id);
-            const isInit = node.name?.trim().toUpperCase() === 'INIT';
+            const isInit = node.is_initial === true;
             return (
               <div
                 key={pos.id}
@@ -558,7 +528,8 @@ export function SuccessionView() {
                   setNodeForm({ 
                     name: node.name || 'N', 
                     expression: node.expression, 
-                    split_type: node.split_type 
+                    split_type: node.split_type,
+                    is_initial: node.is_initial || false
                   });
                 }}
               >
@@ -649,6 +620,19 @@ export function SuccessionView() {
                   </button>
                 ))}
               </div>
+
+              <label className="flex items-center gap-3 mb-6 p-3 bg-emerald-50 border border-emerald-100 rounded-lg cursor-pointer hover:bg-emerald-100 transition-colors">
+                <input
+                  type="checkbox"
+                  checked={nodeForm.is_initial}
+                  onChange={(e) => setNodeForm({ ...nodeForm, is_initial: e.target.checked })}
+                  className="w-5 h-5 text-emerald-600 rounded border-gray-300 focus:ring-emerald-500"
+                />
+                <div>
+                  <span className="block text-sm font-bold text-emerald-900">Initial State</span>
+                  <span className="block text-[10px] text-emerald-700">Mark this node as a starting point of the graph.</span>
+                </div>
+              </label>
               
               <div className="flex flex-wrap gap-2">
                 {sensors.map(s => (
