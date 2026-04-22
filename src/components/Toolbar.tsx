@@ -66,5 +66,6 @@ export function Toolbar({ currentView, onViewChange, onExport }: ToolbarProps) {
         </button>
       </div>
     </div>
+    </div>
   );
 }
