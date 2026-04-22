@@ -95,7 +95,7 @@ export function IncompatibilityView() {
                   onClick={() => group2.includes(t.id) ? setGroup2(group2.filter(id => id !== t.id)) : setGroup2([...group2, t.id])}
                   className={`px-2 py-1 rounded text-[10px] font-bold transition-all ${group2.includes(t.id) ? 'bg-blue-600 text-white shadow-md' : 'bg-gray-100 text-gray-400 hover:bg-gray-200'}`}
                 >
-                  Create Link
+                  {t.name}
                 </button>
               ))}
             </div>
@@ -107,9 +107,7 @@ export function IncompatibilityView() {
             disabled={group1.length === 0 || group2.length === 0}
             className="flex items-center justify-center px-4 py-2 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 disabled:opacity-30 w-32 text-[10px] uppercase text-center shadow-md               transition-all"
           >
-            {group1.length * group2.length > 0 
-              ? `Create ${group1.length * group2.length} Links` 
-              : 'Select Tasks'}
+            Create Link
           </button>
         </div>
       </div>
