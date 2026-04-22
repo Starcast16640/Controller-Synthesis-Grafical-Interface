@@ -648,19 +648,19 @@ export function SuccessionView() {
                   </button>
                 ))}
               </div>
-              <label className="flex items-center gap-3 mb-6 p-3 bg-emerald-50 border border-emerald-100 rounded-lg cursor-pointer hover:bg-emerald-100 transition-colors">
-                <input
-                  type="checkbox"
-                  checked={nodeForm.is_initial}
-                  onChange={(e) => setNodeForm({ ...nodeForm, is_initial: e.target.checked })}
-                  className="w-5 h-5 text-emerald-600 rounded border-gray-300 focus:ring-emerald-500"
-                />
-                <div>
-                  <span className="block text-sm font-bold text-emerald-900">Initial State</span>
-                  <span className="block text-[10px] text-emerald-700">Mark this node as a starting point of the graph.</span>
-                </div>
-              </label>
             </div>
+            <label className="flex items-center gap-3 mb-6 p-3 bg-emerald-50 border border-emerald-100 rounded-lg cursor-pointer hover:bg-emerald-100 transition-colors">
+              <input
+                type="checkbox"
+                checked={nodeForm.is_initial}
+                onChange={(e) => setNodeForm({ ...nodeForm, is_initial: e.target.checked })}
+                className="w-5 h-5 text-emerald-600 rounded border-gray-300 focus:ring-emerald-500"
+              />
+              <div>
+                <span className="block text-sm font-bold text-emerald-900">Initial State</span>
+                <span className="block text-[10px] text-emerald-700">Mark this node as a starting point of the graph.</span>
+              </div>
+            </label>
             <label className="block text-[10px] font-bold text-gray-400 uppercase mb-1">Split Type (Execution Mode)</label>
             <select
               value={nodeForm.split_type}
