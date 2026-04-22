@@ -113,7 +113,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
   const updateObserver = async (id: string, observer: Partial<Omit<Observer, 'id' | 'created_at'>>) => {
     await supabase.from('observers').update(observer).eq('id', id);
     await fetchObservers();
-  };
+  }; 
 
   const deleteObserver = async (id: string) => {
     await supabase.from('observers').delete().eq('id', id);
