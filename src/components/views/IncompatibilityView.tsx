@@ -60,7 +60,8 @@ export function IncompatibilityView() {
       </div>
       <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8 shadow-sm">
         <h3 className="text-lg font-semibold text-black-900 mb-4">Create New Incompatibility</h3>
-        <div className="flex flex-col md:flex-row gap-4 items-end">
+        <div className="flex flex-col md:flex-row gap-4 items-center
+          ">
           <div className="flex-1 bg-white p-3 rounded-lg border border-gray-300 h-40 overflow-y-auto">
             <label className="block text-[10px] font-bold text-gray-400 uppercase mb-2 text-center underline">Group 1</label>
             <div className="flex flex-wrap gap-1">
