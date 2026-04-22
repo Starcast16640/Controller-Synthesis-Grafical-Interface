@@ -95,7 +95,7 @@ export function IncompatibilityView() {
                   onClick={() => group2.includes(t.id) ? setGroup2(group2.filter(id => id !== t.id)) : setGroup2([...group2, t.id])}
                   className={`px-2 py-1 rounded text-[10px] font-bold transition-all ${group2.includes(t.id) ? 'bg-blue-600 text-white shadow-md' : 'bg-gray-100 text-gray-400 hover:bg-gray-200'}`}
                 >
-                  {t.name}
+                  Create Link
                 </button>
               ))}
             </div>
@@ -117,9 +117,9 @@ export function IncompatibilityView() {
         <table className="min-w-full divide-y divide-blue-200">
           <thead className="bg-blue-50">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-500 uppercase">First Task</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-500 uppercase">First Group</th>
               <th className="px-6 py-3 text-center text-xs font-medium text-500 uppercase">Linked</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-500 uppercase">Second Task</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-500 uppercase">Second Group</th>
               <th className="px-6 py-3 text-right text-xs font-medium text-500 uppercase">Delete</th>
             </tr>
           </thead>
