@@ -60,7 +60,7 @@ export function IncompatibilityView() {
       </div>
       <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8 shadow-sm">
         <h3 className="text-lg font-semibold text-black-900 mb-4">Create New Incompatibility</h3>
-        <div className="flex flex-col md:flex-row gap-4 items-start">
+        <div className="flex flex-col md:flex-row gap-4 items-center">
           <div className="flex-1 bg-white p-4 rounded-lg border border-gray-300 min-h-[100px] h-auto transition-all shadow-sm">
             <label className="block text-[10px] font-bold text-gray-400 uppercase mb-2 text-center underline">Group 1</label>
             <div className="flex flex-wrap gap-1">
@@ -76,13 +76,13 @@ export function IncompatibilityView() {
             </div>
           </div>
           
-          <div className="flex items-center self-center justify-center px-4 text-blue-500 font-black text-2xl">
+          <div className="flex items-center justify-center px-4 text-blue-500 font-black text-2xl">
             ✕
           </div>
 
           <div className="flex-1 bg-white p-4 rounded-lg border border-gray-300 min-h-[100px] h-auto transition-all shadow-sm">
             <label className="block text-[10px] font-bold text-gray-400 uppercase mb-2 text-center underline">Group 2</label>
-            <div className="flex flex-wrap gap-1">
+            <div className="flex flex-wrap gap-1"> 
               {tasks.map(t => (
                 <button 
                   key={t.id} 
