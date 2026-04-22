@@ -20,32 +20,30 @@ export function IncompatibilityView() {
 
   const handleCreateLinks = async () => {
     btnRef.current?.setCustomValidity("");
+    const sortedG1 = [...group1].sort();
+    const sortedG2 = [...group2].sort();
+    const alreadyExists = incompatibilityLinks.some(link => {
+      const l1 = [...(link.task1_ids || [])].sort();
+      const l2 = [...(link.task2_ids || [])].sort();
+      
+      const normalMatch = JSON.stringify(l1) === JSON.stringify(sortedG1) && JSON.stringify(l2) === JSON.stringify(sortedG2);
+      const invertedMatch = JSON.stringify(l1) === JSON.stringify(sortedG2) && JSON.stringify(l2) === JSON.stringify(sortedG1);
+      
+      return normalMatch || invertedMatch;
+    });
 
-    let totalCreated = 0;
-    let totalDuplicates = 0;
-    for (const id1 of group1) {
-      for (const id2 of group2) {
-        if (id1 === id2) continue;
-        const alreadyExists = incompatibilityLinks.some(link => 
-          (link.task1_id === id1 && link.task2_id === id2) || 
-          (link.task1_id === id2 && link.task2_id === id1)
-        );
-
-        if (!alreadyExists) {
-          await addIncompatibilityLink({ task1_id: id1, task2_id: id2 });
-          totalCreated++;
-        } else {
-          totalDuplicates++;
-        }
-      }
-    }
-    if (totalCreated === 0 && totalDuplicates > 0) {
-      btnRef.current?.setCustomValidity("Ces liens d'incompatibilité existent déjà (même intervertis).");
+    if (alreadyExists) {
+      btnRef.current?.setCustomValidity("Ce groupe d'incompatibilité existe déjà (même interverti).");
       btnRef.current?.reportValidity();
-    } else {
-      setGroup1([]);
-      setGroup2([]);
+      return;
     }
+    await addIncompatibilityLink({ 
+      task1_ids: sortedG1, 
+      task2_ids: sortedG2 
+    });
+
+    setGroup1([]);
+    setGroup2([]);
   };
 
   const getTaskName = (id: string) => {
