@@ -14,8 +14,39 @@ interface TaskPosition {
 export function IncompatibilityView() {
   const { tasks, incompatibilityLinks, addIncompatibilityLink, deleteIncompatibilityLink } = useData();
 
-  const [task1Id, setTask1Id] = useState('');
-  const [task2Id, setTask2Id] = useState('');
+  const [group1, setGroup1] = useState<string[]>([]);
+  const [group2, setGroup2] = useState<string[]>([]);
+  const btnRef = useRef<HTMLButtonElement>(null);
+
+  const handleCreateLinks = async () => {
+    btnRef.current?.setCustomValidity("");
+
+    let totalCreated = 0;
+    let totalDuplicates = 0;
+    for (const id1 of group1) {
+      for (const id2 of group2) {
+        if (id1 === id2) continue;
+        const alreadyExists = incompatibilityLinks.some(link => 
+          (link.task1_id === id1 && link.task2_id === id2) || 
+          (link.task1_id === id2 && link.task2_id === id1)
+        );
+
+        if (!alreadyExists) {
+          await addIncompatibilityLink({ task1_id: id1, task2_id: id2 });
+          totalCreated++;
+        } else {
+          totalDuplicates++;
+        }
+      }
+    }
+    if (totalCreated === 0 && totalDuplicates > 0) {
+      btnRef.current?.setCustomValidity("Ces liens d'incompatibilité existent déjà (même intervertis).");
+      btnRef.current?.reportValidity();
+    } else {
+      setGroup1([]);
+      setGroup2([]);
+    }
+  };
 
   const getTaskName = (id: string) => {
     const task = tasks.find((t) => t.id === id);
@@ -30,18 +61,19 @@ export function IncompatibilityView() {
       <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8 shadow-sm">
         <h3 className="text-lg font-semibold text-black-900 mb-4">Create New Incompatibility</h3>
         <div className="flex flex-col md:flex-row gap-4 items-end">
-          <div className="flex-1 w-full">
-            <label className="block text-sm font-medium text-black-700 mb-2">First Task :</label>
-            <select
-              value={task1Id}
-              onChange={(e) => setTask1Id(e.target.value)}
-              className="w-full pr-12 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white"
-            >
-              <option value="">Select Task</option>
-              {tasks.map((t) => (
-                <option key={t.id} value={t.id} disabled={t.id === task2Id}>{t.name}</option>
+          <div className="flex-1 bg-white p-3 rounded-lg border border-gray-300 h-40 overflow-y-auto">
+            <label className="block text-[10px] font-bold text-gray-400 uppercase mb-2 text-center underline">Group 1</label>
+            <div className="flex flex-wrap gap-1">
+              {tasks.map(t => (
+                <button 
+                  key={t.id} 
+                  onClick={() => group1.includes(t.id) ? setGroup1(group1.filter(id => id !== t.id)) : setGroup1([...group1, t.id])}
+                  className={`px-2 py-1 rounded text-[10px] font-bold transition-all ${group1.includes(t.id) ? 'bg-blue-600 text-white shadow-md' : 'bg-gray-100 text-gray-400 hover:bg-gray-200'}`}
+                >
+                  {t.name}
+                </button>
               ))}
-            </select>
+            </div>
           </div>
           
           <div className="flex items-center justify-center pb-2 px-2 text-blue-500 font-bold text-xl">
