@@ -80,7 +80,7 @@ export function IncompatibilityView() {
             ✕
           </div>
 
-          <div className="flex-1 bg-white p-3 rounded-lg border border-gray-300 h-40 overflow-y-auto">
+          <div className="flex-1 bg-white p-4 rounded-lg border border-gray-300 min-h-[100px] h-auto transition-all shadow-sm">
             <label className="block text-[10px] font-bold text-gray-400 uppercase mb-2 text-center underline">Group 2</label>
             <div className="flex flex-wrap gap-1">
               {tasks.map(t => (
