@@ -50,7 +50,7 @@ export function Toolbar({ currentView, onViewChange, onExport }: ToolbarProps) {
             </button>
             
             <label className="p-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 cursor-pointer transition-all shadow-sm" title="Load Project (JSON)">
-              <gitBranch className="w-4 h-4 rotate-180" /> {/* Utilise une icône de ton choix */}
+              <GitBranch className="w-4 h-4 rotate-180" />
               <input 
                 type="file" 
                 accept=".json" 
