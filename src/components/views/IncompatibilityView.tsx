@@ -76,7 +76,7 @@ export function IncompatibilityView() {
             </div>
           </div>
           
-          <div className="flex items-center justify-center pb-2 px-2 text-blue-500 font-bold text-xl">
+          <div className="flex items-center justify-center px-4 text-blue-500 font-black text-2xl">
             ✕
           </div>
 
