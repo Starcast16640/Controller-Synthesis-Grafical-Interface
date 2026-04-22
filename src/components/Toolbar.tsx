@@ -37,7 +37,26 @@ export function Toolbar({ currentView, onViewChange, onExport }: ToolbarProps) {
             </button>
           ))}
         </div>
-
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 border-r pr-4 border-gray-200">
+            <button
+              onClick={onJsonExport}
+              className="p-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition-all shadow-sm"
+              title="Save Project (JSON)"
+            >
+              <Download className="w-4 h-4" />
+            </button>
+            
+            <label className="p-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 cursor-pointer transition-all shadow-sm" title="Load Project (JSON)">
+              <gitBranch className="w-4 h-4 rotate-180" /> {/* Utilise une icône de ton choix */}
+              <input 
+                type="file" 
+                accept=".json" 
+                className="hidden" 
+                onChange={(e) => e.target.files?.[0] && onJsonImport(e.target.files[0])} 
+              />
+            </label>
+          </div>
         <button
           onClick={onExport}
           className="flex items-center gap-2 px-4 py-2 rounded-lg font-medium bg-green-600 text-white hover:bg-green-700 transition-all shadow-md"
