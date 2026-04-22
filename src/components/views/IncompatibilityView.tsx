@@ -98,9 +98,9 @@ export function IncompatibilityView() {
 
           <button
             ref={btnRef}
-            onClick={handleCreateLinks}
+            onClick={handleCreateLinks} 
             disabled={group1.length === 0 || group2.length === 0}
-            className="flex items-end justify-center px-4 py-2 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 disabled:opacity-30 w-32 text-[10px] uppercase text-center shadow-md               transition-all"
+            className="flex items-center justify-center px-4 py-2 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 disabled:opacity-30 w-32 text-[10px] uppercase text-center shadow-md               transition-all"
           >
             {group1.length * group2.length > 0 
               ? `Create ${group1.length * group2.length} Links` 
