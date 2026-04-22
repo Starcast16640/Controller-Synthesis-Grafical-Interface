@@ -97,14 +97,14 @@ export function IncompatibilityView() {
           </div>
 
           <button
-            onClick={() => {
-              addIncompatibilityLink({ task1_id: task1Id, task2_id: task2Id });
-              setTask1Id(''); setTask2Id('');
-            }}
-            disabled={!task1Id || !task2Id || task1Id === task2Id}
-            className="flex items-center gap-2 px-6 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 h-[42px]"
+            ref={btnRef}
+            onClick={handleCreateLinks}
+            disabled={group1.length === 0 || group2.length === 0}
+            className="flex items-center justify-center px-4 py-2 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 disabled:opacity-30 h-40 w-32 text-[10px] uppercase text-center shadow-md               transition-all"
           >
-            Create Link
+            {group1.length * group2.length > 0 
+              ? `Create ${group1.length * group2.length} Links` 
+              : 'Select Tasks'}
           </button>
         </div>
       </div>
