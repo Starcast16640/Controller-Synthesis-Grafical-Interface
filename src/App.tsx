@@ -26,7 +26,7 @@ function AppContent() {
 
   return (
     <div className="h-screen flex flex-col bg-gray-100">
-      <Toolbar currentView={currentView} onViewChange={setCurrentView} onExport={handleExport} />
+      <Toolbar currentView={currentView} onViewChange={setCurrentView} onExport={handleExport} onJsonExport={exportProject} onJsonImport={importProject} />
 
       <div className="flex-1 overflow-hidden">
         {currentView === 'sensors' && <SensorView />}
