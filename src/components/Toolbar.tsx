@@ -10,7 +10,7 @@ interface ToolbarProps {
   onJsonImport: (file: File) => void;
 }
 
-export function Toolbar({ currentView, onViewChange, onExport }: ToolbarProps) {
+export function Toolbar({ currentView, onViewChange, onExport, onJsonExport, onJsonImport }: ToolbarProps) {
   const views: { id: ViewType; label: string; icon: React.ReactNode }[] = [
     { id: 'sensors', label: 'Sensors', icon: <Gauge className="w-4 h-4" /> },
     { id: 'observers', label: 'Observers', icon: <Eye className="w-4 h-4" /> },
