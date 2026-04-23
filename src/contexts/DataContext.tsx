@@ -162,58 +162,59 @@ export function DataProvider({ children }: { children: ReactNode }) {
   };
 
   const exportProject = () => {
-    const allNames = [
-      ...sensors.map(s => s.name), 
-      ...observers.map(o => o.name), 
-      ...tasks.map(t => t.name), 
-      'TRUE', 'FALSE', 'AUTO'
-    ];
-    const cleanTasks = tasks.map(t => {
-      const authRes = analyzeExpression(t.authorization_expression, allNames);
-      const finalRes = analyzeExpression(t.final_condition, allNames);
-      return {
-        ...t,
-        authorization_expression: authRes.tokens.length > 0 ? normalizeExpression(authRes.tokens) : t.authorization_expression,
-        final_condition: finalRes.tokens.length > 0 ? normalizeExpression(finalRes.tokens) : t.final_condition
-      };
-    });
-    const cleanObservers = observers.map(o => {
-      const newExprs = { ...o.expressions } as any;
-      Object.keys(newExprs).forEach(key => {
-        if (newExprs[key]) {
-          const res = analyzeExpression(newExprs[key], allNames);
-          if (res.tokens.length > 0) newExprs[key] = normalizeExpression(res.tokens);
-        }
+    try {
+      const allNames = [
+        ...sensors.map(s => s.name), 
+        ...observers.map(o => o.name), 
+        ...tasks.map(t => t.name), 
+        'TRUE', 'FALSE', 'AUTO'
+      ];
+      const cleanTasks = tasks.map(t => {
+        const authRes = analyzeExpression(t.authorization_expression, allNames);
+        const finalRes = analyzeExpression(t.final_condition, allNames);
+        return {
+          ...t,
+          authorization_expression: authRes.tokens.length > 0 ? normalizeExpression(authRes.tokens) : t.authorization_expression,
+          final_condition: finalRes.tokens.length > 0 ? normalizeExpression(finalRes.tokens) : t.final_condition
+        };
       });
-      return { ...o, expressions: newExprs };
-    });
-    const cleanNodes = successionNodes.map(n => {
-      const res = analyzeExpression(n.expression, allNames);
-      return {
-        ...n,
-        expression: res.tokens.length > 0 ? normalizeExpression(res.tokens) : n.expression
+      const cleanObservers = observers.map(o => {
+        const newExprs = { ...o.expressions } as any;
+        Object.keys(newExprs).forEach(key => {
+          if (newExprs[key]) {
+            const res = analyzeExpression(newExprs[key], allNames);
+            if (res.tokens.length > 0) newExprs[key] = normalizeExpression(res.tokens);
+          }
+        });
+        return { ...o, expressions: newExprs };
+      });
+      const cleanNodes = successionNodes.map(n => {
+        const res = analyzeExpression(n.expression, allNames);
+        return {
+          ...n,
+          expression: res.tokens.length > 0 ? normalizeExpression(res.tokens) : n.expression
+        };
+      });
+      const projectData = {
+        sensors,
+        observers: cleanObservers,
+        tasks: cleanTasks,
+        incompatibilityLinks,
+        successionNodes: cleanNodes,
+        successionArrows
       };
-    });
-    const projectData = {
-      sensors,
-      observers: cleanObservers,
-      tasks: cleanTasks,
-      incompatibilityLinks,
-      successionNodes: cleanNodes,
-      successionArrows
-    };
-    const json = JSON.stringify(projectData, null, 2);
-      const blob = new Blob([json], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `projet_logiciel_${new Date().toISOString().slice(0,10)}.json`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      setTimeout(() => URL.revokeObjectURL(url), 100);
-      
-      showNotify("Fichier JSON prêt !", "success");
+      const json = JSON.stringify(projectData, null, 2);
+        const blob = new Blob([json], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `projet_logiciel_${new Date().toISOString().slice(0,10)}.json`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        setTimeout(() => URL.revokeObjectURL(url), 100);
+        
+        showNotify("Fichier JSON prêt !", "success");
 
     } catch (error) {
       console.error("Erreur lors de l'exportation :", error);
