@@ -170,6 +170,43 @@ export function DataProvider({ children }: { children: ReactNode }) {
     await fetchSuccessionNodes();
   };
 
+  const exportProject = () => {
+    const projectData = {
+      sensors,
+      observers,
+      tasks,
+      incompatibilityLinks,
+      successionNodes,
+      successionArrows
+    };
+    const blob = new Blob([JSON.stringify(projectData, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `projet_logiciel_${new Date().toISOString().slice(0,10)}.json`;
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
+  const importProject = (file: File) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const data = JSON.parse(e.target?.result as string);
+        if (data.sensors) setSensors(data.sensors);
+        if (data.observers) setObservers(data.observers);
+        if (data.tasks) setTasks(data.tasks);
+        if (data.incompatibilityLinks) setIncompatibilityLinks(data.incompatibilityLinks);
+        if (data.successionNodes) setSuccessionNodes(data.successionNodes);
+        if (data.successionArrows) setSuccessionArrows(data.successionArrows);
+        alert("Projet importé avec succès !");
+      } catch (err) {
+        alert("Erreur lors de la lecture du fichier JSON.");
+      }
+    };
+    reader.readAsText(file);
+  };
+
   return (
     <DataContext.Provider
       value={{
@@ -196,6 +233,8 @@ export function DataProvider({ children }: { children: ReactNode }) {
         updateSuccessionNode,
         deleteSuccessionNode,
         refreshData,
+        exportProject,
+        importProject,
       }}
     >
       {children}
