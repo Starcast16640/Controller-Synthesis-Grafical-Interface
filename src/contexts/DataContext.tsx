@@ -8,6 +8,7 @@ import type {
   SuccessionArrow,
   SuccessionNode,
 } from '../lib/database.types';
+import { CheckCircle2, AlertCircle } from 'lucide-react';
 
 interface DataContextType {
   sensors: Sensor[];
