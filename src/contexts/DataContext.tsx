@@ -17,23 +17,23 @@ interface DataContextType {
   incompatibilityLinks: IncompatibilityLink[];
   successionArrows: SuccessionArrow[];
   successionNodes: SuccessionNode[];
-  addSensor: (sensor: Omit<Sensor, 'id' | 'created_at'>) => Promise<void>;
-  updateSensor: (id: string, sensor: Partial<Omit<Sensor, 'id' | 'created_at'>>) => Promise<void>;
-  deleteSensor: (id: string) => Promise<void>;
-  addObserver: (observer: Omit<Observer, 'id' | 'created_at'>) => Promise<void>;
-  updateObserver: (id: string, observer: Partial<Omit<Observer, 'id' | 'created_at'>>) => Promise<void>;
-  deleteObserver: (id: string) => Promise<void>;
-  addTask: (task: Omit<Task, 'id' | 'created_at'>) => Promise<void>;
-  updateTask: (id: string, task: Partial<Omit<Task, 'id' | 'created_at'>>) => Promise<void>;
-  deleteTask: (id: string) => Promise<void>;
-  addIncompatibilityLink: (link: Omit<IncompatibilityLink, 'id' | 'created_at'>) => Promise<void>;
-  deleteIncompatibilityLink: (id: string) => Promise<void>;
-  addSuccessionArrow: (arrow: Omit<SuccessionArrow, 'id' | 'created_at'>) => Promise<void>;
-  deleteSuccessionArrow: (id: string) => Promise<void>;
-  addSuccessionNode: (node: Omit<SuccessionNode, 'id' | 'created_at'>) => Promise<void>;
-  updateSuccessionNode: (id: string, node: Partial<Omit<SuccessionNode, 'id' | 'created_at'>>) => Promise<void>;
-  deleteSuccessionNode: (id: string) => Promise<void>;
-  refreshData: () => Promise<void>;
+  addSensor: (sensor: Omit<Sensor, 'id' | 'created_at'>) => void;
+  updateSensor: (id: string, sensor: Partial<Omit<Sensor, 'id' | 'created_at'>>) => void;
+  deleteSensor: (id: string) => void;
+  addObserver: (observer: Omit<Observer, 'id' | 'created_at'>) => void;
+  updateObserver: (id: string, observer: Partial<Omit<Observer, 'id' | 'created_at'>>) => void;
+  deleteObserver: (id: string) => void;
+  addTask: (task: Omit<Task, 'id' | 'created_at'>) => void;
+  updateTask: (id: string, task: Partial<Omit<Task, 'id' | 'created_at'>>) => void;
+  deleteTask: (id: string) => void;
+  addIncompatibilityLink: (link: Omit<IncompatibilityLink, 'id' | 'created_at'>) => void;
+  deleteIncompatibilityLink: (id: string) => void;
+  addSuccessionArrow: (arrow: Omit<SuccessionArrow, 'id' | 'created_at'>) => void;
+  deleteSuccessionArrow: (id: string) => void;
+  addSuccessionNode: (node: Omit<SuccessionNode, 'id' | 'created_at'>) => void;
+  updateSuccessionNode: (id: string, node: Partial<Omit<SuccessionNode, 'id' | 'created_at'>>) => void;
+  deleteSuccessionNode: (id: string) => void;
+  refreshData: () => void;
 }
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
@@ -50,36 +50,6 @@ export function DataProvider({ children }: { children: ReactNode }) {
   const showNotify = (message: string, type: 'success' | 'error' = 'success') => {
     setNotification({ message, type });
     setTimeout(() => setNotification(null), 3000);
-  };
-  
-  const fetchSensors = async () => {
-    const { data, error } = await supabase.from('sensors').select('*').order('created_at');
-    if (!error && data) setSensors(data);
-  };
-
-  const fetchObservers = async () => {
-    const { data, error } = await supabase.from('observers').select('*').order('created_at');
-    if (!error && data) setObservers(data);
-  };
-
-  const fetchTasks = async () => {
-    const { data, error } = await supabase.from('tasks').select('*').order('created_at');
-    if (!error && data) setTasks(data);
-  };
-
-  const fetchIncompatibilityLinks = async () => {
-    const { data, error } = await supabase.from('incompatibility_links').select('*');
-    if (!error && data) setIncompatibilityLinks(data);
-  };
-
-  const fetchSuccessionArrows = async () => {
-    const { data, error } = await supabase.from('succession_arrows').select('*');
-    if (!error && data) setSuccessionArrows(data);
-  };
-
-  const fetchSuccessionNodes = async () => {
-    const { data, error } = await supabase.from('succession_nodes').select('*');
-    if (!error && data) setSuccessionNodes(data);
   };
 
   const refreshData = () => {
@@ -138,54 +108,54 @@ export function DataProvider({ children }: { children: ReactNode }) {
     setObservers(prev => prev.filter(o => o.id !== id));
   };
 
-  const addTask = async (task: Omit<Task, 'id' | 'created_at'>) => {
-    await supabase.from('tasks').insert([task]);
-    await fetchTasks();
+  const addTask = (task: any) => {
+    const newObj = { ...task, id: crypto.randomUUID(), created_at: new Date().toISOString() };
+    setTasks(prev => [...prev, newObj]);
+    showNotify("Task added", "success");
   };
 
-  const updateTask = async (id: string, task: Partial<Omit<Task, 'id' | 'created_at'>>) => {
-    await supabase.from('tasks').update(task).eq('id', id);
-    await fetchTasks();
+  const updateTask = (id: string, updates: any) => {
+    setTasks(prev => prev.map(t => t.id === id ? { ...t, ...updates } : t));
   };
 
-  const deleteTask = async (id: string) => {
-    await supabase.from('tasks').delete().eq('id', id);
-    await fetchTasks();
+  const deleteTask = (id: string) => {
+    setTasks(prev => prev.filter(t => t.id !== id));
   };
 
-  const addIncompatibilityLink = async (link: Omit<IncompatibilityLink, 'id' | 'created_at'>) => {
-    await supabase.from('incompatibility_links').insert([link]);
-    await fetchIncompatibilityLinks();
+  const addIncompatibilityLink = (link: Omit<IncompatibilityLink, 'id' | 'created_at'>) => {
+    const newLink = { ...link, id: crypto.randomUUID(), created_at: new Date().toISOString() };
+    setIncompatibilityLinks(prev => [...prev, newLink]);
+    showNotify("Incompatibility link created", "success");
   };
 
-  const deleteIncompatibilityLink = async (id: string) => {
-    await supabase.from('incompatibility_links').delete().eq('id', id);
-    await fetchIncompatibilityLinks();
+  const deleteIncompatibilityLink = (id: string) => {
+    setIncompatibilityLinks(prev => prev.filter(l => l.id !== id));
+    showNotify("Link deleted", "success");
   };
 
-  const addSuccessionArrow = async (arrow: Omit<SuccessionArrow, 'id' | 'created_at'>) => {
-    await supabase.from('succession_arrows').insert([arrow]);
-    await fetchSuccessionArrows();
+  const addSuccessionArrow = (arrow: Omit<SuccessionArrow, 'id' | 'created_at'>) => {
+    const newArrow = { ...arrow, id: crypto.randomUUID(), created_at: new Date().toISOString() };
+    setSuccessionArrows(prev => [...prev, newArrow]);
   };
 
-  const deleteSuccessionArrow = async (id: string) => {
-    await supabase.from('succession_arrows').delete().eq('id', id);
-    await fetchSuccessionArrows();
+  const deleteSuccessionArrow = (id: string) => {
+    setSuccessionArrows(prev => prev.filter(a => a.id !== id));
   };
 
-  const addSuccessionNode = async (node: Omit<SuccessionNode, 'id' | 'created_at'>) => {
-    await supabase.from('succession_nodes').insert([node]);
-    await fetchSuccessionNodes();
+  const addSuccessionNode = (node: Omit<SuccessionNode, 'id' | 'created_at'>) => {
+    const newNode = { ...node, id: crypto.randomUUID(), created_at: new Date().toISOString() };
+    setSuccessionNodes(prev => [...prev, newNode]);
+    showNotify("Node added", "success");
   };
 
-  const updateSuccessionNode = async (id: string, node: Partial<Omit<SuccessionNode, 'id' | 'created_at'>>) => {
-    await supabase.from('succession_nodes').update(node).eq('id', id);
-    await fetchSuccessionNodes();
+  const updateSuccessionNode = (id: string, updates: Partial<SuccessionNode>) => {
+    setSuccessionNodes(prev => prev.map(n => n.id === id ? { ...n, ...updates } : n));
   };
 
-  const deleteSuccessionNode = async (id: string) => {
-    await supabase.from('succession_nodes').delete().eq('id', id);
-    await fetchSuccessionNodes();
+  const deleteSuccessionNode = (id: string) => {
+    setSuccessionNodes(prev => prev.filter(n => n.id !== id));
+    setSuccessionArrows(prev => prev.filter(a => a.from_id !== id && a.to_id !== id));
+    showNotify("Node deleted", "success");
   };
 
   const exportProject = () => {
