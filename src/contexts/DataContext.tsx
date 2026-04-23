@@ -124,19 +124,18 @@ export function DataProvider({ children }: { children: ReactNode }) {
     setSensors(prev => prev.filter(s => s.id !== id));
   };
 
-  const addObserver = async (observer: Omit<Observer, 'id' | 'created_at'>) => {
-    await supabase.from('observers').insert([observer]);
-    await fetchObservers();
+  const addObserver = (observer: any) => {
+    const newObj = { ...observer, id: crypto.randomUUID(), created_at: new Date().toISOString() };
+    setObservers(prev => [...prev, newObj]);
+    showNotify("Observer added", "success");
   };
 
-  const updateObserver = async (id: string, observer: Partial<Omit<Observer, 'id' | 'created_at'>>) => {
-    await supabase.from('observers').update(observer).eq('id', id);
-    await fetchObservers();
-  }; 
+  const updateObserver = (id: string, updates: any) => {
+    setObservers(prev => prev.map(o => o.id === id ? { ...o, ...updates } : o));
+  };
 
-  const deleteObserver = async (id: string) => {
-    await supabase.from('observers').delete().eq('id', id);
-    await fetchObservers();
+  const deleteObserver = (id: string) => {
+    setObservers(prev => prev.filter(o => o.id !== id));
   };
 
   const addTask = async (task: Omit<Task, 'id' | 'created_at'>) => {
