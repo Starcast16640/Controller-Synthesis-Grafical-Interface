@@ -46,7 +46,7 @@ export function Toolbar({ currentView, onViewChange, onExport, onJsonExport, onJ
               className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gray-800 text-white hover:bg-gray-900 transition-all shadow-sm text-xs font-bold"
             >
               <Save className="w-3.5 h-3.5" />
-              <span>SAVE</span>
+              <span>Download</span>
             </button>
             
             <label className="p-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 cursor-pointer transition-all shadow-sm" title="Load Project (JSON)">
