@@ -252,7 +252,11 @@ export function DataProvider({ children }: { children: ReactNode }) {
               ? 'bg-emerald-500 border-emerald-400 text-white' 
               : 'bg-red-500 border-red-400 text-white'
           }`}>
-            <CheckCircle2 className="w-5 h-5" />
+            {notification.type === 'success' ? (
+              <CheckCircle2 className="w-5 h-5" />
+            ) : (
+              <AlertCircle className="w-5 h-5" />
+            )}
             <span className="font-bold text-sm uppercase tracking-wide">
               {notification.message}
             </span>
