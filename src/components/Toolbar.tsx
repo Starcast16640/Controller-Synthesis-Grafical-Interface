@@ -47,6 +47,7 @@ export function Toolbar({ currentView, onViewChange, onExport, onJsonExport, onJ
               title="Save Project (JSON)"
             >
               <Download className="w-4 h-4" />
+              Download save
             </button>
             
             <label className="p-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 cursor-pointer transition-all shadow-sm" title="Load Project (JSON)">
