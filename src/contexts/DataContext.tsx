@@ -94,7 +94,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
     setSensors(prev => prev.filter(s => s.id !== id));
   };
 
-  const addObserver = (observer: any) => {
+  const addObserver = (observer: Omit<Observer, 'id' | 'created_at'>) => {
     const newObj = { ...observer, id: crypto.randomUUID(), created_at: new Date().toISOString() };
     setObservers(prev => [...prev, newObj]);
     showNotify("Observer added", "success");
@@ -108,7 +108,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
     setObservers(prev => prev.filter(o => o.id !== id));
   };
 
-  const addTask = (task: any) => {
+  const addTask = (task: Omit<Task, 'id' | 'created_at'>) => {
     const newObj = { ...task, id: crypto.randomUUID(), created_at: new Date().toISOString() };
     setTasks(prev => [...prev, newObj]);
     showNotify("Task added", "success");
