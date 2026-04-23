@@ -1,4 +1,4 @@
-import { Download, Gauge, Eye, ListTodo, Link2, GitBranch, Layers } from 'lucide-react';
+import { Download, Gauge, Eye, ListTodo, Link2, GitBranch, Layers, Save, Upload } from 'lucide-react';
 
 export type ViewType = 'sensors' | 'observers' | 'tasks' | 'incompatibility' | 'succession' | 'combined';
 
@@ -43,11 +43,10 @@ export function Toolbar({ currentView, onViewChange, onExport, onJsonExport, onJ
           <div className="flex items-center gap-2 border-r pr-4 border-gray-200">
             <button
               onClick={onJsonExport}
-              className="p-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition-all shadow-sm"
-              title="Save Project (JSON)"
+              className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gray-800 text-white hover:bg-gray-900 transition-all shadow-sm text-xs font-bold"
             >
-              <Download className="w-4 h-4" />
-              Download save
+              <Save className="w-3.5 h-3.5" />
+              <span>SAVE</span>
             </button>
             
             <label className="p-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 cursor-pointer transition-all shadow-sm" title="Load Project (JSON)">
