@@ -222,6 +222,25 @@ export function DataProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const importProject = (file: File) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const data = JSON.parse(e.target?.result as string);
+        if (data.sensors) setSensors(data.sensors);
+        if (data.observers) setObservers(data.observers);
+        if (data.tasks) setTasks(data.tasks);
+        if (data.incompatibilityLinks) setIncompatibilityLinks(data.incompatibilityLinks);
+        if (data.successionNodes) setSuccessionNodes(data.successionNodes);
+        if (data.successionArrows) setSuccessionArrows(data.successionArrows);
+        showNotify("Project loaded successfully!", "success");
+      } catch (err) {
+        showNotify("Error: Invalid JSON file.", "error");
+      }
+    };
+    reader.readAsText(file);
+  };
+
   return (
     <DataContext.Provider
       value={{
