@@ -202,34 +202,23 @@ export function DataProvider({ children }: { children: ReactNode }) {
       successionNodes: cleanNodes,
       successionArrows
     };
-    const blob = new Blob([JSON.stringify(projectData, null, 2)], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `projet_deps_final.json`;
-    link.click();
-    URL.revokeObjectURL(url);
-    
-    showNotify("Fichier JSON nettoyé et téléchargé !", "success");
-  };
+    const json = JSON.stringify(projectData, null, 2);
+      const blob = new Blob([json], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `projet_logiciel_${new Date().toISOString().slice(0,10)}.json`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      setTimeout(() => URL.revokeObjectURL(url), 100);
+      
+      showNotify("Fichier JSON prêt !", "success");
 
-  const importProject = (file: File) => {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      try {
-        const data = JSON.parse(e.target?.result as string);
-        if (data.sensors) setSensors(data.sensors);
-        if (data.observers) setObservers(data.observers);
-        if (data.tasks) setTasks(data.tasks);
-        if (data.incompatibilityLinks) setIncompatibilityLinks(data.incompatibilityLinks);
-        if (data.successionNodes) setSuccessionNodes(data.successionNodes);
-        if (data.successionArrows) setSuccessionArrows(data.successionArrows);
-        showNotify("Project loaded successfully!", "success");
-      } catch (err) {
-        showNotify("Error: Invalid JSON file structure.", "error");
-      }
-    };
-    reader.readAsText(file);
+    } catch (error) {
+      console.error("Erreur lors de l'exportation :", error);
+      showNotify("Erreur lors de la génération du fichier.", "error");
+    }
   };
 
   return (
