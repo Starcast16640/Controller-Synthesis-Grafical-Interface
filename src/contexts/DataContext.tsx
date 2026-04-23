@@ -46,6 +46,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
   const [successionArrows, setSuccessionArrows] = useState<SuccessionArrow[]>([]);
   const [successionNodes, setSuccessionNodes] = useState<SuccessionNode[]>([]);
   const [notification, setNotification] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+  const [isInitialized, setIsInitialized] = useState(false);
 
   const showNotify = (message: string, type: 'success' | 'error' = 'success') => {
     setNotification({ message, type });
@@ -67,6 +68,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
         console.error("Erreur de lecture du backup");
       }
     }
+    setIsInitialized(true);
   };
 
   useEffect(() => {
@@ -74,6 +76,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
+    if (!isInitialized) return;
     const projectState = {
       sensors, observers, tasks, incompatibilityLinks, successionNodes, successionArrows
     };
