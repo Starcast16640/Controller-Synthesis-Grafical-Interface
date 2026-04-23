@@ -1,4 +1,4 @@
-import { Download, Gauge, Eye, ListTodo, Link2, GitBranch, Layers, Save, Upload } from 'lucide-react';
+import { Download, Gauge, Eye, ListTodo, Link2, GitBranch, Layers, Save, Upload, CheckCircle2 } from 'lucide-react';
 
 export type ViewType = 'sensors' | 'observers' | 'tasks' | 'incompatibility' | 'succession' | 'combined';
 
