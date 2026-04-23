@@ -174,8 +174,8 @@ export function DataProvider({ children }: { children: ReactNode }) {
         const finalRes = analyzeExpression(t.final_condition, allNames);
         return {
           ...t,
-          authorization_expression: authRes.tokens.length > 0 ? normalizeExpression(authRes.tokens) : t.authorization_expression,
-          final_condition: finalRes.tokens.length > 0 ? normalizeExpression(finalRes.tokens) : t.final_condition
+          authorization_expression: (authRes.tokens?.length > 0) ? normalizeExpression(authRes.tokens) : t.authorization_expression,
+          final_condition: (finalRes.tokens?.length > 0) ? normalizeExpression(finalRes.tokens) : t.final_condition
         };
       });
       const cleanObservers = observers.map(o => {
@@ -183,7 +183,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
         Object.keys(newExprs).forEach(key => {
           if (newExprs[key]) {
             const res = analyzeExpression(newExprs[key], allNames);
-            if (res.tokens.length > 0) newExprs[key] = normalizeExpression(res.tokens);
+            if (res.tokens?.length > 0) newExprs[key] = normalizeExpression(res.tokens);
           }
         });
         return { ...o, expressions: newExprs };
@@ -192,7 +192,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
         const res = analyzeExpression(n.expression, allNames);
         return {
           ...n,
-          expression: res.tokens.length > 0 ? normalizeExpression(res.tokens) : n.expression
+          expression: (res.tokens?.length > 0) ? normalizeExpression(res.tokens) : n.expression
         };
       });
       const projectData = {
