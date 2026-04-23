@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
+import { analyzeExpression, normalizeExpression } from '../lib/expressionParser';
 import type {
   Sensor,
   Observer,
@@ -81,9 +82,8 @@ export function DataProvider({ children }: { children: ReactNode }) {
     if (!error && data) setSuccessionNodes(data);
   };
 
-  const refreshData = async () => {
+  const refreshData = () => {
     const saved = localStorage.getItem('current_project_backup');
-    
     if (saved) {
       try {
         const data = JSON.parse(saved);
@@ -91,21 +91,12 @@ export function DataProvider({ children }: { children: ReactNode }) {
         if (data.observers) setObservers(data.observers);
         if (data.tasks) setTasks(data.tasks);
         if (data.incompatibilityLinks) setIncompatibilityLinks(data.incompatibilityLinks);
-        if (data.successionNodes) setNodePositions(data.successionNodes);
+        if (data.successionNodes) setSuccessionNodes(data.successionNodes);
         if (data.successionArrows) setSuccessionArrows(data.successionArrows);
-        return;
       } catch (e) {
-        console.error("Backup local corrompu, chargement BD...");
+        console.error("Erreur de lecture du backup");
       }
     }
-    await Promise.all([
-      fetchSensors(),
-      fetchObservers(),
-      fetchTasks(),
-      fetchIncompatibilityLinks(),
-      fetchSuccessionArrows(),
-      fetchSuccessionNodes(),
-    ]);
   };
 
   useEffect(() => {
@@ -199,21 +190,55 @@ export function DataProvider({ children }: { children: ReactNode }) {
   };
 
   const exportProject = () => {
+    const allNames = [
+      ...sensors.map(s => s.name), 
+      ...observers.map(o => o.name), 
+      ...tasks.map(t => t.name), 
+      'TRUE', 'FALSE', 'AUTO'
+    ];
+    const cleanTasks = tasks.map(t => {
+      const authRes = analyzeExpression(t.authorization_expression, allNames);
+      const finalRes = analyzeExpression(t.final_condition, allNames);
+      return {
+        ...t,
+        authorization_expression: authRes.tokens.length > 0 ? normalizeExpression(authRes.tokens) : t.authorization_expression,
+        final_condition: finalRes.tokens.length > 0 ? normalizeExpression(finalRes.tokens) : t.final_condition
+      };
+    });
+    const cleanObservers = observers.map(o => {
+      const newExprs = { ...o.expressions } as any;
+      Object.keys(newExprs).forEach(key => {
+        if (newExprs[key]) {
+          const res = analyzeExpression(newExprs[key], allNames);
+          if (res.tokens.length > 0) newExprs[key] = normalizeExpression(res.tokens);
+        }
+      });
+      return { ...o, expressions: newExprs };
+    });
+    const cleanNodes = successionNodes.map(n => {
+      const res = analyzeExpression(n.expression, allNames);
+      return {
+        ...n,
+        expression: res.tokens.length > 0 ? normalizeExpression(res.tokens) : n.expression
+      };
+    });
     const projectData = {
       sensors,
-      observers,
-      tasks,
+      observers: cleanObservers,
+      tasks: cleanTasks,
       incompatibilityLinks,
-      successionNodes,
+      successionNodes: cleanNodes,
       successionArrows
     };
     const blob = new Blob([JSON.stringify(projectData, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = url;
-    link.download = `projet_logiciel_${new Date().toISOString().slice(0,10)}.json`;
+    link.download = `projet_deps_final.json`;
     link.click();
     URL.revokeObjectURL(url);
+    
+    showNotify("Fichier JSON nettoyé et téléchargé !", "success");
   };
 
   const importProject = (file: File) => {
