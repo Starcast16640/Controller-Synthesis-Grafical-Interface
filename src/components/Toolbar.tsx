@@ -39,35 +39,33 @@ export function Toolbar({ currentView, onViewChange, onExport, onJsonExport, onJ
             </button>
           ))}
         </div>
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2 border-r pr-4 border-gray-200">
-            <button
-              onClick={onJsonExport}
-              className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-gray-800 text-white hover:bg-gray-900 transition-all shadow-sm text-xs font-bold"
+        <div className="flex items-center gap-2">
+          <button
+            onClick={onJsonExport}
+            className={`${sideBtnClass} bg-gray-800 text-white hover:bg-gray-900`}
             >
-              <Save className="w-3.5 h-4" />
-              <span>Download</span>
-            </button>
-            
-            <label className="p-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 cursor-pointer transition-all shadow-sm" title="Load Project (JSON)">
-              <GitBranch className="w-4 h-4 rotate-180" />
-              <input 
-                type="file" 
-                accept=".json" 
-                className="hidden" 
-                onChange={(e) => e.target.files?.[0] && onJsonImport(e.target.files[0])} 
-              />
-            </label>
-          </div>
-        <button
-          onClick={onExport}
-          className="flex items-center gap-2 px-4 py-2 rounded-lg font-medium bg-green-600 text-white hover:bg-green-700 transition-all shadow-md"
-        >
-          <Download className="w-4 h-4" />
-          <span>Export DEPS/GRAFCET</span>
-        </button>
+            <Save className="w-4 h-4" />
+            <span>Download Save</span>
+          </button>
+          <label className={`${sideBtnClass} bg-blue-600 text-white hover:bg-blue-700 cursor-pointer`}>
+            <Upload className="w-4 h-4" />
+            <span>Upload Save</span>
+            <input 
+              type="file" 
+              accept=".json" 
+              className="hidden" 
+              onChange={(e) => e.target.files?.[0] && onJsonImport(e.target.files[0])} 
+            />
+          </label>
+          <button
+            onClick={onExport}
+            className={`${sideBtnClass} bg-green-600 text-white hover:bg-green-700`}
+          >
+            <Download className="w-4 h-4" />
+            <span>Export DEPS</span>
+          </button>
+        </div>
       </div>
-    </div>
     </div>
   );
 }
