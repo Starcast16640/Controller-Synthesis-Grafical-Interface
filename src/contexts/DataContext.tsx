@@ -83,6 +83,22 @@ export function DataProvider({ children }: { children: ReactNode }) {
   };
 
   const refreshData = async () => {
+    const saved = localStorage.getItem('current_project_backup');
+    
+    if (saved) {
+      try {
+        const data = JSON.parse(saved);
+        if (data.sensors) setSensors(data.sensors);
+        if (data.observers) setObservers(data.observers);
+        if (data.tasks) setTasks(data.tasks);
+        if (data.incompatibilityLinks) setIncompatibilityLinks(data.incompatibilityLinks);
+        if (data.successionNodes) setNodePositions(data.successionNodes);
+        if (data.successionArrows) setSuccessionArrows(data.successionArrows);
+        return;
+      } catch (e) {
+        console.error("Backup local corrompu, chargement BD...");
+      }
+    }
     await Promise.all([
       fetchSensors(),
       fetchObservers(),
@@ -96,6 +112,13 @@ export function DataProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     refreshData();
   }, []);
+
+  useEffect(() => {
+    const projectState = {
+      sensors, observers, tasks, incompatibilityLinks, successionNodes, successionArrows
+    };
+    localStorage.setItem('current_project_backup', JSON.stringify(projectState));
+  }, [sensors, observers, tasks, incompatibilityLinks, successionNodes, successionArrows]);
 
   const addSensor = async (sensor: Omit<Sensor, 'id' | 'created_at'>) => {
     await supabase.from('sensors').insert([sensor]);
