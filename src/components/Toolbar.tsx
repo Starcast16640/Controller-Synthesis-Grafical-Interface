@@ -63,7 +63,7 @@ export function Toolbar({ currentView, onViewChange, onExport, onJsonExport, onJ
             className={`${sideBtnClass} bg-green-600 text-white hover:bg-green-700`}
           >
             <Download className="w-4 h-4" />
-            <span>Export DEPS</span>
+            <span>Export DEPS/GRAFECET</span>
           </button>
         </div>
       </div>
