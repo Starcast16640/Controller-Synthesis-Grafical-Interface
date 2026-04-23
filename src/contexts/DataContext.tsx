@@ -1,5 +1,4 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import { supabase } from '../lib/supabase';
 import type {
   Sensor,
   Observer,
@@ -120,19 +119,18 @@ export function DataProvider({ children }: { children: ReactNode }) {
     localStorage.setItem('current_project_backup', JSON.stringify(projectState));
   }, [sensors, observers, tasks, incompatibilityLinks, successionNodes, successionArrows]);
 
-  const addSensor = async (sensor: Omit<Sensor, 'id' | 'created_at'>) => {
-    await supabase.from('sensors').insert([sensor]);
-    await fetchSensors();
+  const addSensor = (sensor: Omit<Sensor, 'id' | 'created_at'>) => {
+    const newSensor = { ...sensor, id: crypto.randomUUID(), created_at: new Date().toISOString() };
+    setSensors(prev => [...prev, newSensor]);
+    showNotify("Sensor added locally", "success");
   };
 
-  const updateSensor = async (id: string, sensor: Partial<Omit<Sensor, 'id' | 'created_at'>>) => {
-    await supabase.from('sensors').update(sensor).eq('id', id);
-    await fetchSensors();
+  const updateSensor = (id: string, updates: Partial<Sensor>) => {
+    setSensors(prev => prev.map(s => s.id === id ? { ...s, ...updates } : s));
   };
 
-  const deleteSensor = async (id: string) => {
-    await supabase.from('sensors').delete().eq('id', id);
-    await fetchSensors();
+  const deleteSensor = (id: string) => {
+    setSensors(prev => prev.filter(s => s.id !== id));
   };
 
   const addObserver = async (observer: Omit<Observer, 'id' | 'created_at'>) => {
