@@ -44,7 +44,13 @@ export function DataProvider({ children }: { children: ReactNode }) {
   const [incompatibilityLinks, setIncompatibilityLinks] = useState<IncompatibilityLink[]>([]);
   const [successionArrows, setSuccessionArrows] = useState<SuccessionArrow[]>([]);
   const [successionNodes, setSuccessionNodes] = useState<SuccessionNode[]>([]);
+  const [notification, setNotification] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
 
+  const showNotify = (message: string, type: 'success' | 'error' = 'success') => {
+    setNotification({ message, type });
+    setTimeout(() => setNotification(null), 3000);
+  };
+  
   const fetchSensors = async () => {
     const { data, error } = await supabase.from('sensors').select('*').order('created_at');
     if (!error && data) setSensors(data);
@@ -199,9 +205,9 @@ export function DataProvider({ children }: { children: ReactNode }) {
         if (data.incompatibilityLinks) setIncompatibilityLinks(data.incompatibilityLinks);
         if (data.successionNodes) setSuccessionNodes(data.successionNodes);
         if (data.successionArrows) setSuccessionArrows(data.successionArrows);
-        alert("Projet importé avec succès !");
+        showNotify("Project loaded successfully!", "success");
       } catch (err) {
-        alert("Erreur lors de la lecture du fichier JSON.");
+        showNotify("Error: Invalid JSON file structure.", "error");
       }
     };
     reader.readAsText(file);
@@ -238,6 +244,20 @@ export function DataProvider({ children }: { children: ReactNode }) {
       }}
     >
       {children}
+      {notification && (
+        <div className="fixed bottom-6 right-6 z-[9999] animate-in fade-in slide-in-from-right-4 duration-300">
+          <div className={`flex items-center gap-3 px-6 py-3 rounded-xl shadow-2xl border ${
+            notification.type === 'success' 
+              ? 'bg-emerald-500 border-emerald-400 text-white' 
+              : 'bg-red-500 border-red-400 text-white'
+          }`}>
+            <CheckCircle2 className="w-5 h-5" />
+            <span className="font-bold text-sm uppercase tracking-wide">
+              {notification.message}
+            </span>
+          </div>
+        </div>
+      )}
     </DataContext.Provider>
   );
 }
