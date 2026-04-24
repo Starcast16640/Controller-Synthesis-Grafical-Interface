@@ -85,7 +85,6 @@ export function IncompatibilityView() {
               Create Group ({selectedTasks.length})
             </button>
           </div>
-        </div>
       <div className="flex-1 bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden flex flex-col">
           <div className="bg-gray-50 px-6 py-4 border-b border-gray-200">
             <h3 className="text-sm font-black text-gray-400 uppercase tracking-widest text-xs">Mutual Incompatibilities</h3>
@@ -120,5 +119,6 @@ export function IncompatibilityView() {
           </div>
         </div>
       </div>
+    </div>
   );
 }
