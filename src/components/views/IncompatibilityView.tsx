@@ -99,7 +99,7 @@ export function IncompatibilityView() {
                     <td className="px-6 py-5">
                       <div className="flex flex-wrap gap-2">
                         {(link.task_ids || []).map(id => (
-                          <span key={id} className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-[11px] font-black border border-red-200 shadow-sm">
+                          <span key={id} className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-[11px] font-black border border-blue-200 shadow-sm">
                             {tasks.find(t => t.id === id)?.name || 'Unknown'}
                           </span>
                         ))}
