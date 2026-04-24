@@ -77,7 +77,7 @@ export function IncompatibilityView() {
               ref={btnRef}
               onClick={handleCreateGroup}
               disabled={selectedTasks.length < 2}
-              className="flex-1 h-10 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-semibold text-sm shadow-md"
+              className="flex-1 h-14 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-semibold text-sm shadow-md"
             >
               {editingId ? `Update Group (${selectedTasks.length})` : `Create Group (${selectedTasks.length})`}
             </button>
