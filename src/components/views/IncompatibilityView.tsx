@@ -85,6 +85,7 @@ export function IncompatibilityView() {
             </button>
           </div>
         </div>
+      </div>
       <div className="bg-white rounded-lg shadow-md overflow-hidden flex-1 border border-blue-200">
         <table className="min-w-full divide-y divide-blue-200">
           <thead className="bg-blue-50">
