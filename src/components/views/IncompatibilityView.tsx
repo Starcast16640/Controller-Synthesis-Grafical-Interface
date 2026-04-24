@@ -14,36 +14,26 @@ interface TaskPosition {
 export function IncompatibilityView() {
   const { tasks, incompatibilityLinks, addIncompatibilityLink, deleteIncompatibilityLink } = useData();
 
-  const [group1, setGroup1] = useState<string[]>([]);
-  const [group2, setGroup2] = useState<string[]>([]);
+  const [selectedTasks, setSelectedTasks] = useState<string[]>([]);
   const btnRef = useRef<HTMLButtonElement>(null);
 
-  const handleCreateLinks = async () => {
+  const handleCreateGroup = () => {
+    if (selectedTasks.length < 2) return;
     btnRef.current?.setCustomValidity("");
-    const sortedG1 = [...group1].sort();
-    const sortedG2 = [...group2].sort();
-    const alreadyExists = incompatibilityLinks.some(link => {
-      const l1 = [...(link.task1_ids || [])].sort();
-      const l2 = [...(link.task2_ids || [])].sort();
-      
-      const normalMatch = JSON.stringify(l1) === JSON.stringify(sortedG1) && JSON.stringify(l2) === JSON.stringify(sortedG2);
-      const invertedMatch = JSON.stringify(l1) === JSON.stringify(sortedG2) && JSON.stringify(l2) === JSON.stringify(sortedG1);
-      
-      return normalMatch || invertedMatch;
-    });
+    
+    const sortedIds = [...selectedTasks].sort();
+    const alreadyExists = incompatibilityLinks.some(link => 
+      JSON.stringify([...link.task_ids].sort()) === JSON.stringify(sortedIds)
+    );
 
     if (alreadyExists) {
-      btnRef.current?.setCustomValidity("Ce groupe d'incompatibilité existe déjà (même interverti).");
+      btnRef.current?.setCustomValidity("Ce groupe d'incompatibilité existe déjà.");
       btnRef.current?.reportValidity();
       return;
     }
-    await addIncompatibilityLink({ 
-      task1_ids: sortedG1, 
-      task2_ids: sortedG2 
-    });
 
-    setGroup1([]);
-    setGroup2([]);
+    addIncompatibilityLink({ task_ids: sortedIds });
+    setSelectedTasks([]);
   };
 
   const formatGroupNames = (ids: string[]) => {
@@ -64,8 +54,6 @@ export function IncompatibilityView() {
         <h2 className="text-2xl font-bold text-gray-900">Incompatibility View</h2>
       </div>
       <div className="flex flex-1 gap-6 overflow-hidden mt-4">
-        
-        {/* COLONNE GAUCHE : SÉLECTION (30% de large) */}
         <div className="w-1/3 bg-white p-6 rounded-xl shadow-md border border-gray-200 flex flex-col">
           <h3 className="text-sm font-black text-gray-400 uppercase mb-4 tracking-widest">Select Group Members</h3>
           <p className="text-[10px] text-gray-400 mb-4 italic">Click tasks that cannot run at the same time.</p>
