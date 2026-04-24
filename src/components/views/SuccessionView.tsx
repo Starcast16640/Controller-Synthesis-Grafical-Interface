@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useData } from '../../contexts/DataContext';
 import { Trash2, Edit } from 'lucide-react';
+import { analyzeExpression } from '../../lib/expressionParser';
 
 const TASK_BLOCK_WIDTH = 150;
 const TASK_BLOCK_HEIGHT = 80;
@@ -61,6 +62,7 @@ export function SuccessionView() {
   const [selectedForLink, setSelectedForLink] = useState<{ id: string; type: 'task' | 'node' }[]>([]);
   const [isDeleteMode, setIsDeleteMode] = useState(false);
   const [hoveredArrowId, setHoveredArrowId] = useState<string | null>(null);
+  const [diag, setDiag] = useState({ isValid: true, errorMessage: "", errorPos: 0 });
   const modalExprRef = useRef<HTMLTextAreaElement>(null);
 
   const insertInModal = (value: string) => {
