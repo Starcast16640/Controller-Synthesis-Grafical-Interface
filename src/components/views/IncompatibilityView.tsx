@@ -52,7 +52,7 @@ export function IncompatibilityView() {
       <div className="flex flex-1 gap-6 overflow-hidden mt-4">
         <div className="w-1/3 bg-white p-6 rounded-xl shadow-md border border-gray-200 flex flex-col">
           <h3 className="text-lg font-semibold text-gray-800 mb-4">Select Tasks</h3>
-          <p className="text-lg font-semibold text-gray-800 mb-1">Click tasks that cannot run at the same time.</p>
+          <p className="text-[50] font-semibold text-gray-800 mb-4">Click tasks that cannot run at the same time.</p>
           
           <div className="flex-1 overflow-y-auto space-y-2 mb-4 pr-2">
             {tasks.map(t => (
