@@ -72,14 +72,28 @@ export function IncompatibilityView() {
               </button>
             ))}
           </div>
-            <button
-              ref={btnRef}
-              onClick={handleCreateGroup}
-              disabled={selectedTasks.length < 2}
-              className="w-full py-4 bg-blue-600 text-white font-black rounded-xl hover:bg-blue-700 disabled:opacity-30 transition-all uppercase text-xs shadow-lg"
-            >
-              Create Group ({selectedTasks.length})
-            </button>
+            <div className="flex gap-2 w-full">
+              <button
+                ref={btnRef}
+                onClick={handleCreateGroup}
+                disabled={selectedTasks.length < 2}
+                className={`flex-1 py-4 text-white font-black rounded-xl shadow-lg transition-all uppercase text-xs ${
+                  editingId 
+                    ? 'bg-orange-500 hover:bg-orange-600' 
+                    : 'bg-blue-600 hover:bg-blue-700'
+                } disabled:opacity-30`}
+              >
+                {editingId ? `Update (${selectedTasks.length})` : `Create Group (${selectedTasks.length})`}
+              </button>
+              {editingId && (
+                <button
+                  onClick={() => { setEditingId(null); setSelectedTasks([]); }}
+                  className="px-6 py-4 bg-gray-400 text-white font-black rounded-xl hover:bg-gray-500 transition-all uppercase text-xs shadow-lg"
+                >
+                  Cancel
+                </button>
+              )}
+            </div>
           </div>
       <div className="flex-1 bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden flex flex-col">
           <div className="bg-gray-50 px-6 py-4 border-b border-gray-200">
