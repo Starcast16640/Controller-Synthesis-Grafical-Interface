@@ -79,7 +79,7 @@ export function IncompatibilityView() {
               ref={btnRef}
               onClick={handleCreateGroup}
               disabled={selectedTasks.length < 2}
-              className="w-full py-4 bg-red-600 text-white font-black rounded-xl hover:bg-red-700 disabled:opacity-30 transition-all uppercase text-xs shadow-lg"
+              className="w-full py-4 bg-blue-600 text-white font-black rounded-xl hover:bg-blue-700 disabled:opacity-30 transition-all uppercase text-xs shadow-lg"
             >
               Create Group ({selectedTasks.length})
             </button>
