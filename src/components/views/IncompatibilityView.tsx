@@ -12,35 +12,31 @@ interface TaskPosition {
 }
 
 export function IncompatibilityView() {
-  const { tasks, incompatibilityLinks, addIncompatibilityLink, deleteIncompatibilityLink } = useData();
+  const { tasks, incompatibilityLinks, addIncompatibilityLink, updateIncompatibilityLink, deleteIncompatibilityLink } = useData();
 
   const [selectedTasks, setSelectedTasks] = useState<string[]>([]);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const btnRef = useRef<HTMLButtonElement>(null);
 
   const handleCreateGroup = () => {
     if (selectedTasks.length < 2) return;
-    btnRef.current?.setCustomValidity("");
-    
     const sortedIds = [...selectedTasks].sort();
-    const alreadyExists = incompatibilityLinks.some(link => 
-      link.task_ids && JSON.stringify([...link.task_ids].sort()) === JSON.stringify(sortedIds)
-    );
 
-    if (alreadyExists) {
-      btnRef.current?.setCustomValidity("Ce groupe d'incompatibilité existe déjà.");
-      btnRef.current?.reportValidity();
-      return;
+    if (editingId) {
+      updateIncompatibilityLink(editingId, { task_ids: sortedIds });
+      setEditingId(null);
+    } else {
+      const exists = incompatibilityLinks.some(link => 
+        JSON.stringify([...link.task_ids].sort()) === JSON.stringify(sortedIds)
+      );
+      if (exists) {
+        btnRef.current?.setCustomValidity("Ce groupe existe déjà.");
+        btnRef.current?.reportValidity();
+        return;
+      }
+      addIncompatibilityLink({ task_ids: sortedIds });
     }
-
-    addIncompatibilityLink({ task_ids: sortedIds });
     setSelectedTasks([]);
-  };
-
-  const formatGroupNames = (ids: string[]) => {
-    return ids.map(id => {
-      const task = tasks.find(t => t.id === id);
-      return task ? task.name : '?';
-    }).join(' - ');
   };
 
   const getTaskName = (id: string) => {
