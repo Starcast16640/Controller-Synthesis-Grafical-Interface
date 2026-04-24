@@ -72,78 +72,74 @@ export function IncompatibilityView() {
               </button>
             ))}
           </div>
-            <div className="flex gap-2 w-full">
+          <div className="flex gap-2 w-full mt-4">
+            <button
+              ref={btnRef}
+              onClick={handleCreateGroup}
+              disabled={selectedTasks.length < 2}
+              className="flex-1 py-4 bg-blue-600 text-white font-black rounded-xl shadow-lg transition-all text-xs hover:bg-blue-700 disabled:opacity-30"
+            >
+              {editingId ? `Update Group (${selectedTasks.length})` : `Create Group (${selectedTasks.length})`}
+            </button>
+            {editingId && (
               <button
-                ref={btnRef}
-                onClick={handleCreateGroup}
-                disabled={selectedTasks.length < 2}
-                className={`flex-1 py-4 text-white font-black rounded-xl shadow-lg transition-all uppercase text-xs ${
-                  editingId 
-                    ? 'bg-orange-500 hover:bg-orange-600' 
-                    : 'bg-blue-600 hover:bg-blue-700'
-                } disabled:opacity-30`}
+                onClick={() => { setEditingId(null); setSelectedTasks([]); }}
+                className="px-6 py-4 bg-gray-400 text-white font-black rounded-xl hover:bg-gray-500 transition-all text-xs shadow-lg"
               >
-                {editingId ? `Update (${selectedTasks.length})` : `Create Group (${selectedTasks.length})`}
+                Cancel
               </button>
-              {editingId && (
-                <button
-                  onClick={() => { setEditingId(null); setSelectedTasks([]); }}
-                  className="px-6 py-4 bg-gray-400 text-white font-black rounded-xl hover:bg-gray-500 transition-all uppercase text-xs shadow-lg"
-                >
-                  Cancel
-                </button>
-              )}
+            )}
+          </div>
+        </div>
+        <div className="flex-1 bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden flex flex-col">
+            <div className="bg-gray-50 px-6 py-4 border-b border-gray-200">
+              <h3 className="text-sm font-black text-gray-400 uppercase tracking-widest text-xs">Mutual Incompatibilities</h3>
             </div>
-          </div>
-      <div className="flex-1 bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden flex flex-col">
-          <div className="bg-gray-50 px-6 py-4 border-b border-gray-200">
-            <h3 className="text-sm font-black text-gray-400 uppercase tracking-widest text-xs">Mutual Incompatibilities</h3>
-          </div>
-          
-          <div className="flex-1 overflow-y-auto">
-            <table className="w-full text-left border-collapse">
-              <tbody className="divide-y divide-gray-100">
-                {incompatibilityLinks.map((link) => (
-                  <tr key={link.id} className="hover:bg-gray-50 group transition-colors">
-                    <td className="px-6 py-4">
-                      <div className="flex flex-wrap gap-1.5">
-                        {tasks.map(task => {
-                          const isActive = link.task_ids.includes(task.id);
-                          return (
-                            <span key={task.id} className={`px-2 py-0.5 rounded text-[9px] font-bold border ${
-                              isActive 
-                                ? 'bg-blue-100 text-blue-700 border-blue-200'
-                                : 'bg-gray-50 text-gray-300 border-transparent opacity-40'
-                            }`}>
-                              {task.name}
-                            </span>
-                          );
-                        })}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 text-right">
-                      <div className="flex justify-end gap-2 pr-2">
-                        <button 
-                          onClick={() => { setEditingId(link.id); setSelectedTasks(link.task_ids); }}
-                          className="p-2 text-blue-600 hover:bg-blue-50 rounded-full transition-colors"
-                        >
-                          <Edit className="w-4 h-4" />
-                        </button>
-                        <button 
-                          onClick={() => deleteIncompatibilityLink(link.id)}
-                          className="p-2 text-red-600 hover:bg-red-50 rounded-full transition-colors"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            
+            <div className="flex-1 overflow-y-auto">
+              <table className="w-full text-left border-collapse">
+                <tbody className="divide-y divide-gray-100">
+                  {incompatibilityLinks.map((link) => (
+                    <tr key={link.id} className="hover:bg-gray-50 group transition-colors">
+                      <td className="px-6 py-4">
+                        <div className="flex flex-wrap gap-1.5">
+                          {tasks.map(task => {
+                            const isActive = link.task_ids.includes(task.id);
+                            return (
+                              <span key={task.id} className={`px-2 py-0.5 rounded text-[9px] font-bold border ${
+                                isActive 
+                                  ? 'bg-blue-100 text-blue-700 border-blue-200'
+                                  : 'bg-gray-50 text-gray-300 border-transparent opacity-40'
+                              }`}>
+                                {task.name}
+                              </span>
+                            );
+                          })}
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 text-right">
+                        <div className="flex justify-end gap-2 pr-2">
+                          <button 
+                            onClick={() => { setEditingId(link.id); setSelectedTasks(link.task_ids); }}
+                            className="p-2 text-blue-600 hover:bg-blue-50 rounded-full transition-colors"
+                          >
+                            <Edit className="w-4 h-4" />
+                          </button>
+                          <button 
+                            onClick={() => deleteIncompatibilityLink(link.id)}
+                            className="p-2 text-red-600 hover:bg-red-50 rounded-full transition-colors"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
-    </div>
   );
 }
