@@ -125,10 +125,10 @@ export function DataProvider({ children }: { children: ReactNode }) {
     setTasks(prev => prev.filter(t => t.id !== id));
   };
 
-  const addIncompatibilityLink = (link: Omit<IncompatibilityLink, 'id' | 'created_at'>) => {
+  const addIncompatibilityLink = (link: { task_ids: string[] }) => {
     const newLink = { ...link, id: crypto.randomUUID(), created_at: new Date().toISOString() };
     setIncompatibilityLinks(prev => [...prev, newLink]);
-    showNotify("Incompatibility link created", "success");
+    showNotify("Incompatibility group created", "success");
   };
 
   const deleteIncompatibilityLink = (id: string) => {
