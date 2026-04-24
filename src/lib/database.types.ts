@@ -90,20 +90,17 @@ export interface Database {
       incompatibility_links: {
         Row: {
           id: string;
-          task1_id: string;
-          task2_id: string;
+          task_ids: string[];
           created_at: string;
         };
         Insert: {
           id?: string;
-          task1_id: string;
-          task2_id: string;
+          task_ids: string[];
           created_at?: string;
         };
         Update: {
           id?: string;
-          task1_id?: string;
-          task2_id?: string;
+          task_ids: string[];
           created_at?: string;
         };
       };
