@@ -104,7 +104,7 @@ export function IncompatibilityView() {
                       <td className="px-6 py-4">
                         <div className="flex flex-wrap gap-1.5">
                           {tasks.map(task => {
-                            const isActive = link.task_ids.includes(task.id);
+                            const isActive = (link.task_ids || []).includes(task.id);
                             return (
                               <span key={task.id} className={`px-2 py-0.5 rounded text-[9px] font-bold border ${
                                 isActive 
