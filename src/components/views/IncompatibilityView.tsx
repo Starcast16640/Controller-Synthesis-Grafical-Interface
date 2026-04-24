@@ -86,40 +86,39 @@ export function IncompatibilityView() {
           </div>
         </div>
       </div>
-      <div className="bg-white rounded-lg shadow-md overflow-hidden flex-1 border border-blue-200">
-        <table className="min-w-full divide-y divide-blue-200">
-          <thead className="bg-blue-50">
-            <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-500 uppercase">First Group</th>
-              <th className="px-6 py-3 text-center text-xs font-medium text-500 uppercase">Linked</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-500 uppercase">Second Group</th>
-              <th className="px-6 py-3 text-right text-xs font-medium text-500 uppercase">Delete</th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {incompatibilityLinks.length === 0 ? (
-              <tr><td colSpan={4} className="px-6 py-8 text-center text-gray-500">No incompatibilities defined yet.</td></tr>
-            ) : (
-              incompatibilityLinks.map((link) => (
-                <tr key={link.id} className="hover:bg-blue-50/50">
-                  <td className="px-6 py-4 text-sm font-bold text-gray-900">
-                    {formatGroupNames(link.task1_ids)}
-                  </td>
-                  <td className="px-6 py-4 text-sm text-center text-blue-500 font-black">✕</td>
-                  <td className="px-6 py-4 text-sm font-bold text-gray-900">
-                    {formatGroupNames(link.task2_ids)}
-                  </td>
-                  <td className="px-6 py-4 text-right">
-                    <button onClick={() => deleteIncompatibilityLink(link.id)} className="text-red-500 hover:text-red-700 p-2">
-                      <Trash2 className="w-4 h-4" />
-                    </button>
-                  </td>
-                </tr>
-              ))
-            )}
-          </tbody>
-        </table>
+      <div className="flex-1 bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden flex flex-col">
+          <div className="bg-gray-50 px-6 py-4 border-b border-gray-200">
+            <h3 className="text-sm font-black text-gray-400 uppercase tracking-widest text-xs">Mutual Incompatibilities</h3>
+          </div>
+          
+          <div className="flex-1 overflow-y-auto">
+            <table className="w-full text-left border-collapse">
+              <tbody className="divide-y divide-gray-100">
+                {incompatibilityLinks.map((link) => (
+                  <tr key={link.id} className="hover:bg-red-50/20 group">
+                    <td className="px-6 py-5">
+                      <div className="flex flex-wrap gap-2">
+                        {link.task_ids.map(id => (
+                          <span key={id} className="px-3 py-1 bg-red-100 text-red-700 rounded-full text-[11px] font-black border border-red-200 shadow-sm">
+                            {tasks.find(t => t.id === id)?.name || 'Unknown'}
+                          </span>
+                        ))}
+                      </div>
+                    </td>
+                    <td className="px-6 py-5 text-right">
+                      <button onClick={() => deleteIncompatibilityLink(link.id)} className="text-gray-300 hover:text-red-600 p-2 transition-colors">
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+                {incompatibilityLinks.length === 0 && (
+                  <tr><td className="px-6 py-20 text-center text-gray-400 italic font-medium">No groups defined. Select tasks on the left.</td></tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
-    </div>
   );
 }
