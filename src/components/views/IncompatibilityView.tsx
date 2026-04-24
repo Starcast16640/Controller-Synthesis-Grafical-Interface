@@ -92,10 +92,16 @@ export function IncompatibilityView() {
           </div>
         </div>
         <div className="flex-1 bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden flex flex-col">
-            <div className="bg-gray-50 px-6 py-4 border-b border-gray-200">
-              <h3 className="text-sm font-semibold text-gray-800 mb-4">Mutual Incompatibilities</h3>
-            </div>
-            
+          <div className="bg-white border-b border-gray-200">
+            <table className="min-w-full">
+              <thead className="bg-gray-50/50">
+                <tr className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+                  <th className="px-6 py-3 text-left">Incompatible Tasks Set</th>
+                  <th className="px-6 py-3 text-right pr-12">Actions</th>
+                </tr>
+              </thead>
+            </table>
+          </div> 
             <div className="flex-1 overflow-y-auto">
               <table className="w-full text-left border-collapse">
                 <tbody className="divide-y divide-gray-100">
