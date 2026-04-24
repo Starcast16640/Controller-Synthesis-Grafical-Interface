@@ -94,7 +94,7 @@ export function IncompatibilityView() {
             <table className="w-full text-left border-collapse">
               <tbody className="divide-y divide-gray-100">
                 {incompatibilityLinks.map((link) => (
-                  <tr key={link.id} className="hover:bg-red-50/20 group">
+                  <tr key={link.id} className="hover:bg-blue-50/20 group">
                     <td className="px-6 py-5">
                       <div className="flex flex-wrap gap-2">
                         {(link.task_ids || []).map(id => (
