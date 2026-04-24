@@ -75,38 +75,16 @@ export function IncompatibilityView() {
                 {t.name}
               </button>
             ))}
+            <button
+              ref={btnRef}
+              onClick={handleCreateGroup}
+              disabled={selectedTasks.length < 2}
+              className="w-full py-4 bg-red-600 text-white font-black rounded-xl hover:bg-red-700 disabled:opacity-30 transition-all uppercase text-xs shadow-lg"
+            >
+              Create Group ({selectedTasks.length})
+            </button>
           </div>
-          
-          <div className="flex items-center justify-center px-4 text-blue-500 font-black text-2xl">
-            ✕
-          </div>
-
-          <div className="flex-1 bg-white p-4 rounded-lg border border-gray-300 min-h-[100px] h-auto transition-all shadow-sm">
-            <label className="block text-[10px] font-bold text-gray-400 uppercase mb-2 text-center underline">Group 2</label>
-            <div className="flex flex-wrap gap-1"> 
-              {tasks.map(t => (
-                <button 
-                  key={t.id} 
-                  type="button"
-                  onClick={() => group2.includes(t.id) ? setGroup2(group2.filter(id => id !== t.id)) : setGroup2([...group2, t.id])}
-                  className={`px-2 py-1 rounded text-[10px] font-bold transition-all ${group2.includes(t.id) ? 'bg-blue-600 text-white shadow-md' : 'bg-gray-100 text-gray-400 hover:bg-gray-200'}`}
-                >
-                  {t.name}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <button
-            ref={btnRef}
-            onClick={handleCreateLinks} 
-            disabled={group1.length === 0 || group2.length === 0}
-            className="flex items-center justify-center px-4 py-2 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 disabled:opacity-30 w-32 text-[10px] uppercase text-center shadow-md               transition-all"
-          >
-            Create Link
-          </button>
         </div>
-      </div>
       <div className="bg-white rounded-lg shadow-md overflow-hidden flex-1 border border-blue-200">
         <table className="min-w-full divide-y divide-blue-200">
           <thead className="bg-blue-50">
