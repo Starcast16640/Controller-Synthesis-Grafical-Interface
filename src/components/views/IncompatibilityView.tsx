@@ -88,7 +88,6 @@ export function IncompatibilityView() {
               </button>
             ))}
           </div>
-        </div>
           
           <div className="flex items-center justify-center px-4 text-blue-500 font-black text-2xl">
             ✕
