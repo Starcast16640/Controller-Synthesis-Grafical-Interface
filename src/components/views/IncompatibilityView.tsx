@@ -120,7 +120,7 @@ export function IncompatibilityView() {
                       <td className="px-6 py-4 text-right">
                         <div className="flex justify-end gap-2 pr-2">
                           <button 
-                            onClick={() => { setEditingId(link.id); setSelectedTasks(link.task_ids); }}
+                            onClick={() => { setEditingId(link.id); setSelectedTasks(link.task_ids || []); }}
                             className="p-2 text-blue-600 hover:bg-blue-50 rounded-full transition-colors"
                           >
                             <Edit className="w-4 h-4" />
