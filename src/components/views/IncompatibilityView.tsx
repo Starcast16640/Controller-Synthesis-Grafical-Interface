@@ -23,7 +23,7 @@ export function IncompatibilityView() {
     
     const sortedIds = [...selectedTasks].sort();
     const alreadyExists = incompatibilityLinks.some(link => 
-      JSON.stringify([...link.task_ids].sort()) === JSON.stringify(sortedIds)
+      link.task_ids && JSON.stringify([...link.task_ids].sort()) === JSON.stringify(sortedIds)
     );
 
     if (alreadyExists) {
@@ -98,7 +98,7 @@ export function IncompatibilityView() {
                   <tr key={link.id} className="hover:bg-red-50/20 group">
                     <td className="px-6 py-5">
                       <div className="flex flex-wrap gap-2">
-                        {link.task_ids.map(id => (
+                        {(link.task_ids || []).map(id => (
                           <span key={id} className="px-3 py-1 bg-red-100 text-red-700 rounded-full text-[11px] font-black border border-red-200 shadow-sm">
                             {tasks.find(t => t.id === id)?.name || 'Unknown'}
                           </span>
