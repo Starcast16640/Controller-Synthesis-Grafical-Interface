@@ -153,6 +153,22 @@ export function SuccessionView() {
     });
   }, [successionNodes]);
 
+  useEffect(() => {
+    const allValidNames = [
+      ...sensors.map(s => s.name),
+      ...observers.map(o => o.name),
+      ...tasks.map(t => t.name),
+      'TRUE', 'FALSE', 'AUTO'
+    ];
+    const result = analyzeExpression(nodeForm.expression || '', allValidNames);
+
+    setDiag({
+      isValid: result.isValid,
+      errorMessage: result.errorMessage || "",
+      errorPos: result.errorPos || 0
+    });
+  }, [nodeForm.expression, sensors, observers, tasks]);
+
   const getArrowCoords = (arrow: any) => {
   const fromPos = arrow.from_type === 'task' 
     ? taskPositions.find(p => p.id === arrow.from_id)
@@ -598,7 +614,11 @@ export function SuccessionView() {
               placeholder="Node Expression"
               value={nodeForm.expression}
               onChange={(e) => setNodeForm({ ...nodeForm, expression: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 font-mono text-sm mb-4 resize-none"
+              className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 font-mono text-sm transition-all resize-none mb-4 ${
+                !diag.isValid 
+                  ? 'border-red-500 bg-red-50 focus:ring-red-500 text-red-900' 
+                  : 'border-gray-300 focus:ring-blue-500'
+              }`}
               rows={3}
             />
             <div className="p-3 bg-gray-50 rounded-lg border border-gray-200 mb-4">
@@ -651,6 +671,12 @@ export function SuccessionView() {
                 ))}
               </div>
             </div>
+            {!diag.isValid && (
+              <div className="mb-4 p-2 bg-red-50 border-l-4 border-red-500 text-red-700 text-[10px] flex items-center gap-2">
+                <span className="font-black underline uppercase">Diagnostic :</span>
+                <span>{diag.errorMessage} (Pos: {diag.errorPos})</span>
+              </div>
+            )}
             <label className="flex items-center gap-3 mb-6 p-3 bg-emerald-50 border border-emerald-100 rounded-lg cursor-pointer hover:bg-emerald-100 transition-colors">
               <input
                 type="checkbox"
@@ -675,10 +701,14 @@ export function SuccessionView() {
             <div className="flex gap-2">
               <button
                 onClick={() => {
+                  if (!diag.isValid) {
+                    alert("Veuillez corriger l'expression avant de sauvegarder.");
+                    return;
+                  }
                   updateSuccessionNode(editingNode, nodeForm);
                   setEditingNode(null);
                 }}
-                className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                className="..."
               >
                 Save
               </button>
