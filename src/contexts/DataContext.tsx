@@ -27,6 +27,7 @@ interface DataContextType {
   updateTask: (id: string, task: Partial<Omit<Task, 'id' | 'created_at'>>) => void;
   deleteTask: (id: string) => void;
   addIncompatibilityLink: (link: Omit<IncompatibilityLink, 'id' | 'created_at'>) => void;
+  updateIncompatibilityLink: (id: string, updates: Partial<IncompatibilityLink>) => void;
   deleteIncompatibilityLink: (id: string) => void;
   addSuccessionArrow: (arrow: Omit<SuccessionArrow, 'id' | 'created_at'>) => void;
   deleteSuccessionArrow: (id: string) => void;
@@ -129,6 +130,11 @@ export function DataProvider({ children }: { children: ReactNode }) {
     const newLink = { ...link, id: crypto.randomUUID(), created_at: new Date().toISOString() };
     setIncompatibilityLinks(prev => [...prev, newLink]);
     showNotify("Incompatibility group created", "success");
+  };
+
+  const updateIncompatibilityLink = (id: string, updates: Partial<IncompatibilityLink>) => {
+    setIncompatibilityLinks(prev => prev.map(l => l.id === id ? { ...l, ...updates } : l));
+    showNotify("Incompatibility group updated", "success");
   };
 
   const deleteIncompatibilityLink = (id: string) => {
@@ -260,6 +266,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
         updateTask,
         deleteTask,
         addIncompatibilityLink,
+        updateIncompatibilityLink,
         deleteIncompatibilityLink,
         addSuccessionArrow,
         deleteSuccessionArrow,
