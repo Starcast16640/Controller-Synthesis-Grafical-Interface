@@ -90,26 +90,41 @@ export function IncompatibilityView() {
             <table className="w-full text-left border-collapse">
               <tbody className="divide-y divide-gray-100">
                 {incompatibilityLinks.map((link) => (
-                  <tr key={link.id} className="hover:bg-blue-50/20 group">
-                    <td className="px-6 py-5">
-                      <div className="flex flex-wrap gap-2">
-                        {(link.task_ids || []).map(id => (
-                          <span key={id} className="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-[11px] font-black border border-blue-200 shadow-sm">
-                            {tasks.find(t => t.id === id)?.name || 'Unknown'}
-                          </span>
-                        ))}
+                  <tr key={link.id} className="hover:bg-gray-50 group transition-colors">
+                    <td className="px-6 py-4">
+                      <div className="flex flex-wrap gap-1.5">
+                        {tasks.map(task => {
+                          const isActive = link.task_ids.includes(task.id);
+                          return (
+                            <span key={task.id} className={`px-2 py-0.5 rounded text-[9px] font-bold border ${
+                              isActive 
+                                ? 'bg-blue-100 text-blue-700 border-blue-200'
+                                : 'bg-gray-50 text-gray-300 border-transparent opacity-40'
+                            }`}>
+                              {task.name}
+                            </span>
+                          );
+                        })}
                       </div>
                     </td>
-                    <td className="px-6 py-5 text-right">
-                      <button onClick={() => deleteIncompatibilityLink(link.id)} className="text-gray-300 hover:text-red-600 p-2 transition-colors">
-                        <Trash2 className="w-4 h-4" />
-                      </button>
+                    <td className="px-6 py-4 text-right">
+                      <div className="flex justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <button 
+                          onClick={() => { setEditingId(link.id); setSelectedTasks(link.task_ids); }}
+                          className="p-2 text-blue-600 hover:bg-blue-50 rounded-full transition-colors"
+                        >
+                          <Edit className="w-4 h-4" />
+                        </button>
+                        <button 
+                          onClick={() => deleteIncompatibilityLink(link.id)}
+                          className="p-2 text-red-600 hover:bg-red-50 rounded-full transition-colors"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}
-                {incompatibilityLinks.length === 0 && (
-                  <tr><td className="px-6 py-20 text-center text-gray-400 italic font-medium">No groups defined. Select tasks on the left.</td></tr>
-                )}
               </tbody>
             </table>
           </div>
