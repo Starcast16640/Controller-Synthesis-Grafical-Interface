@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { useData } from '../../contexts/DataContext';
-import { Trash2 } from 'lucide-react';
+import { Trash2, Edit } from 'lucide-react';
 
 const TASK_BLOCK_WIDTH = 150;
 const TASK_BLOCK_HEIGHT = 80;
