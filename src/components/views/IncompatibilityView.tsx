@@ -84,7 +84,7 @@ export function IncompatibilityView() {
             {editingId && (
               <button
                 onClick={() => { setEditingId(null); setSelectedTasks([]); }}
-                className="px-6 py-4 bg-gray-400 text-white font-black rounded-xl hover:bg-gray-500 transition-all text-xs shadow-lg"
+                className="flex-1 h-12 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-semibold text-sm shadow-md"
               >
                 Cancel
               </button>
