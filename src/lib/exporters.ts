@@ -111,11 +111,12 @@ export function generateDEPS(
   });
   
   deps += '\n(* ========== INCOMPATIBILITIES ========== *)\n';
-  incompatibilityLinks.forEach((link) => {
-    const task1 = tasks.find((t) => t.id === link.task1_id);
-    const task2 = tasks.find((t) => t.id === link.task2_id);
-    if (task1 && task2) {
-      deps += ` Incompatible${task1.name}v${task2.name} : Incompatible(${CONTROLER_NAME}.${task1.name}, ${CONTROLER_NAME}.${task2.name});\n`;
+  incompatibilityLinks.forEach((link, idx) => {
+    const groupTaskNames = (link.task_ids || [])
+      .map(id => tasks.find(t => t.id === id)?.name)
+      .filter(Boolean);
+    if (groupTaskNames.length >= 2) {
+      deps += ` GroupIncompatible${idx} : IncompatibleSet([${groupTaskNames.map(name => `${CONTROLER_NAME}.${name}`).join(', ')}]);\n`;
     }
   });
 
@@ -125,10 +126,11 @@ export function generateDEPS(
   successionNodes.forEach((node, idx) => {
     let inArrow = '';
     let outArrow = '';
-    const nodeName = node.name || `node${idx}`
-    deps += ` ${nodeName} : SuccessionNode`;
-    /* not implemented yet deps += `  expression = ${node.expression || 'true'}\n`; */
-    if (node.split_type==='only_one') {
+    const nodeName = node.name || `node${idx}`;
+    const isInit = node.is_initial === true;
+    const modelName = isInit ? 'InitialSuccessionNode' : 'SuccessionNode';
+    deps += ` ${nodeName} : ${modelName}`;
+    if (node.split_type === 'only_one') {
        deps += `OnlyOne(`;
     } else {
       deps += `All(`;
