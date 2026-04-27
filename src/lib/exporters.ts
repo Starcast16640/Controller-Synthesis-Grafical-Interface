@@ -129,7 +129,13 @@ export function generateDEPS(
     const nodeName = node.name || `node${idx}`;
     const isInit = node.is_initial === true;
     const modelName = isInit ? 'InitialSuccessionNode' : 'SuccessionNode';
+    
     deps += ` ${nodeName} : ${modelName}`;
+
+    if (node.expression && node.expression.toUpperCase() !== 'TRUE') {
+      deps += `(expression := "${node.expression}")`; 
+    }
+    
     if (node.split_type === 'only_one') {
        deps += `OnlyOne(`;
     } else {
