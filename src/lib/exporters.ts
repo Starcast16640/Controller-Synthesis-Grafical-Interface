@@ -47,6 +47,31 @@ function buildDepsHierarchy(expr: string, allNames: string[], prefix: string): {
   const outputQueue: string[] = [];
   const opStack: string[] = [];
 
+  const generateOp = (op: string, val1: string, val2?: string) => {
+    const id = `${prefix}_Op${opCount++}`;
+    let model = "";
+    switch(op) {
+      case 'AND': model = 'ModelOpAND'; break;
+      case 'OR':  model = 'ModelOpOR'; break;
+      case 'XOR': model = 'ModelOpXOR'; break;
+      case 'NOT': model = 'ModelOpNOT'; break;
+      case '↑':   model = 'ModelOpUP'; break;
+      case '↓':   model = 'ModelOpDOWN'; break;
+      case '>':   model = 'ModelOpGT'; break;
+      case '<':   model = 'ModelOpLT'; break;
+      case '=':   model = 'ModelOpEQ'; break;
+      case '!=':  model = 'ModelOpNEQ'; break;
+      default:    model = 'ModelOpUNK';
+    }
+    
+    if (val2) {
+      elements += `    ${id} : ${model} (${val1}, ${val2});\n`;
+    } else {
+      elements += `    ${id} : ${model} (${val1});\n`;
+    }
+    return id;
+  };
+
   return { elements: "(* Comming soon *)", finalVar: "TODO" };
 }
 
