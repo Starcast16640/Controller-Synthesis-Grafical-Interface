@@ -6,6 +6,7 @@ import type {
   SuccessionArrow,
   SuccessionNode,
 } from './database.types';
+import { analyzeExpression } from './expressionParser';
 
 const CONTROLER_NAME = 'Cont';
 const PHYSICAL_SYSTEM_NAME ='Sys';
