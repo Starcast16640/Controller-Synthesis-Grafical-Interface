@@ -13,6 +13,14 @@ const SUBDEFINED_SYSTEM_NAME = 'Sys';
 const SYSTEM_NAME = 'PB';
 const PROBLEM_NAME = 'ConvergenceStation';
 
+/**
+ * Transforme une expression textuelle en suite d'opérations DEPS
+ * Exemple: "A AND B OR C" -> ["Op1 : ModelAND(A, B)", "Op2 : ModelOR(Op1, C)"]
+ */
+function decomposeLogic(expr: string, prefix: string): { lines: string[], finalVar: string } {
+  
+}
+
 export function generateDEPS(
   sensors: Sensor[],
   observers: Observer[],
