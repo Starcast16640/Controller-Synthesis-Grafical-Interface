@@ -27,6 +27,29 @@ function decomposeLogic(expr: string, prefix: string): { lines: string[], finalV
   };
 }
 
+/**
+ * Transforme une expression en suite d'opérations binaires pour DEPS
+ */
+function buildDepsHierarchy(expr: string, allNames: string[], prefix: string): { elements: string, finalVar: string } {
+  const result = analyzeExpression(expr, allNames);
+  if (!result.isValid || result.tokens.length === 0) return { elements: "", finalVar: "TRUE" };
+
+  let elements = "";
+  let opCount = 1;
+  const tokens = result.tokens.filter(t => t.type !== 'WHITESPACE');
+  const precedence: { [key: string]: number } = {
+    'OR': 1, 'XOR': 1,
+    'AND': 2,
+    '>': 3, '<': 3, '=': 3, '!=': 3, '>=': 3, '<=': 3,
+    'NOT': 4, '↑': 4, '↓': 4
+  };
+
+  const outputQueue: string[] = [];
+  const opStack: string[] = [];
+
+  return { elements: "(* Comming soon *)", finalVar: "TODO" };
+}
+
 export function generateDEPS(
   sensors: Sensor[],
   observers: Observer[],
