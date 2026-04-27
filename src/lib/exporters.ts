@@ -18,7 +18,13 @@ const PROBLEM_NAME = 'ConvergenceStation';
  * Exemple: "A AND B OR C" -> ["Op1 : ModelAND(A, B)", "Op2 : ModelOR(Op1, C)"]
  */
 function decomposeLogic(expr: string, prefix: string): { lines: string[], finalVar: string } {
-  
+  if (!expr || expr.toUpperCase() === 'TRUE' || expr === '') {
+    return { lines: [], finalVar: 'true' };
+  }
+  return { 
+    lines: [` (* Hierarchical decomposition for ${prefix} pending official model names *) `], 
+    finalVar: expr 
+  };
 }
 
 export function generateDEPS(
