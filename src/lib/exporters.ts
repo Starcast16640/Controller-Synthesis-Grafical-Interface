@@ -145,7 +145,7 @@ export function generateDEPS(
       deps += ` F${task.name} : SensorBoolean(); (*end of task "${task.name}"*)\n`;
     }
   })
-  deps += ' Collections \n Properties\nEnd\n \n';
+  deps += '  \n Properties\nEnd\n \n';
 
 
   /*========Tasks and Observers==== Controler =========*/
@@ -271,7 +271,7 @@ export function generateDEPS(
     })
     deps +=`); \n`;
   })
-  deps += ' Collections \n Properties\n'
+  deps += '  \n Properties\n'
   let listofoptimisations ='';
   let listoftasks='';
   deps +=`\n`;
@@ -291,15 +291,15 @@ export function generateDEPS(
 
   deps += 'Model SubDefinedSystem() extends AbstractSubDefinedSystem[] \n Constants\n Variables\n Elements\n';
   deps += ` ${PHYSICAL_SYSTEM_NAME} : PhysicalSystem(); redefine; \n ${CONTROLER_NAME} : Controler(${PHYSICAL_SYSTEM_NAME}); redefine;\n`;
-  deps += ' Collections\n Properties\nEnd\n\n';
+  deps += ' \n Properties\nEnd\n\n';
 
   deps += 'Model System() extends AbstractSystem[] \n Constants\n Variables\n Elements\n';
   deps += ` ${SUBDEFINED_SYSTEM_NAME} : SubDefinedSystem(); redefine;\n Requirement : Requirement (${SUBDEFINED_SYSTEM_NAME}.${CONTROLER_NAME}); redefine; \n`;
-  deps += ' Collections\n Properties\nEnd\n\n';
+  deps += ' \n Properties\nEnd\n\n';
 
   deps += `Problem ${PROBLEM_NAME}\n Constants\n Variables\n Elements\n`;
   deps += `${SYSTEM_NAME} : System(); \n`
-  deps += ' Collections\n Properties\nEnd\n\n';
+  deps += ' \n Properties\nEnd\n\n';
   return deps;
 }
 
