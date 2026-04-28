@@ -260,13 +260,14 @@ export function generateDEPS(
     let inArrow = '';
     let outArrow = '';
     const nodeName = node.name || `node${idx}`;
-    const isInit = node.is_initial === true;
-    const modelName = isInit ? 'InitialSuccessionNode' : 'SuccessionNode';
-    
-    deps += ` ${nodeName} : ${modelName}`;
+    const modelBase = node.is_initial ? 'InitialSuccessionNode' : 'SuccessionNode';
+    const guardH = buildDepsHierarchy(node.expression, allNames, `${nodeName}_Guard`);
+    deps += `\n    (* Guard Logic for Node ${nodeName} *)\n`;
+    deps += guardH.elements;
 
-    if (node.expression && node.expression.toUpperCase() !== 'TRUE') {
-      deps += `(expression := "${node.expression}")`; 
+    deps += `    ${nodeName} : ${modelBase}`;
+    if (guardH.finalVar !== "TRUE") {
+      deps += `(expression := ${guardH.finalVar})`; 
     }
     
     if (node.split_type === 'only_one') {
