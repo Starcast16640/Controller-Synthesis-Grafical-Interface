@@ -134,7 +134,7 @@ export interface Database {
         Row: {
           id: string;
           expression: string;
-          split_type: 'both' | 'only_one';
+          split_type: 'both' | 'only_one' | 'none';
           position_x: number;
           position_y: number;
           created_at: string;
@@ -142,7 +142,7 @@ export interface Database {
         Insert: {
           id?: string;
           expression?: string;
-          split_type?: 'both' | 'only_one';
+          split_type: 'both' | 'only_one' | 'none';
           position_x?: number;
           position_y?: number;
           created_at?: string;
@@ -150,7 +150,7 @@ export interface Database {
         Update: {
           id?: string;
           expression?: string;
-          split_type?: 'both' | 'only_one';
+          split_type: 'both' | 'only_one' | 'none';
           position_x?: number;
           position_y?: number;
           created_at?: string;
