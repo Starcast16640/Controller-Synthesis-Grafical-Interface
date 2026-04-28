@@ -125,7 +125,7 @@ export function ObserverView() {
     if (type === 'expression') {
       expressions = { main: '' };
     } else if (type === 'counter') {
-      expressions = { increase: '', decrease: '' };
+      expressions = { increase: '', decrease: '', reset: '' };
     } else if (type === 'jk_flip_flop') {
       expressions = { set: '', reset: '' };
     }
@@ -137,7 +137,7 @@ export function ObserverView() {
     if (observer.type === 'expression') {
       return exprs.main || '';
     } else if (observer.type === 'counter') {
-      return `+: ${exprs.increase || ''}, -: ${exprs.decrease || ''}`;
+      return `+: ${exprs.increase || ''}, -: ${exprs.decrease || ''}, Res: ${exprs.reset || ''}`;
     } else if (observer.type === 'jk_flip_flop') {
       return `Set: ${exprs.set || ''}, Reset: ${exprs.reset || ''}`;
     }
@@ -242,6 +242,26 @@ export function ObserverView() {
                     }
                     className={`w-full px-4 py-2 border rounded-lg focus:ring-2 font-mono text-sm transition-colors ${
                       activeField === 'decrease' && !diag.isValid 
+                        ? 'border-red-500 bg-red-50 focus:ring-red-500 text-red-900' 
+                        : 'border-gray-300 focus:ring-blue-500'
+                    }`}
+                  />
+                </div>
+                <div>
+                  <label className="block text-[10px] font-bold text-orange-600 uppercase mb-1">Reset (Set 0)</label>
+                  <input
+                    type="text"
+                    placeholder="Reset Expression"
+                    onFocus={() => setActiveField('reset')}
+                    value={formData.expressions.reset || ''}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        expressions: { ...formData.expressions, reset: e.target.value },
+                      })
+                    }
+                    className={`w-full px-4 py-2 border rounded-lg focus:ring-2 font-mono text-sm transition-colors ${
+                      activeField === 'reset' && !diag.isValid 
                         ? 'border-red-500 bg-red-50 focus:ring-red-500 text-red-900' 
                         : 'border-gray-300 focus:ring-blue-500'
                     }`}
