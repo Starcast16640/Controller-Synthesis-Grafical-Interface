@@ -15,18 +15,12 @@ const SYSTEM_NAME = 'PB';
 const PROBLEM_NAME = 'TemplateOfAProblem';
 
 const DEPS_MODELS = {
-  AND: '',
-  OR: '',
-  XOR: '',
-  NOT: '',
-  UP: '',
-  DOWN: '',
-  GT: '',
-  LT: '',
-  EQ: '',
-  NEQ: '',
-  GTE: '',
-  LTE: '',
+  AND: 'OpAnd',
+  OR: 'OpOr',
+  XOR: 'OpXor',
+  NOT: 'OpNot',
+  UP: 'OpUp',
+  DOWN: 'OpDown',
 };
 
 /**
@@ -62,10 +56,26 @@ function buildDepsHierarchy(expr: string, allNames: string[], prefix: string): {
 
   const outputQueue: string[] = [];
   const opStack: string[] = [];
-
+  
   const generateOp = (op: string, val1: string, val2?: string) => {
     const id = `${prefix}_Op${opCount++}`;
     let model = "";
+    const isVal2Numeric = val2 && /^\d+$/.test(val2);
+
+    if (isVal2Numeric) {
+      const num = val2;
+      if (op === '=')  model = `ObserverEqual${num}`;
+      else if (op === '>')  model = `ObserverAbove${num}`;
+      else if (op === '<')  model = `ObserverBelow${num}`;
+      else if (op === '>=') model = `ObserverAboveEqual${num}`;
+      else if (op === '<=') model = `ObserverBelowEqual${num}`;
+      else if (op === '!=') model = `ObserverNotEqual${num}`;
+      else model = 'ObserverUnknown';
+
+      elements += `    ${id} : ${model} (${val1});\n`;
+      return id;
+    }
+    
     switch(op) {
       case 'AND': model = DEPS_MODELS.AND; break;
       case 'OR':  model = DEPS_MODELS.OR; break;
@@ -73,10 +83,6 @@ function buildDepsHierarchy(expr: string, allNames: string[], prefix: string): {
       case 'NOT': model = DEPS_MODELS.NOT; break;
       case '↑':   model = DEPS_MODELS.UP; break;
       case '↓':   model = DEPS_MODELS.DOWN; break;
-      case '>':   model = DEPS_MODELS.GT; break;
-      case '<':   model = DEPS_MODELS.LT; break;
-      case '=':   model = DEPS_MODELS.EQ; break;
-      case '!=':  model = DEPS_MODELS.NEQ; break;
       default:    model = 'OpUnknown';
     }
 
@@ -176,18 +182,31 @@ export function generateDEPS(
       deps += ` F${task.name} : ObserverE(${PHYSICAL_SYSTEM_NAME}.F${task.name}); (*end of task "${task.name}"*)\n`;
     }
   })
-  observers.forEach((observer) => {  
+  const allNames = [...sensors.map(s => s.name), ...observers.map(o => o.name), ...tasks.map(t => t.name), 'TRUE', 'FALSE', 'AUTO'];
+
+  observers.forEach((observer) => {
+    deps += `\n    (* Logic for Observer ${observer.name} *)\n`;
+    const exprs = observer.expressions as any;
+
     if (observer.type === 'expression') {
-      const exprs = observer.expressions as { main?: string };
-      deps += ` ${observer.name}: ObserverE(${exprs.main || 'true'});\n`;
-    } else if (observer.type === 'counter') {
-      const exprs = observer.expressions as { increase?: string; decrease?: string };
-      deps += ` ${observer.name}: ObserverCounter(${exprs.increase || 'false'},${exprs.decrease || 'false'});\n`;
-    } else if (observer.type === 'jk_flip_flop') {
-      const exprs = observer.expressions as { set?: string; reset?: string };
-      deps += ` ${observer.name}: ObserverJK(${exprs.set || 'false'},${exprs.reset || 'false'});\n`;
+      const h = buildDepsHierarchy(exprs.main, allNames, `${observer.name}_Logic`);
+      deps += h.elements;
+      deps += `    ${observer.name}: ObserverE(${h.finalVar});\n`;
+    } 
+    else if (observer.type === 'counter') {
+      const hInc = buildDepsHierarchy(exprs.increase, allNames, `${observer.name}_Inc`);
+      const hDec = buildDepsHierarchy(exprs.decrease, allNames, `${observer.name}_Dec`);
+      const hRes = buildDepsHierarchy(exprs.reset, allNames, `${observer.name}_Res`);
+      deps += hInc.elements + hDec.elements + hRes.elements;
+      deps += `    ${observer.name}: ObserverCounter(${hInc.finalVar}, ${hDec.finalVar}, ${hRes.finalVar});\n`;
+    } 
+    else if (observer.type === 'jk_flip_flop') {
+      const hSet = buildDepsHierarchy(exprs.set, allNames, `${observer.name}_Set`);
+      const hRes = buildDepsHierarchy(exprs.reset, allNames, `${observer.name}_Res`);
+      deps += hSet.elements + hRes.elements;
+      deps += `    ${observer.name}: ObserverJK(${hSet.finalVar}, ${hRes.finalVar});\n`;
     }
-  })
+  });
 
   deps += '\n(* ========== OBSERVERS For Succession constraint========== *)\n';
   successionArrows.forEach((arrow,idx) => {
@@ -206,18 +225,22 @@ export function generateDEPS(
   deps += `Model Requirement() extends AbstractRequirement[AbstractControler[AbstractPhysicalSystem[]]]\n Constants \n Variables \n Elements \n ${CONTROLER_NAME} : Controler[PhysicalSystem[]]; redefine; \n`;
   deps += '\n(* ========== INTER-TASK CONSTRAINT ========== *)\n';
   tasks.forEach((task) => {
-    deps += ` ${task.name}InitialCondition : InitialCondition(${CONTROLER_NAME}.${task.authorization_expression || 'true'},Cont.${task.name}); \n`;
-    
-    if (task.final_condition === 'AUTO') {
-      deps += ` ${task.name}FinalCondition : FinalCondition(${CONTROLER_NAME}.F${task.name},${CONTROLER_NAME}.${task.name});\n`;
+    const authH = buildDepsHierarchy(task.authorization_expression, allNames, `${task.name}_Auth`);
+    deps += `\n    (* Logic for ${task.name} *)\n`;
+    deps += authH.elements;
+    deps += `    ${task.name}InitialCondition : InitialCondition(${CONTROLER_NAME}.${authH.finalVar}, ${CONTROLER_NAME}.${task.name}); \n`;
+    if (task.final_condition !== 'AUTO' && task.final_condition !== '') {
+      const finalH = buildDepsHierarchy(task.final_condition, allNames, `${task.name}_Fin`);
+      deps += finalH.elements;
+      deps += `    ${task.name}FinalCondition : FinalCondition(${CONTROLER_NAME}.${finalH.finalVar}, ${CONTROLER_NAME}.${task.name});\n`;
     } else {
-      deps += ` ${task.name}FinalCondition : FinalCondition(${CONTROLER_NAME}.${task.final_condition},${CONTROLER_NAME}.${task.name});\n`;
+      deps += `    ${task.name}FinalCondition : FinalCondition(${CONTROLER_NAME}.F${task.name}, ${CONTROLER_NAME}.${task.name});\n`;
     }
     
     if (task.type.includes('reactivable')) {
-      deps += ` ${task.name}MaxActivation : MaxActivation${task.max_simultaneous_executions}(${CONTROLER_NAME}.${task.name});\n`;
+      deps += `    ${task.name}MaxActivation : MaxActivation${task.max_simultaneous_executions}(${CONTROLER_NAME}.${task.name});\n`;
     }
-    deps += '\n' 
+    deps += '\n';
   });
   
   deps += '\n(* ========== INCOMPATIBILITIES ========== *)\n';
