@@ -12,7 +12,7 @@ const CONTROLER_NAME = 'Controler';
 const PHYSICAL_SYSTEM_NAME ='PhysicalSystem';
 const SUBDEFINED_SYSTEM_NAME = 'SubDefinedSystem';
 const SYSTEM_NAME = 'PB';
-const PROBLEM_NAME = 'ConvergenceStation';
+const PROBLEM_NAME = 'TemplateOfAProblem';
 
 /**
  * Transforme une expression textuelle en suite d'opérations DEPS
