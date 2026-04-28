@@ -146,7 +146,7 @@ export function TaskView() {
       authorization_expression: '',
       final_condition: '',
       max_simultaneous_executions: 1,
-      priority: formData.priority,
+      priority: Math.max(...tasks.map(t => t.priority), -1) + 1,
       factory_io_address: '',
     });
   };
@@ -172,7 +172,7 @@ export function TaskView() {
       authorization_expression: '',
       final_condition: '',
       max_simultaneous_executions: 1,
-      priority: formData.priority,
+      priority: Math.max(...tasks.map(t => t.priority), -1) + 1,
       factory_io_address: ''
     });
   };
