@@ -52,7 +52,7 @@ export function SuccessionView() {
   const [draggingNodeId, setDraggingNodeId] = useState<string | null>(null);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const [editingNode, setEditingNode] = useState<string | null>(null);
-  const [nodeForm, setNodeForm] = useState({ name: '', expression: '', split_type: 'both', is_initial: false });
+  const [nodeForm, setNodeForm] = useState({ name: '', expression: '', split_type: 'none', is_initial: false });
   const [editingNameId, setEditingNameId] = useState<string | null>(null);
   const [editingNameValue, setEditingNameValue] = useState('');
   const [isDrawingArrow, setIsDrawingArrow] = useState(false);
@@ -551,8 +551,10 @@ export function SuccessionView() {
                   });
                 }}
               >
-                <span className={`font-bold pointer-events-none ${isInit ? 'text-[14px] text-emerald-900' : 'text-sm text-yellow-900'}`}>
-                  {(node.split_type === 'both' ? '⊕' : '|')}
+                <span className={`font-bold pointer-events-none ${isInit ? 'text-[10px] text-emerald-900' : 'text-sm text-yellow-900'}`}>
+                  {isInit ? 'INIT' : (
+                    node.split_type === 'none' ? '' : (node.split_type === 'both' ? '⊕' : '|')
+                  )}
                 </span>
                 <div 
                   className="absolute top-full mt-1 left-1/2 -translate-x-1/2"
@@ -690,11 +692,13 @@ export function SuccessionView() {
               </div>
             </label>
             <label className="block text-[10px] font-bold text-gray-400 uppercase mb-1">Split Type (Execution Mode)</label>
+            <label className="block text-[10px] font-bold text-gray-400 uppercase mb-1">Split Type (Execution Mode)</label>
             <select
               value={nodeForm.split_type}
-              onChange={(e) => setNodeForm({ ...nodeForm, split_type: e.target.value as 'both' | 'only_one' })}
+              onChange={(e) => setNodeForm({ ...nodeForm, split_type: e.target.value as any })}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent mb-4"
             >
+              <option value="none">None</option>
               <option value="both">Both (⊕)</option>
               <option value="only_one">Only One (|)</option>
             </select>
