@@ -45,7 +45,7 @@ export function TaskView() {
   useEffect(() => {
     if (!editingId) {
       const nextPrio = tasks.length === 0 ? 0 : Math.max(...tasks.map(t => t.priority)) + 1;
-      setFormData(prev => ({ ...prev, priority: nextPrio }));
+      setFormData(prev => prev.priority === nextPrio ? prev : { ...prev, priority: nextPrio });
     }
   }, [tasks, editingId]);
 
@@ -146,7 +146,7 @@ export function TaskView() {
       authorization_expression: '',
       final_condition: '',
       max_simultaneous_executions: 1,
-      priority: Math.max(...tasks.map(t => t.priority), -1) + 1,
+      priority: 0,
       factory_io_address: '',
     });
   };
@@ -172,7 +172,7 @@ export function TaskView() {
       authorization_expression: '',
       final_condition: '',
       max_simultaneous_executions: 1,
-      priority: Math.max(...tasks.map(t => t.priority), -1) + 1,
+      priority: 0,
       factory_io_address: ''
     });
   };
