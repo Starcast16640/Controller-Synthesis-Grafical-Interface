@@ -169,7 +169,7 @@ export function generateDEPS(
       deps += ` ${sensor.name} : ObserverE(${PHYSICAL_SYSTEM_NAME}.${sensor.name});\n`;
       deps += ` Not${sensor.name} : ObserverN(${PHYSICAL_SYSTEM_NAME}.${sensor.name});\n`;
     }
-    /* Need to do the reste of others observer of sensor : Interger and Reeeal*/
+    /* Need to do the leftovers of others observer of sensor : Interger and Reeeal*/
   });
   tasks.forEach((task) => {
     if (task.final_condition === 'AUTO') {
