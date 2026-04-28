@@ -207,6 +207,7 @@ export function ObserverView() {
             {formData.type === 'counter' && (
               <div className="space-y-4">
                 <div className="grid grid-cols-2 gap-4">
+                  <div>
                     <label className="block text-[10px] font-bold text-green-600 uppercase mb-1">Increase (+)</label>
                     <input
                       type="text"
@@ -225,6 +226,9 @@ export function ObserverView() {
                           : 'border-gray-300 focus:ring-blue-500'
                       }`}
                     />
+                  </div>
+
+                  <div>
                     <label className="block text-[10px] font-bold text-red-600 uppercase mb-1">Decrease (-)</label>
                     <input
                       type="text"
@@ -244,6 +248,7 @@ export function ObserverView() {
                       }`}
                     />
                   </div>
+                </div>
                   <div>
                     <label className="block text-[10px] font-bold text-orange-600 uppercase mb-1">Reset (Set 0)</label>
                     <input
