@@ -431,7 +431,7 @@ export function SuccessionView() {
       <div className="flex justify-between items-center mb-4">
         <div>
           <h2 className="text-2xl font-bold text-gray-900">Succession View</h2>
-          <p className="text-[10px] text-gray-500 mt-1">
+          <p className="text-[11px] text-gray-500 mt-1">
             💡 Tip: Right-click on a node to edit its properties.
           </p>
         </div>
