@@ -413,7 +413,7 @@ export function SuccessionView() {
     addSuccessionNode({ 
       name: `N${nextNumber}`, 
       expression: '', 
-      split_type: 'both', 
+      split_type: 'none', 
       position_x: 100, 
       position_y: 100 
     });
