@@ -14,6 +14,21 @@ const SUBDEFINED_SYSTEM_NAME = 'SubDefinedSystem';
 const SYSTEM_NAME = 'PB';
 const PROBLEM_NAME = 'TemplateOfAProblem';
 
+const DEPS_MODELS = {
+  AND: '',
+  OR: '',
+  XOR: '',
+  NOT: '',
+  UP: '',
+  DOWN: '',
+  GT: '',
+  LT: '',
+  EQ: '',
+  NEQ: '',
+  GTE: '',
+  LTE: '',
+};
+
 /**
  * Transforme une expression textuelle en suite d'opérations DEPS
  * Exemple: "A AND B OR C" -> ["Op1 : ModelAND(A, B)", "Op2 : ModelOR(Op1, C)"]
@@ -52,19 +67,19 @@ function buildDepsHierarchy(expr: string, allNames: string[], prefix: string): {
     const id = `${prefix}_Op${opCount++}`;
     let model = "";
     switch(op) {
-      case 'AND': model = 'ModelOpAND'; break;
-      case 'OR':  model = 'ModelOpOR'; break;
-      case 'XOR': model = 'ModelOpXOR'; break;
-      case 'NOT': model = 'ModelOpNOT'; break;
-      case '↑':   model = 'ModelOpUP'; break;
-      case '↓':   model = 'ModelOpDOWN'; break;
-      case '>':   model = 'ModelOpGT'; break;
-      case '<':   model = 'ModelOpLT'; break;
-      case '=':   model = 'ModelOpEQ'; break;
-      case '!=':  model = 'ModelOpNEQ'; break;
-      default:    model = 'ModelOpUNK';
+      case 'AND': model = DEPS_MODELS.AND; break;
+      case 'OR':  model = DEPS_MODELS.OR; break;
+      case 'XOR': model = DEPS_MODELS.XOR; break;
+      case 'NOT': model = DEPS_MODELS.NOT; break;
+      case '↑':   model = DEPS_MODELS.UP; break;
+      case '↓':   model = DEPS_MODELS.DOWN; break;
+      case '>':   model = DEPS_MODELS.GT; break;
+      case '<':   model = DEPS_MODELS.LT; break;
+      case '=':   model = DEPS_MODELS.EQ; break;
+      case '!=':  model = DEPS_MODELS.NEQ; break;
+      default:    model = 'OpUnknown';
     }
-    
+
     if (val2) {
       elements += `    ${id} : ${model} (${val1}, ${val2});\n`;
     } else {
