@@ -9,7 +9,7 @@ import type {
 import { analyzeExpression } from './expressionParser';
 
 const CONTROLER_NAME = 'Cont';
-const PHYSICAL_SYSTEM_NAME ='Sys';
+const PHYSICAL_SYSTEM_NAME ='PhysicalSystem';
 const SUBDEFINED_SYSTEM_NAME = 'Sys';
 const SYSTEM_NAME = 'PB';
 const PROBLEM_NAME = 'ConvergenceStation';
