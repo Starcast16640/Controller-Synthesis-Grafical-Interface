@@ -21,8 +21,8 @@ export function TaskView() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [activeField, setActiveField] = useState<'auth' | 'final' | null>(null);
   const getNextPriority = () => {
-  if (tasks.length === 0) return 0;
-  return Math.max(...tasks.map(t => t.priority)) + 1;
+    if (tasks.length === 0) return 0;
+    return Math.max(...tasks.map(t => t.priority), -1) + 1;
   };
   const [formData, setFormData] = useState<TaskFormData>({
     name: '',
@@ -146,7 +146,7 @@ export function TaskView() {
       authorization_expression: '',
       final_condition: '',
       max_simultaneous_executions: 1,
-      priority: 0,
+      priority: Math.max(...tasks.map(t => t.priority), -1) + 2,
       factory_io_address: '',
     });
   };
@@ -172,7 +172,7 @@ export function TaskView() {
       authorization_expression: '',
       final_condition: '',
       max_simultaneous_executions: 1,
-      priority: 0,
+      priority: Math.max(...tasks.map(t => t.priority), -1) + 2,
       factory_io_address: ''
     });
   };
