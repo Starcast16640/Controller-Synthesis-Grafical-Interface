@@ -429,7 +429,12 @@ export function SuccessionView() {
   return (
     <div className="p-6 h-full flex flex-col">
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-2xl font-bold text-gray-900">Succession View</h2>
+        <div>
+          <h2 className="text-2xl font-bold text-gray-900">Succession View</h2>
+          <p className="text-[10px] text-gray-500 italic mt-1">
+            💡 Tip: Right-click on a node to edit its properties.
+          </p>
+        </div>
         <div className="flex gap-2">
           <button
             onClick={handleCreateNode}
