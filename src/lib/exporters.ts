@@ -8,9 +8,9 @@ import type {
 } from './database.types';
 import { analyzeExpression } from './expressionParser';
 
-const CONTROLER_NAME = 'Cont';
+const CONTROLER_NAME = 'Controler';
 const PHYSICAL_SYSTEM_NAME ='PhysicalSystem';
-const SUBDEFINED_SYSTEM_NAME = 'Sys';
+const SUBDEFINED_SYSTEM_NAME = 'SubDefinedSystem';
 const SYSTEM_NAME = 'PB';
 const PROBLEM_NAME = 'ConvergenceStation';
 
