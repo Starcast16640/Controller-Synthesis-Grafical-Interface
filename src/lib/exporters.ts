@@ -199,7 +199,7 @@ export function generateDEPS(
     }
   })
     
-  deps += ' Collections \n Properties\nEnd\n \n';
+  deps += ' Properties\nEnd\n \n';
 
   
   /*========= REQUIREMENT ==========*/
