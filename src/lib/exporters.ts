@@ -73,7 +73,39 @@ function buildDepsHierarchy(expr: string, allNames: string[], prefix: string): {
     return id;
   };
 
-  return { elements: "(* Comming soon *)", finalVar: "TODO" };
+  const processOpFromStack = () => {
+    const op = opStack.pop()!;
+    if (['NOT', '↑', '↓'].includes(op)) {
+      const v1 = outputQueue.pop()!;
+      outputQueue.push(generateOp(op, v1));
+    } else {
+      const v2 = outputQueue.pop()!;
+      const v1 = outputQueue.pop()!;
+      outputQueue.push(generateOp(op, v1, v2));
+    }
+  };
+
+  tokens.forEach(t => {
+    if (t.type === 'ID') {
+      outputQueue.push(t.value);
+    } else if (['(', '['].includes(t.value)) {
+      opStack.push(t.value);
+    } else if ([')', ']'].includes(t.value)) {
+      while (opStack.length > 0 && !['(', '['].includes(opStack[opStack.length - 1])) {
+        processOpFromStack();
+      }
+      opStack.pop(); 
+    } else {
+      while (opStack.length > 0 && precedence[opStack[opStack.length - 1]] >= precedence[t.value]) {
+        processOpFromStack();
+      }
+      opStack.push(t.value);
+    }
+  });
+
+  while (opStack.length > 0) processOpFromStack();
+
+  return { elements, finalVar: outputQueue[0] || "TRUE" };
 }
 
 export function generateDEPS(
