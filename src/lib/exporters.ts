@@ -49,7 +49,6 @@ function buildDepsHierarchy(expr: string, allNames: string[], prefix: string): {
 
   let elements = "";
   let opCount = 1;
-  const tokens = result.tokens.filter(t => t.type !== 'WHITESPACE');
   const precedence: { [key: string]: number } = {
     'OR': 1, 'XOR': 1,
     'AND': 2,
