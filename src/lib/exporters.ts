@@ -302,10 +302,10 @@ export function generateDEPS(
   tasks.forEach((task,idx) => {
     if (idx ===0) {
       listofoptimisations+=`max`;
-      listoftasks+=`${CONTROLER_NAME}.${task.name}.Aut`;
+      listoftasks+=`${CONTROLER_NAME}.${task.name}.Authorization`;
     } else {
       listofoptimisations+=`,max`;
-      listoftasks+=`,${CONTROLER_NAME}.${task.name}.Aut`;
+      listoftasks+=`,${CONTROLER_NAME}.${task.name}.Authorization`;
     }     
   })
 
@@ -313,7 +313,7 @@ export function generateDEPS(
   deps +=`Blo ([${listofoptimisations}],[${listoftasks}]);\n`;
   
 
-  
+
   deps += 'End\n \n';
 
 
@@ -337,9 +337,9 @@ export function generateGRAFCET(tasks: Task[], successionArrows: SuccessionArrow
     grafcet +=`	<grafcet type="normal" owner="" name="GMemorisation${task.name}" comment="">\n`;
     grafcet +='		<sequence id="1">\n'
     grafcet +=`			<step type="initial" name="XOFF${task.name}"/>\n`;
-    grafcet +=`			<transition>\n				<condition>${task.name}T</condition>\n			</transition>\n`;
-    grafcet +=`			<step type="normal" name="${task.name}prevT" />\n`;
-    grafcet +=`			<transition>\n				<condition><cpl>${task.name}T</cpl></condition>\n			</transition>\n`;
+    grafcet +=`			<transition>\n				<condition>${task.name}CurrentActive</condition>\n			</transition>\n`;
+    grafcet +=`			<step type="normal" name="${task.name}PreviousActive" />\n`;
+    grafcet +=`			<transition>\n				<condition><cpl>${task.name}CurrentActive</cpl></condition>\n			</transition>\n`;
     grafcet +=`		</sequence>\n`;
     grafcet +=`		<jump seqid_from="1" seqid_to="1" />\n`;
     grafcet +=`	</grafcet>\n`;
