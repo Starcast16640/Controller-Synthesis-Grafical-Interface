@@ -15,7 +15,7 @@ export interface ParseResult {
 
 export function analyzeExpression(expr: string, validNames: string[]): ParseResult {
   if (!expr || expr.trim() === '' || expr.toUpperCase() === 'TRUE') {
-    return { isValid: true, errorMessage: null, errorPos: null, tokens[] };
+    return { isValid: true, errorMessage: null, errorPos: null, tokens: [] };
   }
   
   const BINARY_OPS = ['AND', 'OR', 'XOR', 'NOT', '>=', '<=', '>', '<', '=', '!='];
