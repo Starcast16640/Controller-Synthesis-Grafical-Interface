@@ -42,7 +42,10 @@ function decomposeLogic(expr: string, prefix: string): { lines: string[], finalV
  */
 function buildDepsHierarchy(expr: string, allNames: string[], prefix: string): { elements: string, finalVar: string } {
   const result = analyzeExpression(expr, allNames);
-  if (!result.isValid || result.tokens.length === 0) return { elements: "", finalVar: "TRUE" };
+  const tokens = (result.tokens || []).filter(t => t.type !== 'WHITESPACE');
+  if (!result.isValid || tokens.length === 0) {
+    return { elements: "", finalVar: "true" };
+  }
 
   let elements = "";
   let opCount = 1;
