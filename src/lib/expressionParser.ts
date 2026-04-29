@@ -61,6 +61,7 @@ export function analyzeExpression(expr: string, validNames: string[]): ParseResu
             isValid: false, 
             errorMessage: `Symbole fermant "${token.value}" sans ouverture correspondante`, 
             errorPos: token.pos 
+            tokens: []
           };
         }
       }
@@ -73,6 +74,7 @@ export function analyzeExpression(expr: string, validNames: string[]): ParseResu
       isValid: false, 
       errorMessage: `Le symbole "${last?.value}" n'est pas refermé`, 
       errorPos: last?.pos || 0 
+      tokens: []
     };
   }
 
@@ -84,6 +86,7 @@ export function analyzeExpression(expr: string, validNames: string[]): ParseResu
           isValid: false, 
           errorMessage: `L'élément "${token.value}" n'existe pas dans le modèle`, 
           errorPos: token.pos 
+          tokens: []
         };
       }
     }
@@ -156,6 +159,7 @@ export function analyzeExpression(expr: string, validNames: string[]): ParseResu
       isValid: false, 
       errorMessage: `L'expression ne peut pas commencer par l'opérateur "${firstToken.value}"`, 
       errorPos: firstToken.pos 
+      tokens: []
     };
   }
   if (lastToken.type === 'OPERATOR') {
@@ -163,6 +167,7 @@ export function analyzeExpression(expr: string, validNames: string[]): ParseResu
       isValid: false, 
       errorMessage: `L'expression ne peut pas se terminer par l'opérateur "${lastToken.value}"`, 
       errorPos: lastToken.pos 
+      tokens: []
     };
   }
   
