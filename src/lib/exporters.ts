@@ -251,7 +251,7 @@ export function generateDEPS(
       .map(id => tasks.find(t => t.id === id)?.name)
       .filter(Boolean);
     if (groupTaskNames.length >= 2) {
-      deps += ` GroupIncompatible${idx} : IncompatibleSet([${groupTaskNames.map(name => `${CONTROLER_NAME}.${name}`).join(', ')}]);\n`;
+      deps += ` GroupIncompatible${idx} : Incompatible(${groupTaskNames.map(name => `${CONTROLER_NAME}.${name}`).join(', ')});\n`;
     }
   });
 
@@ -308,7 +308,11 @@ export function generateDEPS(
       listoftasks+=`,${CONTROLER_NAME}.${task.name}.Aut`;
     }     
   })
+
+
   deps +=`Blo ([${listofoptimisations}],[${listoftasks}]);\n`;
+  
+
   
   deps += 'End\n \n';
 
