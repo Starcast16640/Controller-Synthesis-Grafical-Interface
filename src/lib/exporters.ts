@@ -230,13 +230,13 @@ export function generateDEPS(
     const authH = buildDepsHierarchy(task.authorization_expression, allNames, `${task.name}_Auth`);
     deps += `\n    (* Logic for ${task.name} *)\n`;
     deps += authH.elements;
-    deps += `    ${task.name}InitialCondition : InitialCondition(${CONTROLER_NAME}.${authH.finalVar}, ${CONTROLER_NAME}.${task.name}); \n`;
+    deps += `    ${task.name}InitialCondition : InitialCondition(${CONTROLER_NAME}.${task.name}, ${CONTROLER_NAME}.${authH.finalVar} ); \n`;
     if (task.final_condition !== 'AUTO' && task.final_condition !== '') {
       const finalH = buildDepsHierarchy(task.final_condition, allNames, `${task.name}_Fin`);
       deps += finalH.elements;
-      deps += `    ${task.name}FinalCondition : FinalCondition(${CONTROLER_NAME}.${finalH.finalVar}, ${CONTROLER_NAME}.${task.name});\n`;
+      deps += `    ${task.name}FinalCondition : FinalCondition(${CONTROLER_NAME}.${task.name}, ${CONTROLER_NAME}.${finalH.finalVar});\n`;
     } else {
-      deps += `    ${task.name}FinalCondition : FinalCondition(${CONTROLER_NAME}.F${task.name}, ${CONTROLER_NAME}.${task.name});\n`;
+      deps += `    ${task.name}FinalCondition : FinalCondition(${CONTROLER_NAME}.${task.name}, ${CONTROLER_NAME}.F${task.name});\n`;
     }
     
     if (task.type.includes('reactivable')) {
