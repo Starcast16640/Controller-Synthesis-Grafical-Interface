@@ -208,15 +208,15 @@ export function generateDEPS(
     }
   });
 
-  deps += '\n(* ========== OBSERVERS For Succession constraint========== *)\n';
-  successionArrows.forEach((arrow,idx) => {
+  deps += '\n(* ========== SUCCESSION ARROWS (Memory) ========== *)\n';
+  successionArrows.forEach((arrow, idx) => {
     if (arrow.from_type === 'task') {
       const task = tasks.find((t) => t.id === arrow.from_id);
-      deps += ` Arrow${idx} : ObserverEndOfTask(${task?.name || 'unknown'});\n`;
+      deps += `    Arrow${idx} : SuccessionArrowEndOfTask(${task?.name || 'unknown'});\n`;
     } else {
-      deps += ` Arrow${idx} : ObserverElementOfSuccessionConstraint();\n`;
+      deps += `    Arrow${idx} : SuccessionArrowOfSuccessionConstraint();\n`;
     }
-  })
+  });
     
   deps += ' Properties\nEnd\n \n';
 
@@ -257,33 +257,31 @@ export function generateDEPS(
   
   
   successionNodes.forEach((node, idx) => {
-    let inArrow = '';
-    let outArrow = '';
     const nodeName = node.name || `node${idx}`;
-    const modelBase = node.is_initial ? 'InitialSuccessionNode' : 'SuccessionNode';
-    const guardH = buildDepsHierarchy(node.expression, allNames, `${nodeName}_Guard`);
-    deps += `\n    (* Guard Logic for Node ${nodeName} *)\n`;
-    deps += guardH.elements;
+    const h = buildDepsHierarchy(node.expression, allNames, `${nodeName}_Guard`);
+    deps += `\n    (* Logic for Node ${nodeName} *)\n`;
+    deps += h.elements;
+    
+    let inArrows = [];
+    let outArrows = [];
+    successionArrows.forEach((arrow, aIdx) => {
+      if (arrow.to_id === node.id) inArrows.push(`Arrow${aIdx}`);
+      if (arrow.from_id === node.id) outArrows.push(`Arrow${aIdx}`);
+    });
+    
+    let modelName = 'SuccessionNodeAll';
+    if (node.split_type === 'only_one') modelName = 'SuccessionNodeOnlyOne';
+    if (node.split_type === 'none') modelName = 'SuccessionNodeSimple';
 
-    deps += `    ${nodeName} : ${modelBase}`;
-    if (guardH.finalVar !== "TRUE") {
-      deps += `(expression := ${guardH.finalVar})`; 
+
+    deps += `    ${nodeName} : ${modelName}`;
+    if (h.finalVar !== "TRUE") {
+      deps += `(logic := ${h.finalVar})`; 
     }
     
-    if (node.split_type === 'only_one') {
-       deps += `OnlyOne(`;
-    } else {
-      deps += `All(`;
-    }
-    successionArrows.forEach((arrow,idx) => {
-      if (arrow.to_id === node.id) {
-        inArrow += `${CONTROLER_NAME}.Arrow${idx},`;
-      }
-      if (arrow.from_id === node.id) {
-        outArrow += `,${CONTROLER_NAME}.Arrow${idx}`;
-      }
-    })
-   deps += `${inArrow}0${outArrow}); \n`; 
+    const inStr = inArrows.join(', ');
+    const outStr = outArrows.join(', ');
+    deps += `(${inStr}${inStr ? ', ' : ''}0${outStr ? ', ' : ''}${outStr}); \n`; 
   });
 
   tasks.forEach((task) => {
