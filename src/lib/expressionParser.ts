@@ -43,7 +43,7 @@ export function analyzeExpression(expr: string, validNames: string[]): ParseResu
       tokens.push({ type: 'OPERATOR', value: symbol, pos });
     } 
     else if (unknown) {
-      return { isValid: false, errorMessage: `Caractère non reconnu : ${unknown}`, errorPos: pos, tokens[] };
+      return { isValid: false, errorMessage: `Caractère non reconnu : ${unknown}`, errorPos: pos, tokens: [] };
     }
   }
 
