@@ -151,7 +151,7 @@ export function analyzeExpression(expr: string, validNames: string[]): ParseResu
     }
   }
 
-  if (tokens.length === 0) return { isValid: true, errorMessage: null, errorPos: null };
+  if (tokens.length === 0) return { isValid: true, errorMessage: null, errorPos: null, tokens: [] };
   const firstToken = tokens[0];
   const lastToken = tokens[tokens.length - 1];
   if (firstToken.type === 'OPERATOR' && BINARY_OPS.includes(firstToken.value)) {
