@@ -18,8 +18,8 @@ export function analyzeExpression(expr: string, validNames: string[]): ParseResu
     return { isValid: true, errorMessage: null, errorPos: null, tokens: [] };
   }
   
-  const BINARY_OPS = ['AND', 'OR', 'XOR', 'NOT', '>=', '<=', '>', '<', '=', '!='];
-  const UNARY_OPS = ['↑', '↓'];
+  const BINARY_OPS = ['AND', 'OR', 'XOR', '>=', '<=', '>', '<', '=', '!='];
+  const UNARY_OPS = ['↑', '↓', 'NOT'];
   const regex = /([A-Za-z0-9_]+)|(\(|\)|\[|\])|(>=|<=|!=|↑|↓|>|<|=)|(\s+)|(.)/gi;
   let match;
   const tokens: Token[] = [];
