@@ -697,7 +697,6 @@ export function SuccessionView() {
               </div>
             </label>
             <label className="block text-[10px] font-bold text-gray-400 uppercase mb-1">Split Type (Execution Mode)</label>
-            <label className="block text-[10px] font-bold text-gray-400 uppercase mb-1">Split Type (Execution Mode)</label>
             <select
               value={nodeForm.split_type}
               onChange={(e) => setNodeForm({ ...nodeForm, split_type: e.target.value as any })}
