@@ -15,7 +15,7 @@ export interface ParseResult {
 
 export function analyzeExpression(expr: string, validNames: string[]): ParseResult {
   if (!expr || expr.trim() === '' || expr.toUpperCase() === 'TRUE') {
-    return { isValid: true, errorMessage: null, errorPos: null };
+    return { isValid: true, errorMessage: null, errorPos: null, tokens[] };
   }
   
   const BINARY_OPS = ['AND', 'OR', 'XOR', 'NOT', '>=', '<=', '>', '<', '=', '!='];
@@ -43,7 +43,7 @@ export function analyzeExpression(expr: string, validNames: string[]): ParseResu
       tokens.push({ type: 'OPERATOR', value: symbol, pos });
     } 
     else if (unknown) {
-      return { isValid: false, errorMessage: `Caractère non reconnu : ${unknown}`, errorPos: pos };
+      return { isValid: false, errorMessage: `Caractère non reconnu : ${unknown}`, errorPos: pos, tokens[] };
     }
   }
 
@@ -60,7 +60,7 @@ export function analyzeExpression(expr: string, validNames: string[]): ParseResu
           return { 
             isValid: false, 
             errorMessage: `Symbole fermant "${token.value}" sans ouverture correspondante`, 
-            errorPos: token.pos 
+            errorPos: token.pos, 
             tokens: []
           };
         }
@@ -73,7 +73,7 @@ export function analyzeExpression(expr: string, validNames: string[]): ParseResu
     return { 
       isValid: false, 
       errorMessage: `Le symbole "${last?.value}" n'est pas refermé`, 
-      errorPos: last?.pos || 0 
+      errorPos: last?.pos || 0, 
       tokens: []
     };
   }
@@ -85,7 +85,7 @@ export function analyzeExpression(expr: string, validNames: string[]): ParseResu
         return { 
           isValid: false, 
           errorMessage: `L'élément "${token.value}" n'existe pas dans le modèle`, 
-          errorPos: token.pos 
+          errorPos: token.pos, 
           tokens: []
         };
       }
@@ -158,7 +158,7 @@ export function analyzeExpression(expr: string, validNames: string[]): ParseResu
     return { 
       isValid: false, 
       errorMessage: `L'expression ne peut pas commencer par l'opérateur "${firstToken.value}"`, 
-      errorPos: firstToken.pos 
+      errorPos: firstToken.pos,
       tokens: []
     };
   }
@@ -166,7 +166,7 @@ export function analyzeExpression(expr: string, validNames: string[]): ParseResu
     return { 
       isValid: false, 
       errorMessage: `L'expression ne peut pas se terminer par l'opérateur "${lastToken.value}"`, 
-      errorPos: lastToken.pos 
+      errorPos: lastToken.pos, 
       tokens: []
     };
   }
