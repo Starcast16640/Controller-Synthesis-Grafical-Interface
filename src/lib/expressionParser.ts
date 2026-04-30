@@ -97,7 +97,7 @@ export function analyzeExpression(expr: string, validNames: string[]): ParseResu
     const current = tokens[i];
     const next = tokens[i + 1];
 
-    if (UNARY_OPS.includes(current.value)) {
+    if (['↑', '↓'].includes(current.value) && next) {
       if (next.pos > (current.pos + current.value.length)) {
         return { 
           isValid: false, 
@@ -182,10 +182,9 @@ export function normalizeExpression(tokens: Token[]): string {
 
     result += token.value;
     if (next) {
-      const isCurrentPunctuation = ['(', '[', '↑', '↓', 'NOT'].includes(token.value);
-      const isNextPunctuation = [')', ']', ',', '.'].includes(next.value);
-      
-      if (!isCurrentPunctuation && !isNextPunctuation) {
+      const noSpaceAfter = ['(', '[', '↑', '↓'].includes(token.value);
+      const noSpaceBefore = [')', ']', ',', '.', 'NOT'].includes(next.value);
+      if (!noSpaceAfter && !noSpaceBefore) {
         result += " ";
       }
     }
