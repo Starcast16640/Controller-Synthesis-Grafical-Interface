@@ -533,7 +533,7 @@ export function SuccessionView() {
                     : isSelected
                       ? 'bg-blue-200 border-4 border-blue-600 scale-110 shadow-lg' 
                       : isInit 
-                        ? 'bg-emerald-400 border-double border-4 border-emerald-700'
+                        ? 'bg-emerald-400 border-double border-[6px] border-emerald-700'
                         : 'bg-yellow-300 border-2 border-yellow-600 cursor-pointer hover:bg-yellow-400'
                 }`}
                 style={{
@@ -558,7 +558,7 @@ export function SuccessionView() {
               >
                 <span className={`font-bold pointer-events-none ${isInit ? 'text-[10px] text-emerald-900' : 'text-sm text-yellow-900'}`}>
                   {isInit ? 'INIT' : (
-                    node.split_type === 'none' ? '' : (node.split_type === 'both' ? '⊕' : '|')
+                    node.split_type === 'none' ? '' : (node.split_type === 'both' ? '&' : '1')
                   )}
                 </span>
                 <div 
@@ -695,8 +695,8 @@ export function SuccessionView() {
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent mb-4"
             >
               <option value="none">None</option>
-              <option value="both">Both (⊕)</option>
-              <option value="only_one">Only One (|)</option>
+              <option value="both">Both (& - AND)</option>
+              <option value="only_one">Only One (1 - XOR)</option>
             </select>
             <div className="flex gap-2">
               <button
