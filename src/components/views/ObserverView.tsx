@@ -320,7 +320,7 @@ export function ObserverView() {
             <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
               <label className="block text-[10px] font-bold text-gray-400 uppercase mb-2">Helper Tools</label>
               <div className="flex flex-wrap gap-2 mb-3">
-                {['AND', 'OR', 'NOT', 'XOR'].map(op => (
+                {['AND', 'OR', 'XOR'].map(op => (
                   <button key={op} type="button" 
                     onMouseDown={(e) => e.preventDefault()}
                     onClick={() => insertVariable(` ${op} `)}
@@ -329,7 +329,7 @@ export function ObserverView() {
                   </button>
                 ))}
                 
-                {['(', ')', '↑', '↓', '>', '<', '=', '!=', '[', ']'].map(op => (
+                {['NOT', '(', ')', '↑', '↓', '>', '<', '=', '!=', '[', ']'].map(op => (
                   <button key={op} type="button" 
                     onMouseDown={(e) => e.preventDefault()}
                     onClick={() => insertVariable(op)}
