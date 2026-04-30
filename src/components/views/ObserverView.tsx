@@ -320,7 +320,7 @@ export function ObserverView() {
             <div className="p-3 bg-gray-50 rounded-lg border border-gray-200">
               <label className="block text-[10px] font-bold text-gray-400 uppercase mb-2">Helper Tools</label>
               <div className="flex flex-wrap gap-2 mb-3">
-                {['AND', 'OR','XOR'].map(op => (
+                {['AND', 'OR', 'NOT', 'XOR'].map(op => (
                   <button key={op} type="button" 
                     onMouseDown={(e) => e.preventDefault()}
                     onClick={() => insertVariable(` ${op} `)}
@@ -329,7 +329,7 @@ export function ObserverView() {
                   </button>
                 ))}
                 
-                {['NOT', '(', ')', '↑', '↓', '>', '<', '=', '!=', '[', ']'].map(op => (
+                {['(', ')', '↑', '↓', '>', '<', '=', '!=', '[', ']'].map(op => (
                   <button key={op} type="button" 
                     onMouseDown={(e) => e.preventDefault()}
                     onClick={() => insertVariable(op)}
@@ -428,7 +428,7 @@ export function ObserverView() {
                       {observer.name}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      <span className="text-xs bg-gray-100 px-2 py-1 rounded truncate block max-w-xs">
+                      <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">
                         {observer.type}
                       </span>
                     </td>
@@ -437,7 +437,7 @@ export function ObserverView() {
                         {getExpressionDisplay(observer)}
                       </code>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium"> 
                       <button
                         onClick={() => handleEdit(observer)}
                         className="text-blue-600 hover:text-blue-900 mr-4"
