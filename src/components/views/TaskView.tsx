@@ -455,7 +455,7 @@ export function TaskView() {
                     <td className="px-6 py-4 whitespace-nowrap text-sm">
                       <div className="flex gap-1 flex-wrap">
                         {task.type.map((t) => (
-                          <span key={t} className="px-2 py-1 bg-purple-100 text-purple-800 rounded text-xs">
+                          <span key={t} className="text-xs bg-gray-100 px-2 py-1 rounded truncate block max-w-xs">
                             {t}
                           </span>
                         ))}
