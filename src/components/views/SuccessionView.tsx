@@ -668,14 +668,6 @@ export function SuccessionView() {
                     {o.name}
                   </button>
                 ))}
-                {tasks.map(t => (
-                  <button key={t.id} type="button" 
-                    onMouseDown={(e) => e.preventDefault()}
-                    onClick={() => insertInModal(t.name)}
-                    className="px-2 py-1 bg-purple-50 text-purple-700 rounded text-[10px] border border-purple-200 hover:bg-purple-100">
-                    {t.name}
-                  </button>
-                ))}
               </div>
             </div>
             {!diag.isValid && (
