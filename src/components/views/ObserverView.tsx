@@ -428,7 +428,7 @@ export function ObserverView() {
                       {observer.name}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs">
+                      <span className="text-xs bg-gray-100 px-2 py-1 rounded truncate block max-w-xs">
                         {observer.type}
                       </span>
                     </td>
