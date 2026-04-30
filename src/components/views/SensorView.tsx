@@ -185,7 +185,7 @@ export function SensorView() {
                       {sensor.name}
                     </td>
                     <td className="px-6 py-4 text-sm text-gray-500">
-                      <span className="text-xs bg-gray-100 px-2 py-1 rounded truncate block max-w-xs">
+                      <span className="text-xs bg-gray-100 px-2 py-1 rounded">
                         {sensor.type}
                       </span>
                     </td>
