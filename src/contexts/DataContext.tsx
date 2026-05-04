@@ -34,9 +34,9 @@ interface DataContextType {
   addSuccessionNode: (node: Omit<SuccessionNode, 'id' | 'created_at'>) => void;
   updateSuccessionNode: (id: string, node: Partial<Omit<SuccessionNode, 'id' | 'created_at'>>) => void;
   deleteSuccessionNode: (id: string) => void;
-  counters: any[]; 
-  addCounter: (counter: any) => void;
-  updateCounter: (id: string, updates: any) => void;
+  counters: Counter[];
+  addCounter: (counter: Omit<Counter, 'id' | 'created_at'>) => void;
+  updateCounter: (id: string, updates: Partial<Counter>) => void;
   deleteCounter: (id: string) => void;
   refreshData: () => void;
 }
