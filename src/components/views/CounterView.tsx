@@ -86,19 +86,19 @@ export function CounterView() {
               />
             </div>
           </div>
-          <div className="flex gap-2 pt-4">
-            <button 
-              type="submit" 
-              className="px-6 py-2 bg-blue-600 text-white rounded-lg font-bold hover:bg-blue-700 transition-all shadow-md h-10"
+          <div className="flex gap-2">
+            <button
+              type="submit"
+              className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
             >
-              {editingId ? 'Update' : '+ Add Counter'}
+              <Plus className="w-4 h-4" />
+              {editingId ? 'Update' : 'Add'}
             </button>
-            
             {editingId && (
-              <button 
-                type="button" 
-                onClick={handleCancel} 
-                className="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg font-bold h-10"
+              <button
+                type="button"
+                onClick={handleCancel}
+                className="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors"
               >
                 Cancel
               </button>
