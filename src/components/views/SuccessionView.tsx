@@ -619,7 +619,7 @@ export function SuccessionView() {
               placeholder="Node Expression"
               value={nodeForm.expression}
               onChange={(e) => setNodeForm({ ...nodeForm, expression: e.target.value })}
-              className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 font-mono text-sm transition-all resize-none mb-4 ${
+              className={`w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent mb-4 ${
                 !diag.isValid 
                   ? 'border-red-500 bg-red-50 focus:ring-red-500 text-red-900' 
                   : 'border-gray-300 focus:ring-blue-500'
