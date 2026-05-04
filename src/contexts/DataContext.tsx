@@ -222,6 +222,17 @@ export function DataProvider({ children }: { children: ReactNode }) {
           expression: (res.tokens?.length > 0) ? normalizeExpression(res.tokens) : n.expression
         };
       });
+
+      const cleanCounters = counters.map(c => {
+        const newExprs = { ...c.expressions } as any;
+        Object.keys(newExprs).forEach(key => {
+          if (newExprs[key]) {
+            const res = analyzeExpression(newExprs[key], allNames);
+            if (res.tokens?.length > 0) newExprs[key] = normalizeExpression(res.tokens);
+          }
+        });
+        return { ...c, expressions: newExprs };
+      });
       const projectData = {
         sensors,
         observers: cleanObservers,
@@ -260,6 +271,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
         if (data.incompatibilityLinks) setIncompatibilityLinks(data.incompatibilityLinks);
         if (data.successionNodes) setSuccessionNodes(data.successionNodes);
         if (data.successionArrows) setSuccessionArrows(data.successionArrows);
+        if (data.counters) setCounters(data.counters);
         showNotify("Project loaded successfully!", "success");
       } catch (err) {
         showNotify("Error: Invalid JSON file.", "error");
