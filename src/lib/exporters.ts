@@ -60,7 +60,7 @@ function buildDepsHierarchy(expr: string, allNames: string[], prefix: string): {
   const opStack: string[] = [];
   
   const generateOp = (op: string, val1: string, val2?: string) => {
-    const id = `${prefix}_Op${opCount++}`;
+    const id = `${prefix}Op${opCount++}`;
     let model = "";
     const isVal2Numeric = val2 && /^\d+$/.test(val2);
 
@@ -191,14 +191,14 @@ export function generateDEPS(
     const exprs = observer.expressions as any;
 
     if (observer.type === 'expression') {
-      const h = buildDepsHierarchy(exprs.main, allNames, `${observer.name}_Logic`);
+      const h = buildDepsHierarchy(exprs.main, allNames, `${observer.name}Logic`);
       deps += h.elements;
       deps += `    ${observer.name}: ObserverE(${h.finalVar});\n`;
     } 
     else if (observer.type === 'counter') {
-      const hInc = buildDepsHierarchy(exprs.increase, allNames, `${observer.name}_Inc`);
-      const hDec = buildDepsHierarchy(exprs.decrease, allNames, `${observer.name}_Dec`);
-      const hRes = buildDepsHierarchy(exprs.reset, allNames, `${observer.name}_Res`);
+      const hInc = buildDepsHierarchy(exprs.increase, allNames, `${observer.name}Inc`);
+      const hDec = buildDepsHierarchy(exprs.decrease, allNames, `${observer.name}Dec`);
+      const hRes = buildDepsHierarchy(exprs.reset, allNames, `${observer.name}Res`);
       deps += hInc.elements + hDec.elements + hRes.elements;
       deps += `    ${observer.name}: ObserverCounter(${hInc.finalVar}, ${hDec.finalVar}, ${hRes.finalVar});\n`;
     } 
