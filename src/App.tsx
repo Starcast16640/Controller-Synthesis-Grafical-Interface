@@ -4,6 +4,7 @@ import { Toolbar, type ViewType } from './components/Toolbar';
 import { SensorView } from './components/views/SensorView';
 import { ObserverView } from './components/views/ObserverView';
 import { TaskView } from './components/views/TaskView';
+import { CounterView } from './components/views/CounterView';
 import { IncompatibilityView } from './components/views/IncompatibilityView';
 import { SuccessionView } from './components/views/SuccessionView';
 import { CombinedView } from './components/views/CombinedView';
