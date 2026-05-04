@@ -1,4 +1,4 @@
-import { Download, Gauge, Eye, ListTodo, Link2, GitBranch, Layers, Save, Upload, CheckCircle2, Hash } from 'lucide-react';
+import { Download, Gauge, Eye, ListTodo, Link2, GitBranch, Layers, Save, Upload, CheckCircle2, Hash, Binary } from 'lucide-react';
 
 export type ViewType = 'sensors' | 'observers' | 'tasks' | 'counters' | 'incompatibility' | 'succession' | 'combined';
 
@@ -15,7 +15,7 @@ export function Toolbar({ currentView, onViewChange, onExport, onJsonExport, onJ
     { id: 'sensors', label: 'Sensors', icon: <Gauge className="w-4 h-4" /> },
     { id: 'observers', label: 'Observers', icon: <Eye className="w-4 h-4" /> },
     { id: 'tasks', label: 'Tasks', icon: <ListTodo className="w-4 h-4" /> },
-    { id: 'counters', label: 'Counters', icon: <Hash className="w-4 h-4" /> },
+    { id: 'counters', label: 'Counters', icon: <Binary className="w-4 h-4" /> },
     { id: 'incompatibility', label: 'Incompatibility', icon: <Link2 className="w-4 h-4" /> },
     { id: 'succession', label: 'Succession', icon: <GitBranch className="w-4 h-4" /> },
     { id: 'combined', label: 'Combined', icon: <Layers className="w-4 h-4" /> },
