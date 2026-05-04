@@ -109,6 +109,24 @@ export function CounterView() {
     }, 0);
   };
 
+  useEffect(() => {
+    const allNames = [
+      ...sensors.map(s => s.name), 
+      ...observers.map(o => o.name), 
+      ...tasks.map(t => t.name), 
+      ...counters.map(c => c.name),
+      'TRUE', 'FALSE'
+    ];
+    const currentExpr = (formData.expressions as any)[activeField] || '';
+    const result = analyzeExpression(currentExpr, allNames);
+
+    setDiag({
+      isValid: result.isValid,
+      errorMessage: result.errorMessage || "",
+      errorPos: result.errorPos || 0
+    });
+  }, [formData.expressions, activeField, sensors, observers, tasks, counters]);
+
   return (
     <div className="p-6 h-full overflow-y-auto">
       <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">Counters</h2>
