@@ -122,6 +122,7 @@ export function CounterView() {
               <div>
                 <label className="block text-xs font-bold text-green-500 uppercase mb-1">Increase Condition (+1)</label>
                 <input 
+                  ref={increaseRef}
                   type="text" 
                   onFocus={() => setActiveField('increase')} 
                   value={formData.expressions.increase}
@@ -137,6 +138,7 @@ export function CounterView() {
               <div>
                 <label className="block text-xs font-bold text-red-500 uppercase mb-1">Decrease Condition (-1)</label>
                 <input 
+                  ref={decreaseRef}
                   type="text" 
                   onFocus={() => setActiveField('decrease')} 
                   value={formData.expressions.decrease}
@@ -153,6 +155,7 @@ export function CounterView() {
             <div>
               <label className="block text-xs font-bold text-orange-500 uppercase mb-1">Reset Condition (Force to 0)</label>
               <input 
+                ref={resetRef}
                 type="text" 
                 onFocus={() => setActiveField('reset')} 
                 value={formData.expressions.reset}
