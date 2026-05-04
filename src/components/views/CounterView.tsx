@@ -141,7 +141,7 @@ export function CounterView() {
             <div className="flex flex-wrap gap-2 mb-3">
               {['AND', 'OR', 'XOR'].map(op => (
                 <button key={op} type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => insertVariable(` ${op} `)}
-                  className="px-2 py-1.5 bg-white border-2 border-gray-300 rounded-md text-[10px] font-black text-gray-700 hover:bg-gray-50 shadow-sm">
+                  className="px-2 py-1 bg-white border border-gray-300 rounded text-[10px] font-bold text-gray-500 hover:bg-gray-100">
                   {op}
                 </button>
               ))}
