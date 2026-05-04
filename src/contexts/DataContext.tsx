@@ -307,6 +307,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
         addSuccessionNode,
         updateSuccessionNode,
         deleteSuccessionNode,
+        counters,
         addCounter,
         updateCounter,
         deleteCounter,
