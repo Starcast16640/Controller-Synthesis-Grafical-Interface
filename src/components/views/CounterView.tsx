@@ -50,8 +50,8 @@ export function CounterView() {
     <div className="p-6 h-full overflow-y-auto">
       <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">Counters</h2>
       <div className="bg-white rounded-lg shadow-md p-6 mb-8 border border-gray-200">
-        <h3 className="text-sm font-bold text-gray-800 mb-4">
-          {editingId ? 'Edit Counter' : 'Add New Counter'} 
+        <h3 className="text-lg font-semibold text-gray-800 mb-4">
+          {editingId ? 'Edit Counter' : 'Add New Counter'}
         </h3>
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-3 gap-4">
