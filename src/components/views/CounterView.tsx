@@ -17,6 +17,8 @@ export function CounterView() {
   const increaseRef = useRef<HTMLInputElement>(null);
   const decreaseRef = useRef<HTMLInputElement>(null);
   const resetRef = useRef<HTMLInputElement>(null);
+  const nameInputRef = useRef<HTMLInputElement>(null);
+  const addressInputRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -71,14 +73,13 @@ export function CounterView() {
 
   const insertVariable = (value: string) => {
     if (!activeField) return;
-    
     const refs: Record<string, React.RefObject<HTMLInputElement>> = {
       increase: increaseRef,
       decrease: decreaseRef,
       reset: resetRef
     };
 
-    const input = refs[activeField].current;
+    const input = refs[activeField]?.current;
     if (!input || document.activeElement !== input) return;
 
     const start = input.selectionStart || 0;
