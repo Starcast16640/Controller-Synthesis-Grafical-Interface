@@ -19,6 +19,11 @@ export function CounterView() {
   return (
     <div className="p-6 h-full overflow-y-auto">
       <h2 className="text-2xl font-bold text-gray-900">Counters</h2>
+      <div className="bg-white rounded-lg shadow-md p-6 mb-8 border border-gray-200">
+        <h3 className="text-sm font-bold text-gray-800 mb-4">
+          {editingId ? 'Edit Counter' : 'Add New Counter'}
+        </h3>
+      </div>
     </div>
   );
 }
