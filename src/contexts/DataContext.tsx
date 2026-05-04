@@ -70,7 +70,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
         if (data.incompatibilityLinks) setIncompatibilityLinks(data.incompatibilityLinks);
         if (data.successionNodes) setSuccessionNodes(data.successionNodes);
         if (data.successionArrows) setSuccessionArrows(data.successionArrows);
-        if (data.counters) setCounters(data.sensors);
+        if (data.counters) setCounters(data.counters);
       } catch (e) {
         console.error("Erreur de lecture du backup");
       }
