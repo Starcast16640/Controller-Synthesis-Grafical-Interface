@@ -110,7 +110,7 @@ export function CounterView() {
                   onFocus={() => setActiveField('decrease')} 
                   value={formData.expressions.decrease}
                   onChange={(e) => setFormData({...formData, expressions: {...formData.expressions, decrease: e.target.value}})}
-                  className={`w-full px-4 py-2 h-10 border rounded-lg focus:outline-none focus:ring-2 font-mono text-sm transition-all ${
+                  className={`w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
                     activeField === 'decrease' && !diag.isValid 
                       ? 'border-red-500 bg-red-50 focus:ring-red-500 text-red-900 shadow-sm' 
                       : 'border-gray-300 focus:ring-blue-500 shadow-none'
@@ -126,7 +126,7 @@ export function CounterView() {
                 onFocus={() => setActiveField('reset')} 
                 value={formData.expressions.reset}
                 onChange={(e) => setFormData({...formData, expressions: {...formData.expressions, reset: e.target.value}})}
-                className={`w-full px-4 py-2 h-10 border rounded-lg focus:outline-none focus:ring-2 font-mono text-sm transition-all ${
+                className={`w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
                   activeField === 'reset' && !diag.isValid 
                     ? 'border-red-500 bg-red-50 focus:ring-red-500 text-red-900 shadow-sm' 
                     : 'border-gray-300 focus:ring-blue-500 shadow-none'
