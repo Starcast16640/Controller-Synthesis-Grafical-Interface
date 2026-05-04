@@ -86,6 +86,55 @@ export function CounterView() {
               />
             </div>
           </div>
+          <div className="space-y-4 p-4 bg-gray-50/50 rounded-xl border border-gray-100">
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-[10px] font-bold text-green-600 uppercase tracking-wider mb-1">Increase Condition (+1)</label>
+                <input 
+                  type="text" 
+                  onFocus={() => setActiveField('increase')} 
+                  value={formData.expressions.increase}
+                  onChange={(e) => setFormData({...formData, expressions: {...formData.expressions, increase: e.target.value}})}
+                  className={`w-full px-4 py-2 h-10 border rounded-lg focus:outline-none focus:ring-2 font-mono text-sm transition-all ${
+                    activeField === 'increase' && !diag.isValid 
+                      ? 'border-red-500 bg-red-50 focus:ring-red-500 text-red-900 shadow-sm' 
+                      : 'border-gray-300 focus:ring-blue-500 shadow-none'
+                  }`} 
+                  placeholder="e.g. sensor_pulse" 
+                />
+              </div>
+              <div>
+                <label className="block text-[10px] font-bold text-red-600 uppercase tracking-wider mb-1">Decrease Condition (-1)</label>
+                <input 
+                  type="text" 
+                  onFocus={() => setActiveField('decrease')} 
+                  value={formData.expressions.decrease}
+                  onChange={(e) => setFormData({...formData, expressions: {...formData.expressions, decrease: e.target.value}})}
+                  className={`w-full px-4 py-2 h-10 border rounded-lg focus:outline-none focus:ring-2 font-mono text-sm transition-all ${
+                    activeField === 'decrease' && !diag.isValid 
+                      ? 'border-red-500 bg-red-50 focus:ring-red-500 text-red-900 shadow-sm' 
+                      : 'border-gray-300 focus:ring-blue-500 shadow-none'
+                  }`} 
+                  placeholder="e.g. sensor_error" 
+                />
+              </div>
+            </div>
+            <div>
+              <label className="block text-[10px] font-bold text-orange-600 uppercase tracking-wider mb-1">Reset Condition (Force to 0)</label>
+              <input 
+                type="text" 
+                onFocus={() => setActiveField('reset')} 
+                value={formData.expressions.reset}
+                onChange={(e) => setFormData({...formData, expressions: {...formData.expressions, reset: e.target.value}})}
+                className={`w-full px-4 py-2 h-10 border rounded-lg focus:outline-none focus:ring-2 font-mono text-sm transition-all ${
+                  activeField === 'reset' && !diag.isValid 
+                    ? 'border-red-500 bg-red-50 focus:ring-red-500 text-red-900 shadow-sm' 
+                    : 'border-gray-300 focus:ring-blue-500 shadow-none'
+                }`} 
+                placeholder="e.g. button_reset" 
+              />
+            </div>
+          </div>
           <div className="flex gap-2">
             <button
               type="submit"
