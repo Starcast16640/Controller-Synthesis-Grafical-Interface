@@ -135,6 +135,55 @@ export function CounterView() {
               />
             </div>
           </div>
+          <div className="mt-4 p-3 bg-gray-50 rounded-lg border border-gray-200">
+            <label className="block text-[10px] font-bold text-gray-400 uppercase mb-2">Helper Tools</label>
+            
+            <div className="flex flex-wrap gap-2 mb-3">
+              {['AND', 'OR', 'XOR'].map(op => (
+                <button key={op} type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => insertVariable(` ${op} `)}
+                  className="px-2 py-1.5 bg-white border-2 border-gray-300 rounded-md text-[10px] font-black text-gray-700 hover:bg-gray-50 shadow-sm">
+                  {op}
+                </button>
+              ))}
+              <button type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => insertVariable('NOT ')}
+                className="px-2 py-1.5 bg-white border-2 border-gray-300 rounded-md text-[10px] font-black text-gray-700 hover:bg-gray-50 shadow-sm">
+                NOT
+              </button>
+              {['(', ')', '↑', '↓', '>', '<', '=', '!=', '[', ']'].map(op => (
+                <button key={op} type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => insertVariable(op)}
+                  className="px-3 py-1.5 bg-white border-2 border-gray-300 rounded-md text-[10px] font-black text-gray-700 hover:bg-gray-50 shadow-sm">
+                  {op}
+                </button>
+              ))}
+            </div>
+          
+            <div className="flex flex-wrap gap-2">
+              {sensors.map(s => (
+                <button key={s.id} type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => insertVariable(s.name)}
+                  className="px-2 py-1 bg-green-50 text-green-700 rounded text-[10px] border border-green-200 hover:bg-green-100">
+                  {s.name}
+                </button>
+              ))}
+              {observers.map(o => (
+                <button key={o.id} type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => insertVariable(o.name)}
+                  className="px-2 py-1 bg-blue-50 text-blue-700 rounded text-[10px] border border-blue-200 hover:bg-blue-100">
+                  {o.name}
+                </button>
+              ))}
+              {tasks.map(t => (
+                <button key={t.id} type="button" onMouseDown={(e) => e.preventDefault()} onClick={() => insertVariable(t.name)}
+                  className="px-2 py-1 bg-purple-50 text-purple-700 rounded text-[10px] border border-purple-200 hover:bg-purple-100">
+                  {t.name}
+                </button>
+              ))}
+            </div>
+          </div>        
+          {!diag.isValid && (
+            <div className="mt-4 p-2 bg-red-50 border-l-4 border-red-500 text-red-700 text-[11px] flex items-center gap-2">
+              <span className="font-black underline uppercase tracking-tighter">Diagnostic :</span>
+              <span>{diag.errorMessage} (Pos: {diag.errorPos})</span>
+            </div>
+          )}
           <div className="flex gap-2">
             <button
               type="submit"
