@@ -15,6 +15,7 @@ export function Toolbar({ currentView, onViewChange, onExport, onJsonExport, onJ
     { id: 'sensors', label: 'Sensors', icon: <Gauge className="w-4 h-4" /> },
     { id: 'observers', label: 'Observers', icon: <Eye className="w-4 h-4" /> },
     { id: 'tasks', label: 'Tasks', icon: <ListTodo className="w-4 h-4" /> },
+    { id: 'counters', label: 'Counters', icon: <Hash className="w-4 h-4" /> },
     { id: 'incompatibility', label: 'Incompatibility', icon: <Link2 className="w-4 h-4" /> },
     { id: 'succession', label: 'Succession', icon: <GitBranch className="w-4 h-4" /> },
     { id: 'combined', label: 'Combined', icon: <Layers className="w-4 h-4" /> },
