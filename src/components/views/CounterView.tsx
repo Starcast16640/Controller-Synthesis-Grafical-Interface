@@ -21,15 +21,24 @@ export function CounterView() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name) return;
+    
+    if (!diag.isValid) {
+      const refs: any = { increase: increaseRef, decrease: decreaseRef, reset: resetRef };
+      const activeInput = refs[activeField]?.current;
+      if (activeInput) {
+        activeInput.setCustomValidity(diag.errorMessage || "Expression invalide");
+        activeInput.reportValidity();
+      }
+      return;
+    }
     const nameExists = [...tasks, ...sensors, ...observers, ...counters].some(
       item => item.name.toLowerCase() === formData.name.toLowerCase() && item.id !== editingId
     );
-
     if (nameExists) {
-      showNotify(`The name "${formData.name}" is already used.`, "error");
+      nameInputRef.current?.setCustomValidity("Ce nom est déjà utilisé par un autre élément.");
+      nameInputRef.current?.reportValidity();
       return;
     }
-
     if (editingId) {
       updateCounter(editingId, formData);
       setEditingId(null);
@@ -41,6 +50,7 @@ export function CounterView() {
       expressions: { increase: '', decrease: '', reset: '' } 
     });
   };
+  
   const handleCancel = () => {
     setEditingId(null);
     setFormData({ 
