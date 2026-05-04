@@ -24,7 +24,7 @@ export function CounterView() {
           {editingId ? 'Edit Counter' : 'Add New Counter'} 
         </h3>
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="grid grid-cols-4 gap-4">
+          <div className="grid grid-cols-3 gap-4">
             <div>
               <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Counter Name</label>
               <input 
