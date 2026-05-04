@@ -47,6 +47,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
   const [successionArrows, setSuccessionArrows] = useState<SuccessionArrow[]>([]);
   const [successionNodes, setSuccessionNodes] = useState<SuccessionNode[]>([]);
   const [notification, setNotification] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+  const [counters, setCounters] = useState<any[]>([]);
   const [isInitialized, setIsInitialized] = useState(false);
 
   const showNotify = (message: string, type: 'success' | 'error' = 'success') => {
@@ -167,6 +168,21 @@ export function DataProvider({ children }: { children: ReactNode }) {
     showNotify("Node deleted", "success");
   };
 
+  const addCounter = (counter: any) => {
+    const newObj = { ...counter, id: crypto.randomUUID(), created_at: new Date().toISOString() };
+    setCounters(prev => [...prev, newObj]);
+    showNotify("Counter created", "success");
+  };
+
+  const updateCounter = (id: string, updates: any) => {
+    setCounters(prev => prev.map(c => c.id === id ? { ...c, ...updates } : c));
+  };
+
+  const deleteCounter = (id: string) => {
+    setCounters(prev => prev.filter(c => c.id !== id));
+    showNotify("Counter deleted", "error");
+  };
+  
   const exportProject = () => {
     try {
       const allNames = [
