@@ -37,10 +37,21 @@ export function CounterView() {
       item => item.name.toLowerCase() === formData.name.toLowerCase() && item.id !== editingId
     );
     if (nameExists) {
-      nameInputRef.current?.setCustomValidity("Ce nom est déjà utilisé par un autre élément.");
+      nameInputRef.current?.setCustomValidity("Ce nom est déjà utilisé dans le modèle.");
       nameInputRef.current?.reportValidity();
       return;
     }
+    if (formData.factory_io_address) {
+      const addrExists = [...tasks, ...sensors, ...counters].some(
+        item => item.factory_io_address === formData.factory_io_address && item.id !== editingId
+      );
+      if (addrExists) {
+        addressInputRef.current?.setCustomValidity("Cette adresse mapping est déjà utilisée.");
+        addressInputRef.current?.reportValidity();
+        return;
+      }
+    }
+    
     if (editingId) {
       updateCounter(editingId, formData);
       setEditingId(null);
@@ -134,10 +145,14 @@ export function CounterView() {
             <div>
               <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Address Mapping</label>
               <input 
+                ref={addressInputRef}
                 type="text" 
                 placeholder="100"
                 value={formData.factory_io_address} 
-                onChange={(e) => setFormData({...formData, factory_io_address: e.target.value})} 
+                onChange={(e) => {
+                  e.target.setCustomValidity("");
+                  setFormData({...formData, factory_io_address: e.target.value});
+                }} 
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
               />
             </div>
