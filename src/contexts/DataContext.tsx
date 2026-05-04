@@ -239,6 +239,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
         tasks: cleanTasks,
         incompatibilityLinks,
         successionNodes: cleanNodes,
+        counters: cleanCounters,
         successionArrows
       };
       const json = JSON.stringify(projectData, null, 2);
