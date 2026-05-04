@@ -62,7 +62,7 @@ export function CounterView() {
                 placeholder="ex : Cpt_Cycle"
                 value={formData.name} 
                 onChange={(e) => setFormData({...formData, name: e.target.value})} 
-                className="w-full px-4 py-2 h-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
                 required 
               />
             </div>
@@ -72,7 +72,7 @@ export function CounterView() {
                 type="number" 
                 value={formData.initial_value} 
                 onChange={(e) => setFormData({...formData, initial_value: parseInt(e.target.value) || 0})} 
-                className="w-full px-4 py-2 h-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
               />
             </div>
             <div>
@@ -82,7 +82,7 @@ export function CounterView() {
                 placeholder="100"
                 value={formData.factory_io_address} 
                 onChange={(e) => setFormData({...formData, factory_io_address: e.target.value})} 
-                className="w-full px-4 py-2 h-10 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" 
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
               />
             </div>
           </div>
