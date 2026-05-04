@@ -49,6 +49,16 @@ export function CounterView() {
     });
   };
 
+  const handleEdit = (counter: any) => {
+    setEditingId(counter.id);
+    setFormData({
+      name: counter.name,
+      initial_value: counter.initial_value,
+      factory_io_address: counter.factory_io_address || '',
+      expressions: counter.expressions
+    });
+  };
+
   const insertVariable = (value: string) => {
     if (!activeField) return;
     
