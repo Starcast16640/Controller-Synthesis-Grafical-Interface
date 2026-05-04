@@ -100,7 +100,7 @@ export function CounterView() {
                       ? 'border-red-500 bg-red-50 focus:ring-red-500 text-red-900 shadow-sm' 
                       : 'border-gray-300 focus:ring-blue-500 shadow-none'
                   }`} 
-                  placeholder="e.g. sensor_pulse" 
+                  placeholder="Increase Expression" 
                 />
               </div>
               <div>
@@ -115,7 +115,7 @@ export function CounterView() {
                       ? 'border-red-500 bg-red-50 focus:ring-red-500 text-red-900 shadow-sm' 
                       : 'border-gray-300 focus:ring-blue-500 shadow-none'
                   }`} 
-                  placeholder="e.g. sensor_error" 
+                  placeholder="Decrease Expression" 
                 />
               </div>
             </div>
@@ -131,7 +131,7 @@ export function CounterView() {
                     ? 'border-red-500 bg-red-50 focus:ring-red-500 text-red-900 shadow-sm' 
                     : 'border-gray-300 focus:ring-blue-500 shadow-none'
                 }`} 
-                placeholder="e.g. button_reset" 
+                placeholder="Reset Expression" 
               />
             </div>
           </div>
