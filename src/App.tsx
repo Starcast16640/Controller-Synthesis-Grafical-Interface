@@ -32,6 +32,7 @@ function AppContent() {
         {currentView === 'sensors' && <SensorView />}
         {currentView === 'observers' && <ObserverView />}
         {currentView === 'tasks' && <TaskView />}
+        {currentView === 'counters' && <CounterView />}
         {currentView === 'incompatibility' && <IncompatibilityView />}
         {currentView === 'succession' && <SuccessionView />}
         {currentView === 'combined' && <CombinedView />}
