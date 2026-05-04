@@ -23,6 +23,8 @@ const DEPS_MODELS = {
   DOWN: 'OpDown',
 };
 
+const clean = (name: string) => name.replace(/_/g, '');
+
 /**
  * Transforme une expression textuelle en suite d'opérations DEPS
  * Exemple: "A AND B OR C" -> ["Op1 : ModelAND(A, B)", "Op2 : ModelOR(Op1, C)"]
@@ -60,7 +62,7 @@ function buildDepsHierarchy(expr: string, allNames: string[], prefix: string): {
   const opStack: string[] = [];
   
   const generateOp = (op: string, val1: string, val2?: string) => {
-    const id = `${prefix}Op${opCount++}`;
+    const id = `${clean(prefix)}Op${opCount++}`;
     let model = "";
     const isVal2Numeric = val2 && /^\d+$/.test(val2);
 
@@ -89,9 +91,9 @@ function buildDepsHierarchy(expr: string, allNames: string[], prefix: string): {
     }
 
     if (val2) {
-      elements += `    ${id} : ${model} (${val1}, ${val2});\n`;
+      elements += `    ${id} : ${model} (${clean(val1)}, ${clean(val2)});\n`;
     } else {
-      elements += `    ${id} : ${model} (${val1});\n`;
+      elements += `    ${id} : ${model} (${clean(val1)});\n`;
     }
     return id;
   };
@@ -110,7 +112,7 @@ function buildDepsHierarchy(expr: string, allNames: string[], prefix: string): {
 
   tokens.forEach(t => {
     if (t.type === 'ID') {
-      outputQueue.push(t.value);
+      outputQueue.push(clean(t.value));
     } else if (['(', '['].includes(t.value)) {
       opStack.push(t.value);
     } else if ([')', ']'].includes(t.value)) {
