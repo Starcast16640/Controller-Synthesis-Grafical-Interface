@@ -126,7 +126,7 @@ export function SensorView() {
                   e.target.setCustomValidity("");
                   setFormData({ ...formData, factory_io_address: e.target.value });
                 }}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
             <div className="flex gap-2 h-[42px]">
