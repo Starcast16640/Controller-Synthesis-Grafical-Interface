@@ -19,7 +19,7 @@ export function CounterView() {
   return (
     <div className="p-6 h-full overflow-y-auto">
       <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2 uppercase text-[11px] tracking-widest">
-        <Binary className="w-5 h-5 text-blue-600" /> Counters a
+        <Binary className="w-5 h-5 text-blue-600" /> Counters
       </h2>
     </div>
   );
