@@ -89,7 +89,7 @@ export function CounterView() {
           <div className="space-y-4 p-4 bg-gray-50/50 rounded-xl border border-gray-100">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-[10px] font-bold text-green-600 uppercase tracking-wider mb-1">Increase Condition (+1)</label>
+                <label className="block text-xs font-bold text-green-500 uppercase mb-1">Increase Condition (+1)</label>
                 <input 
                   type="text" 
                   onFocus={() => setActiveField('increase')} 
@@ -104,7 +104,7 @@ export function CounterView() {
                 />
               </div>
               <div>
-                <label className="block text-[10px] font-bold text-red-600 uppercase tracking-wider mb-1">Decrease Condition (-1)</label>
+                <label className="block text-xs font-bold text-red-500 uppercase mb-1">Decrease Condition (-1)</label>
                 <input 
                   type="text" 
                   onFocus={() => setActiveField('decrease')} 
@@ -120,7 +120,7 @@ export function CounterView() {
               </div>
             </div>
             <div>
-              <label className="block text-[10px] font-bold text-orange-600 uppercase tracking-wider mb-1">Reset Condition (Force to 0)</label>
+              <label className="block text-xs font-bold text-orange-500 uppercase mb-1">Reset Condition (Force to 0)</label>
               <input 
                 type="text" 
                 onFocus={() => setActiveField('reset')} 
