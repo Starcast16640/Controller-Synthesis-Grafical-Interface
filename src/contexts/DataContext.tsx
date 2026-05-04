@@ -34,6 +34,10 @@ interface DataContextType {
   addSuccessionNode: (node: Omit<SuccessionNode, 'id' | 'created_at'>) => void;
   updateSuccessionNode: (id: string, node: Partial<Omit<SuccessionNode, 'id' | 'created_at'>>) => void;
   deleteSuccessionNode: (id: string) => void;
+  counters: any[]; 
+  addCounter: (counter: any) => void;
+  updateCounter: (id: string, updates: any) => void;
+  deleteCounter: (id: string) => void;
   refreshData: () => void;
 }
 
@@ -66,6 +70,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
         if (data.incompatibilityLinks) setIncompatibilityLinks(data.incompatibilityLinks);
         if (data.successionNodes) setSuccessionNodes(data.successionNodes);
         if (data.successionArrows) setSuccessionArrows(data.successionArrows);
+        if (data.counters) setCounters(data.sensors);
       } catch (e) {
         console.error("Erreur de lecture du backup");
       }
@@ -80,10 +85,10 @@ export function DataProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!isInitialized) return;
     const projectState = {
-      sensors, observers, tasks, incompatibilityLinks, successionNodes, successionArrows
+      sensors, observers, tasks, incompatibilityLinks, successionNodes, successionArrows, counters
     };
     localStorage.setItem('current_project_backup', JSON.stringify(projectState));
-  }, [sensors, observers, tasks, incompatibilityLinks, successionNodes, successionArrows]);
+  }, [sensors, observers, tasks, incompatibilityLinks, successionNodes, successionArrows, counters]);
 
   const addSensor = (sensor: Omit<Sensor, 'id' | 'created_at'>) => {
     const newSensor = { ...sensor, id: crypto.randomUUID(), created_at: new Date().toISOString() };
@@ -289,6 +294,9 @@ export function DataProvider({ children }: { children: ReactNode }) {
         addSuccessionNode,
         updateSuccessionNode,
         deleteSuccessionNode,
+        addCounter,
+        updateCounter,
+        deleteCounter,
         refreshData,
         exportProject,
         importProject,
