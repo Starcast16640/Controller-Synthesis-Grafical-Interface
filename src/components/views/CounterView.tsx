@@ -14,6 +14,9 @@ export function CounterView() {
     factory_io_address: '',
     expressions: { increase: '', decrease: '', reset: '' }
   });
+  const increaseRef = useRef<HTMLInputElement>(null);
+  const decreaseRef = useRef<HTMLInputElement>(null);
+  const resetRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,6 +47,34 @@ export function CounterView() {
       name: '', initial_value: 0, factory_io_address: '', 
       expressions: { increase: '', decrease: '', reset: '' } 
     });
+  };
+
+  const insertVariable = (value: string) => {
+    if (!activeField) return;
+    
+    const refs: Record<string, React.RefObject<HTMLInputElement>> = {
+      increase: increaseRef,
+      decrease: decreaseRef,
+      reset: resetRef
+    };
+
+    const input = refs[activeField].current;
+    if (!input || document.activeElement !== input) return;
+
+    const start = input.selectionStart || 0;
+    const end = input.selectionEnd || 0;
+    const currentText = (formData.expressions as any)[activeField] || '';
+    const newText = currentText.substring(0, start) + value + currentText.substring(end);
+
+    setFormData({
+      ...formData,
+      expressions: { ...formData.expressions, [activeField]: newText }
+    });
+    setTimeout(() => {
+      input.focus();
+      const newPos = start + value.length;
+      input.setSelectionRange(newPos, newPos);
+    }, 0);
   };
 
   return (
