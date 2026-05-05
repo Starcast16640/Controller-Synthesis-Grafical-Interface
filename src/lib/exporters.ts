@@ -223,7 +223,7 @@ export function generateDEPS(
     const hRes = buildDepsHierarchy(exprs.reset, allNames, `${clean(counter.name)}Res`);
     
     deps += hInc.elements + hDec.elements + hRes.elements;
-    deps += `    ${clean(counter.name)} : ObserverCounter(${hInc.finalVar}, ${hDec.finalVar}, ${hRes.finalVar});\n`;
+    deps += `    ${clean(counter.name)} : Counter(${hInc.finalVar}, ${hDec.finalVar}, ${hRes.finalVar});\n`;
   });
   
   deps += '\n(* ========== SUCCESSION ARROWS (Memory) ========== *)\n';
