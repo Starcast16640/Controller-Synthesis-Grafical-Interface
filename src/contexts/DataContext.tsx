@@ -22,8 +22,8 @@ interface DataContextType {
   deleteSensor: (id: string) => void;
   addObserver: (observer: Omit<Observer, 'id' | 'created_at'>) => void;
   updateObserver: (id: string, observer: Partial<Omit<Observer, 'id' | 'created_at'>>) => void;
-  deleteObserver: (id: string) => void;if (data.counters) setCounters(data.sensors);
-  addTask: (task: Omit<Task, 'id' | 'created_at'>) => void;
+  deleteObserver: (id: string) => void;
+  addTask: (task: Omit<Task, 'id' | 'created_at'>) => void; 
   updateTask: (id: string, task: Partial<Omit<Task, 'id' | 'created_at'>>) => void;
   deleteTask: (id: string) => void;
   addIncompatibilityLink: (link: Omit<IncompatibilityLink, 'id' | 'created_at'>) => void;
