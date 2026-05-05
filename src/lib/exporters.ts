@@ -2,6 +2,7 @@ import type {
   Sensor,
   Observer,
   Task,
+  Counters,
   IncompatibilityLink,
   SuccessionArrow,
   SuccessionNode,
