@@ -211,6 +211,19 @@ export function generateDEPS(
     }
   });
 
+  deps += '\n(* ========== DEDICATED COUNTERS ========== *)\n';
+  counters.forEach((counter) => {
+    deps += `\n    (* Logic for Counter ${clean(counter.name)} *)\n`;
+    const exprs = counter.expressions as any;
+
+    const hInc = buildDepsHierarchy(exprs.increase, allNames, `${clean(counter.name)}Inc`);
+    const hDec = buildDepsHierarchy(exprs.decrease, allNames, `${clean(counter.name)}Dec`);
+    const hRes = buildDepsHierarchy(exprs.reset, allNames, `${clean(counter.name)}Res`);
+    
+    deps += hInc.elements + hDec.elements + hRes.elements;
+    deps += `    ${clean(counter.name)} : ObserverCounter(${hInc.finalVar}, ${hDec.finalVar}, ${hRes.finalVar});\n`;
+  });
+  
   deps += '\n(* ========== SUCCESSION ARROWS (Memory) ========== *)\n';
   successionArrows.forEach((arrow, idx) => {
     if (arrow.from_type === 'task') {
