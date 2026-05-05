@@ -78,7 +78,7 @@ export function CounterView() {
       name: counter.name,
       initial_value: counter.initial_value,
       factory_io_address: counter.factory_io_address || '',
-      expressions: counter.expressions
+      expressions: counter.expressions || { increase: '', decrease: '', reset: '' }
     });
   };
 
@@ -95,7 +95,7 @@ export function CounterView() {
 
     const start = input.selectionStart || 0;
     const end = input.selectionEnd || 0;
-    const currentText = (formData.expressions as any)[activeField] || '';
+    const currentText = (formData.expressions?.[activeField as keyof typeof formData.expressions]) || '';
     const newText = currentText.substring(0, start) + value + currentText.substring(end);
 
     setFormData({
@@ -117,7 +117,7 @@ export function CounterView() {
       ...counters.map(c => c.name),
       'TRUE', 'FALSE'
     ];
-    const currentExpr = (formData.expressions as any)[activeField] || '';
+    const currentExpr = (formData.expressions?.[activeField as keyof typeof formData.expressions]) || '';
     const result = analyzeExpression(currentExpr, allNames);
 
     setDiag({
@@ -319,9 +319,9 @@ export function CounterView() {
                   </td>
                   <td className="px-6 py-4">
                     <div className="flex gap-2 text-[9px] font-black uppercase">
-                      <span className="bg-green-50 text-green-700 px-1.5 py-0.5 rounded border border-green-100">Inc: {c.expressions.increase}</span>
-                      <span className="bg-red-50 text-red-700 px-1.5 py-0.5 rounded border border-red-100">Dec: {c.expressions.decrease}</span>
-                      <span className="bg-orange-50 text-orange-700 px-1.5 py-0.5 rounded border border-orange-100">Res: {c.expressions.reset}</span>
+                      <span className="bg-green-50 text-green-700 px-1.5 py-0.5 rounded border border-green-100">Inc: {c.expressions?.increase || ''}</span>
+                      <span className="bg-red-50 text-red-700 px-1.5 py-0.5 rounded border border-red-100">Dec: {c.expressions?.decrease || ''}</span>
+                      <span className="bg-orange-50 text-orange-700 px-1.5 py-0.5 rounded border border-orange-100">Res: {c.expressions?.reset || ''}</span>
                     </div>
                   </td>
                   <td className="px-6 py-4 text-right">
