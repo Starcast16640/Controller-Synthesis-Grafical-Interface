@@ -4,7 +4,7 @@ import { Plus, Trash2, Edit } from 'lucide-react';
 import type { Observer } from '../../lib/database.types';
 import { analyzeExpression } from '../../lib/expressionParser';
 
-type ObserverType = 'expression' | 'counter' | 'jk_flip_flop';
+type ObserverType = 'expression' | 'jk_flip_flop';
 
 interface ObserverFormData {
   name: string;
