@@ -138,6 +138,7 @@ export function generateDEPS(
   sensors: Sensor[],
   observers: Observer[],
   tasks: Task[],
+  counters: Counter[]
   incompatibilityLinks: IncompatibilityLink[],
   successionArrows: SuccessionArrow[],
   successionNodes: SuccessionNode[]
