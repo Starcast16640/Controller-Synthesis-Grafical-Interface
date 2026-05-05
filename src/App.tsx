@@ -13,7 +13,7 @@ import { generateDEPS, generateGRAFCET, downloadFile } from './lib/exporters';
 
 function AppContent() {
   const [currentView, setCurrentView] = useState<ViewType>('sensors');
-  const { sensors, observers, tasks, incompatibilityLinks, successionArrows, successionNodes, exportProject, importProject } = useData();
+  const { sensors, observers, tasks, counters, incompatibilityLinks, successionArrows, successionNodes, exportProject, importProject } = useData();
 
   const handleExport = () => {
     const deps = generateDEPS(sensors, observers, tasks, counters, incompatibilityLinks, successionArrows, successionNodes);
