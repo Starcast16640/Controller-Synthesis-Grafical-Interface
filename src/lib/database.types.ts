@@ -36,21 +36,21 @@ export interface Database {
         Row: {
           id: string;
           name: string;
-          type: 'expression' | 'counter' | 'jk_flip_flop';
+          type: 'expression' | 'jk_flip_flop';
           expressions: Json;
           created_at: string;
         };
         Insert: {
           id?: string;
           name: string;
-          type: 'expression' | 'counter' | 'jk_flip_flop';
+          type: 'expression' | 'jk_flip_flop';
           expressions: Json;
           created_at?: string;
         };
         Update: {
           id?: string;
           name?: string;
-          type?: 'expression' | 'counter' | 'jk_flip_flop';
+          type?: 'expression' | 'jk_flip_flop';
           expressions?: Json;
           created_at?: string;
         };
