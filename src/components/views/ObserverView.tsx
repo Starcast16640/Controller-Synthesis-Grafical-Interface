@@ -178,7 +178,6 @@ export function ObserverView() {
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="expression">Expression</option>
-                  <option value="counter">Counter</option>
                   <option value="jk_flip_flop">JK Flip-Flop</option>
                 </select>
               </div>
@@ -203,52 +202,6 @@ export function ObserverView() {
                 }`}
               />
             )}
-
-            {formData.type === 'counter' && (
-              <div className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-[10px] font-bold text-green-600 uppercase mb-1">Increase (+)</label>
-                    <input
-                      type="text"
-                      placeholder="Increase Expression"
-                      onFocus={() => setActiveField('increase')}
-                      value={formData.expressions.increase || ''}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          expressions: { ...formData.expressions, increase: e.target.value },
-                        })
-                      }
-                      className={`w-full px-4 py-2 border rounded-lg focus:ring-2 font-mono text-sm transition-colors ${
-                        activeField === 'increase' && !diag.isValid 
-                          ? 'border-red-500 bg-red-50 focus:ring-red-500 text-red-900' 
-                          : 'border-gray-300 focus:ring-blue-500'
-                      }`}
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-[10px] font-bold text-red-600 uppercase mb-1">Decrease (-)</label>
-                    <input
-                      type="text"
-                      placeholder="Decrease Expression"
-                      onFocus={() => setActiveField('decrease')}
-                      value={formData.expressions.decrease || ''}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          expressions: { ...formData.expressions, decrease: e.target.value },
-                        })
-                      }
-                      className={`w-full px-4 py-2 border rounded-lg focus:ring-2 font-mono text-sm transition-colors ${
-                        activeField === 'decrease' && !diag.isValid 
-                          ? 'border-red-500 bg-red-50 focus:ring-red-500 text-red-900' 
-                          : 'border-gray-300 focus:ring-blue-500'
-                      }`}
-                    />
-                  </div>
-                </div>
                   <div>
                     <label className="block text-[10px] font-bold text-orange-600 uppercase mb-1">Reset (Set 0)</label>
                     <input
