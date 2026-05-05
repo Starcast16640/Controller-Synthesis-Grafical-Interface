@@ -213,7 +213,7 @@ export function generateDEPS(
     }
   });
 
-  deps += '\n(* ========== DEDICATED COUNTERS ========== *)\n';
+  deps += '\n(* ========== COUNTERS ========== *)\n';
   counters.forEach((counter) => {
     deps += `\n    (* Logic for Counter ${clean(counter.name)} *)\n`;
     const exprs = counter.expressions as any;
