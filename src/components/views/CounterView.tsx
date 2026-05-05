@@ -296,6 +296,50 @@ export function CounterView() {
           </div>
         </form>
       </div>
+      <div className="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden mt-8">
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead className="bg-gray-50/50">
+            <tr className="text-[10px] font-bold text-gray-400 uppercase tracking-wider border-b border-gray-200">
+              <th className="px-6 py-3 text-left">Counter Name</th>
+              <th className="px-6 py-3 text-left">Mapping & Range</th>
+              <th className="px-6 py-3 text-left">Logic</th>
+              <th className="px-6 py-3 text-right pr-12">Actions</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-100">
+            {counters.length === 0 ? (
+              <tr><td colSpan={4} className="px-6 py-10 text-center text-gray-400 italic">No counters defined yet.</td></tr>
+            ) : (
+              counters.map((c) => (
+                <tr key={c.id} className="hover:bg-gray-50 transition-colors">
+                  <td className="px-6 py-4 font-bold text-gray-900">{c.name}</td>
+                  <td className="px-6 py-4">
+                    <div className="text-[10px] font-mono text-gray-400">Addr: {c.factory_io_address || '-'}</div>
+                    <div className="text-[10px] font-bold text-gray-600 uppercase">Init: {c.initial_value}</div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="flex gap-2 text-[9px] font-black uppercase">
+                      <span className="bg-green-50 text-green-700 px-1.5 py-0.5 rounded border border-green-100">Inc: {c.expressions.increase}</span>
+                      <span className="bg-red-50 text-red-700 px-1.5 py-0.5 rounded border border-red-100">Dec: {c.expressions.decrease}</span>
+                      <span className="bg-orange-50 text-orange-700 px-1.5 py-0.5 rounded border border-orange-100">Res: {c.expressions.reset}</span>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 text-right">
+                    <div className="flex justify-end gap-2 pr-2">
+                      <button onClick={() => { setEditingId(c.id); setFormData(c); }} className="p-2 text-blue-600 hover:bg-blue-50 rounded-full transition-colors">
+                        <Edit className="w-4 h-4" />
+                      </button>
+                      <button onClick={() => deleteCounter(c.id)} className="p-2 text-red-600 hover:bg-red-50 rounded-full transition-colors">
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
