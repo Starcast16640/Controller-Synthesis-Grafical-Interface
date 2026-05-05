@@ -318,7 +318,7 @@ export function CounterView() {
                     <div className="text-[10px] font-bold text-gray-600 uppercase">Init: {c.initial_value}</div>
                   </td>
                   <td className="px-6 py-4">
-                    <div className="flex gap-2 text-[9px] font-black uppercase">
+                    <div className="flex gap-2 text-[9px] font-black">
                       <span className="bg-green-50 text-green-700 px-1.5 py-0.5 rounded border border-green-100">Inc: {c.expressions?.increase || ''}</span>
                       <span className="bg-red-50 text-red-700 px-1.5 py-0.5 rounded border border-red-100">Dec: {c.expressions?.decrease || ''}</span>
                       <span className="bg-orange-50 text-orange-700 px-1.5 py-0.5 rounded border border-orange-100">Res: {c.expressions?.reset || ''}</span>
