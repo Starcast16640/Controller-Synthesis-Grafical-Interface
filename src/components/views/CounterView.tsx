@@ -312,7 +312,7 @@ export function CounterView() {
             ) : (
               counters.map((c) => (
                 <tr key={c.id} className="hover:bg-gray-50 transition-colors">
-                  <td className="px-6 py-4 font-bold text-gray-900">{c.name}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{c.name}</td>
                   <td className="px-6 py-4">
                     <div className="text-[10px] font-mono text-gray-400">Address : {c.factory_io_address || '-'}</div>
                     <div className="text-[10px] font-bold text-gray-600 uppercase">Init : {c.initial_value}</div>
