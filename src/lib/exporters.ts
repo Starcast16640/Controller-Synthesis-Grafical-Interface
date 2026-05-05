@@ -203,13 +203,6 @@ export function generateDEPS(
       deps += h.elements;
       deps += `    ${observer.name}: ObserverE(${h.finalVar});\n`;
     } 
-    else if (observer.type === 'counter') {
-      const hInc = buildDepsHierarchy(exprs.increase, allNames, `${observer.name}Inc`);
-      const hDec = buildDepsHierarchy(exprs.decrease, allNames, `${observer.name}Dec`);
-      const hRes = buildDepsHierarchy(exprs.reset, allNames, `${observer.name}Res`);
-      deps += hInc.elements + hDec.elements + hRes.elements;
-      deps += `    ${observer.name}: ObserverCounter(${hInc.finalVar}, ${hDec.finalVar}, ${hRes.finalVar});\n`;
-    } 
     else if (observer.type === 'jk_flip_flop') {
       const hSet = buildDepsHierarchy(exprs.set, allNames, `${observer.name}_Set`);
       const hRes = buildDepsHierarchy(exprs.reset, allNames, `${observer.name}_Res`);
