@@ -186,7 +186,13 @@ export function generateDEPS(
       deps += ` F${task.name} : ObserverE(${PHYSICAL_SYSTEM_NAME}.F${task.name}); (*end of task "${task.name}"*)\n`;
     }
   })
-  const allNames = [...sensors.map(s => s.name), ...observers.map(o => o.name), ...tasks.map(t => t.name), 'TRUE', 'FALSE', 'AUTO'];
+  const allNames = [
+  ...sensors.map(s => s.name), 
+  ...observers.map(o => o.name), 
+  ...tasks.map(t => t.name), 
+  ...counters.map(c => c.name),
+  'TRUE', 'FALSE', 'AUTO'
+];
 
   observers.forEach((observer) => {
     deps += `\n    (* Logic for Observer ${observer.name} *)\n`;
