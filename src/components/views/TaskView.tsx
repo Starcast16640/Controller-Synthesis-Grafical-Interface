@@ -72,22 +72,14 @@ export function TaskView() {
   };
 
   useEffect(() => {
-    const allValidNames = [
-      ...sensors.map(s => s.name),
-      ...observers.map(o => o.name),
-      ...tasks.map(t => t.name),
-      ...counters.map(c => c.name),
-      'TRUE', 'FALSE', 'AUTO'
-    ];
+    const allValidNames = [...sensors.map(s => s.name), ...observers.map(o => o.name), ...tasks.map(t => t.name), ...counters.map(c => c.name), 'TRUE', 'FALSE', 'AUTO'];
+    const onlyCounterNames = counters.map(c => c.name);
+
     const target = activeField === 'auth' ? formData.authorization_expression : formData.final_condition;
-    const result = analyzeExpression(target, allValidNames);
+    const result = analyzeExpression(target, allValidNames, onlyCounterNames);
     
-    setDiag({ 
-      isValid: result.isValid, 
-      errorMessage: result.errorMessage || "", 
-      errorPos: result.errorPos || 0 
-    });
-  }, [formData.authorization_expression, formData.final_condition, activeField, sensors, observers, tasks]);
+    setDiag({ isValid: result.isValid, errorMessage: result.errorMessage || "", errorPos: result.errorPos || 0 });
+  }, [formData.authorization_expression, formData.final_condition, activeField, sensors, observers, tasks, counters]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
