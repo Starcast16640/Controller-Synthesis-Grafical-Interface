@@ -39,6 +39,7 @@ interface DataContextType {
   updateCounter: (id: string, updates: Partial<Counter>) => void;
   deleteCounter: (id: string) => void;
   refreshData: () => void;
+  successionModules: SuccessionModule[];
 }
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
@@ -52,6 +53,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
   const [successionNodes, setSuccessionNodes] = useState<SuccessionNode[]>([]);
   const [notification, setNotification] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
   const [counters, setCounters] = useState<any[]>([]);
+  const [successionModules, setSuccessionModules] = useState<SuccessionModule[]>([]);
   const [isInitialized, setIsInitialized] = useState(false);
 
   const showNotify = (message: string, type: 'success' | 'error' = 'success') => {
