@@ -17,7 +17,7 @@ interface TaskFormData {
 const TASK_TYPES = ['simple', 'reactivable', 'pausable', 'interruptible'];
 
 export function TaskView() {
-  const { tasks, sensors, observers, addTask, updateTask, deleteTask } = useData();
+  const { tasks, sensors, observers, counters, addTask, updateTask, deleteTask } = useData();
   const [editingId, setEditingId] = useState<string | null>(null);
   const [activeField, setActiveField] = useState<'auth' | 'final' | null>(null);
   const getNextPriority = () => {
@@ -76,6 +76,7 @@ export function TaskView() {
       ...sensors.map(s => s.name),
       ...observers.map(o => o.name),
       ...tasks.map(t => t.name),
+      ...counters.map(c => c.name),
       'TRUE', 'FALSE', 'AUTO'
     ];
     const target = activeField === 'auth' ? formData.authorization_expression : formData.final_condition;
