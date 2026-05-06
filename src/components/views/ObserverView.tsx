@@ -70,7 +70,7 @@ export function ObserverView() {
       errorMessage: result.errorMessage || "",
       errorPos: result.errorPos || 0
     });
-  }, [formData.expressions, activeField, sensors, observers, tasks]);
+  }, [formData.expressions, activeField, sensors, observers, tasks, counters]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -296,11 +296,14 @@ export function ObserverView() {
                     {t.name}
                   </button>
                 ))}
-                {counters.map(t => (
-                  <button key={c.id} type="button" 
+                {counters.map(c => (
+                  <button 
+                    key={c.id} 
+                    type="button" 
                     onMouseDown={(e) => e.preventDefault()}
                     onClick={() => insertVariable(c.name)}
-                    className="px-2 py-1 bg-purple-50 text-purple-700 rounded text-[10px] border border-purple-200 hover:bg-purple-100">
+                    className="px-2 py-1 bg-orange-50 text-orange-700 rounded text-[10px] border border-orange-200 hover:bg-orange-100 transition-colors"
+                  >
                     {c.name}
                   </button>
                 ))}
