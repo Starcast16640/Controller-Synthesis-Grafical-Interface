@@ -91,10 +91,10 @@ export function DataProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (!isInitialized) return;
     const projectState = {
-      sensors, observers, tasks, incompatibilityLinks, successionNodes, successionArrows, counters
+      sensors, observers, tasks, incompatibilityLinks, successionNodes, successionArrows, counters, successionModules
     };
     localStorage.setItem('current_project_backup', JSON.stringify(projectState));
-  }, [sensors, observers, tasks, incompatibilityLinks, successionNodes, successionArrows, counters]);
+  }, [sensors, observers, tasks, incompatibilityLinks, successionNodes, successionArrows, counters, successionModules, isInitialized]);
 
   const addSensor = (sensor: Omit<Sensor, 'id' | 'created_at'>) => {
     const newSensor = { ...sensor, id: crypto.randomUUID(), created_at: new Date().toISOString() };
