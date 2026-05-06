@@ -681,9 +681,13 @@ export function SuccessionView() {
               </div>
             </div>
             {!diag.isValid && (
-              <div className="mb-4 p-2 bg-red-50 border-l-4 border-red-500 text-red-700 text-[10px] flex items-center gap-2">
-                <span className="font-black underline uppercase">Diagnostic :</span>
-                <span>{diag.errorMessage} (Pos: {diag.errorPos})</span>
+              <div className="mb-4 p-2 bg-red-50 border-l-4 border-red-500 text-red-700 text-[11px] flex items-start gap-2">
+                <span className="font-bold underline uppercase tracking-tighter whitespace-nowrap flex-shrink-0">
+                  Diagnostic :
+                </span>
+                <span className="leading-tight break-words">
+                  {diag.errorMessage} (Pos: {diag.errorPos})
+                </span>
               </div>
             )}
             <label className="flex items-center gap-3 mb-6 p-3 bg-emerald-50 border border-emerald-100 rounded-lg cursor-pointer hover:bg-emerald-100 transition-colors">
