@@ -160,6 +160,13 @@ export interface Database {
   };
 }
 
+export interface SuccessionModule {
+  id: string;
+  name: string;
+  task_ids: string[];
+  created_at: string;
+}
+
 export type Sensor = Database['public']['Tables']['sensors']['Row'];
 export type Observer = Database['public']['Tables']['observers']['Row'];
 export type Task = Database['public']['Tables']['tasks']['Row'];
