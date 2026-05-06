@@ -217,6 +217,18 @@ export function DataProvider({ children }: { children: ReactNode }) {
     setSuccessionModules(prev => [...prev, newModule]);
     showNotify("Module created successfully!", "success");
   };
+
+  const updateSuccessionModule = (id: string, updates: Partial<SuccessionModule>) => {
+    setSuccessionModules(prev => prev.map(m => m.id === id ? { ...m, ...updates } : m));
+    showNotify("Module updated", "success");
+  };
+
+  const deleteSuccessionModule = (id: string) => {
+    setSuccessionModules(prev => prev.filter(m => m.id !== id));
+    setSuccessionNodes(prev => prev.filter(n => n.module_id !== id));
+    setSuccessionArrows(prev => prev.filter(a => a.module_id !== id));
+    showNotify("Module deleted", "error");
+  };
   
   const exportProject = () => {
     try {
@@ -270,7 +282,8 @@ export function DataProvider({ children }: { children: ReactNode }) {
         incompatibilityLinks,
         successionNodes: cleanNodes,
         counters: cleanCounters,
-        successionArrows
+        successionArrows,
+        successionModules
       };
       const json = JSON.stringify(projectData, null, 2);
         const blob = new Blob([json], { type: 'application/json' });
@@ -303,6 +316,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
         if (data.successionNodes) setSuccessionNodes(data.successionNodes);
         if (data.successionArrows) setSuccessionArrows(data.successionArrows);
         if (data.counters) setCounters(data.counters);
+        if (data.successionModules) setSuccessionModules(data.successionModules);
         showNotify("Project loaded successfully!", "success");
       } catch (err) {
         showNotify("Error: Invalid JSON file.", "error");
@@ -344,6 +358,10 @@ export function DataProvider({ children }: { children: ReactNode }) {
         refreshData,
         exportProject,
         importProject,
+        successionModules,
+        addSuccessionModule,
+        updateSuccessionModule,
+        deleteSuccessionModule,
       }}
     >
       {children}
