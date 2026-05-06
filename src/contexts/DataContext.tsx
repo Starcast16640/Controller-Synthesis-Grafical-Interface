@@ -40,6 +40,9 @@ interface DataContextType {
   deleteCounter: (id: string) => void;
   refreshData: () => void;
   successionModules: SuccessionModule[];
+  addSuccessionModule: (module: Omit<SuccessionModule, 'id' | 'created_at'>) => void;
+  updateSuccessionModule: (id: string, updates: Partial<SuccessionModule>) => void;
+  deleteSuccessionModule: (id: string) => void;
 }
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
@@ -188,6 +191,30 @@ export function DataProvider({ children }: { children: ReactNode }) {
   const deleteCounter = (id: string) => {
     setCounters(prev => prev.filter(c => c.id !== id));
     showNotify("Counter deleted", "error");
+  };
+
+  const addSuccessionModule = (module: Omit<SuccessionModule, 'id' | 'created_at'>) => {
+    const nameExists = successionModules.some(m => m.name.toLowerCase() === module.name.toLowerCase());
+    if (nameExists) {
+      showNotify(`The name "${module.name}" is already used for a module.`, "error");
+      return;
+    }
+    const sortedNewIds = [...module.task_ids].sort();
+    const groupExists = successionModules.some(m => 
+      JSON.stringify([...m.task_ids].sort()) === JSON.stringify(sortedNewIds)
+    );
+
+    if (groupExists) {
+      showNotify("A module with this exact set of tasks already exists.", "error");
+      return;
+    }
+    const newModule = { 
+      ...module, 
+      id: crypto.randomUUID(), 
+      created_at: new Date().toISOString() 
+    };
+    setSuccessionModules(prev => [...prev, newModule]);
+    showNotify("Module created successfully!", "success");
   };
   
   const exportProject = () => {
