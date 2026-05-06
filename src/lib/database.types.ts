@@ -112,6 +112,7 @@ export interface Database {
           to_type: 'task' | 'node';
           to_id: string;
           created_at: string;
+          module_id: string | null;
         };
         Insert: {
           id?: string;
@@ -120,6 +121,7 @@ export interface Database {
           to_type: 'task' | 'node';
           to_id: string;
           created_at?: string;
+          module_id: string | null;
         };
         Update: {
           id?: string;
@@ -128,6 +130,7 @@ export interface Database {
           to_type?: 'task' | 'node';
           to_id?: string;
           created_at?: string;
+          module_id: string | null;
         };
       };
       succession_nodes: {
@@ -138,6 +141,7 @@ export interface Database {
           position_x: number;
           position_y: number;
           created_at: string;
+          module_id: string | null;
         };
         Insert: {
           id?: string;
@@ -146,6 +150,7 @@ export interface Database {
           position_x?: number;
           position_y?: number;
           created_at?: string;
+          module_id: string | null;
         };
         Update: {
           id?: string;
@@ -154,6 +159,7 @@ export interface Database {
           position_x?: number;
           position_y?: number;
           created_at?: string;
+          module_id: string | null;
         };
       };
     };
