@@ -58,7 +58,7 @@ export function ObserverView() {
       ...sensors.map(s => s.name),
       ...observers.map(o => o.name),
       ...tasks.map(t => t.name),
-      ...counters.map(c => c.name)
+      ...counters.map(c => c.name),
       'TRUE', 'FALSE'
     ];
 
