@@ -7,7 +7,7 @@ export interface Token {
 }
 
 export interface ParseResult {
-  analyzeExpressioisValid: boolean;
+  isValid: boolean;
   errorMessage: string | null;
   errorPos: number | null;
   tokens: Token[];
