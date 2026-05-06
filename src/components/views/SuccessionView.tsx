@@ -159,9 +159,11 @@ export function SuccessionView() {
       ...sensors.map(s => s.name),
       ...observers.map(o => o.name),
       ...tasks.map(t => t.name),
+      ...counters.map(c => c.name),
       'TRUE', 'FALSE', 'AUTO'
     ];
-    const result = analyzeExpression(nodeForm.expression || '', allValidNames);
+    const onlyCounterNames = counters.map(c => c.name);
+    const result = analyzeExpression(nodeForm.expression || '', allValidNames, onlyCounterNames);
 
     setDiag({
       isValid: result.isValid,
