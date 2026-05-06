@@ -63,7 +63,7 @@ export function ObserverView() {
     ];
     const onlyCounterNames = counters.map(c => c.name);
     const currentExpr = formData.expressions[activeField as keyof typeof formData.expressions] || '';
-    const result = analyzeExpression(currentExpr, allValidNames);
+    const result = analyzeExpression(currentExpr, allValidNames, onlyCounterNames);
 
     setDiag({
       isValid: result.isValid,
