@@ -674,7 +674,7 @@ export function SuccessionView() {
                   <button key={c.id} type="button" 
                     onMouseDown={(e) => e.preventDefault()}
                     onClick={() => insertInModal(c.name)}
-                    className="px-2 py-1 bg-blue-50 text-blue-700 rounded text-[10px] border border-blue-200 hover:bg-blue-100">
+                    className="px-2 py-1 bg-orange-50 text-orange-700 rounded text-[10px] border border-orange-200 hover:bg-orange-100 transition-colors">
                     {c.name}
                   </button>
                 ))}
