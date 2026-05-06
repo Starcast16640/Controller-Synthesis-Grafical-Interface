@@ -7,13 +7,13 @@ export interface Token {
 }
 
 export interface ParseResult {
-  isValid: boolean;
+  analyzeExpressioisValid: boolean;
   errorMessage: string | null;
   errorPos: number | null;
   tokens: Token[];
 }
 
-export function analyzeExpression(expr: string, validNames: string[]): ParseResult {
+export function analyzeExpression(expr: string, validNames: string[], counterNames: string[] = []): ParseResult {
   if (!expr || expr.trim() === '' || expr.toUpperCase() === 'TRUE') {
     return { isValid: true, errorMessage: null, errorPos: null, tokens: [] };
   }
