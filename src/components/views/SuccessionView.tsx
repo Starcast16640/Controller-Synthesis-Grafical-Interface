@@ -559,8 +559,12 @@ export function SuccessionView() {
                   });
                 }}
               >
-                <span className={`font-bold pointer-events-none ${isInit ? 'text-[10px] text-emerald-900' : 'text-sm text-yellow-900'}`}>
-                  { node.split_type === 'none' ? '' : (node.split_type === 'both' ? '&' : '1')}
+                <span className={`font-black pointer-events-none ${isInit ? 'text-emerald-900' : 'text-yellow-900'} ${node.split_type === 'both' ? 'text-lg' : 'text-base'}`}>
+                  {node.split_type === 'both' ? '&' : (
+                    node.split_type === 'only_one' ? '1' : (
+                      node.split_type === 'selection' ? '?' : ''
+                    )
+                  )}
                 </span>
                 <div 
                   className="absolute top-full mt-1 left-1/2 -translate-x-1/2"
@@ -711,6 +715,7 @@ export function SuccessionView() {
               <option value="none">None</option>
               <option value="both">Both (& - AND)</option>
               <option value="only_one">Only One (1 - XOR)</option>
+              <option value="selection">Selection (? - Condition)</option>
             </select>
             <div className="flex gap-2">
               <button
