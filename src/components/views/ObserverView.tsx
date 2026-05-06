@@ -19,7 +19,7 @@ interface ObserverFormData {
 }
 
 export function ObserverView() {
-  const { observers, sensors, tasks, addObserver, updateObserver, deleteObserver } = useData();
+  const { observers, sensors, tasks, counters, addObserver, updateObserver, deleteObserver } = useData();
   const [editingId, setEditingId] = useState<string | null>(null);
   const nameInputRef = useRef<HTMLInputElement>(null);
   const [formData, setFormData] = useState<ObserverFormData>({
