@@ -76,6 +76,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
         if (data.successionNodes) setSuccessionNodes(data.successionNodes);
         if (data.successionArrows) setSuccessionArrows(data.successionArrows);
         if (data.counters) setCounters(data.counters);
+        if (data.successionModules) setSuccessionModules(data.successionModules);
       } catch (e) {
         console.error("Erreur de lecture du backup");
       }
