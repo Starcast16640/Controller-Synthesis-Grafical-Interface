@@ -295,6 +295,14 @@ export function ObserverView() {
                     {t.name}
                   </button>
                 ))}
+                {counters.map(t => (
+                  <button key={c.id} type="button" 
+                    onMouseDown={(e) => e.preventDefault()}
+                    onClick={() => insertVariable(c.name)}
+                    className="px-2 py-1 bg-purple-50 text-purple-700 rounded text-[10px] border border-purple-200 hover:bg-purple-100">
+                    {c.name}
+                  </button>
+                ))}
               </div>
             </div>
 
