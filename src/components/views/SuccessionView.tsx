@@ -32,6 +32,7 @@ export function SuccessionView() {
     tasks,
     sensors,
     observers,
+    counters,
     updateTask,
     successionArrows,
     successionNodes,
