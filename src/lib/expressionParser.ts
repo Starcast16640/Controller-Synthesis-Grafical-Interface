@@ -93,50 +93,13 @@ export function analyzeExpression(expr: string, validNames: string[], counterNam
   }
   
   let isInsideBrackets = false;
-  for (let i = 0; i < tokens.length - 1; i++) {
+  for (let i = 0; i < tokens.length; i++) {
     const current = tokens[i];
     const next = tokens[i + 1];
 
-    if (['↑', '↓'].includes(current.value) && next) {
-      if (next.pos > (current.pos + current.value.length)) {
-        return { 
-          isValid: false, 
-          errorMessage: `L'opérateur "${current.value}" doit être collé à son élément (pas d'espace)`, 
-          errorPos: current.pos,
-          tokens: [] 
-        };
-      }
-    }
-
-    if (current.value === '=') {
-      if (next && (next.value === '>' || next.value === '<' || next.value === '!')) {
-        let correctSymbol = next.value === '!' ? '!=' : next.value + '=';
-        return { 
-          isValid: false, 
-          errorMessage: `Erreur de syntaxe : le signe "=" doit être à droite (ex: ${correctSymbol})`, 
-          errorPos: current.pos,
-          tokens: [] 
-        };
-      }
-    }
-    
     if (current.value === '[') isInsideBrackets = true;
-    if (current.value === ']') isInsideBrackets = false;
+    
     if (!isInsideBrackets) {
-      if (['>', '<', '=', '!=', '>=', '<='].includes(current.value)) {
-        return { 
-          isValid: false, 
-          errorMessage: `L'opérateur "${current.value}" n'est autorisé qu'à l'intérieur de crochets [ ]`, 
-          errorPos: current.pos, tokens: [] 
-        };
-      }
-      if (current.type === 'ID' && /^\d+$/.test(current.value)) {
-        return { 
-          isValid: false, 
-          errorMessage: `Les valeurs numériques doivent être placées dans des crochets [ ]`, 
-          errorPos: current.pos, tokens: [] 
-        };
-      }
       if (current.type === 'ID' && counterNames.includes(current.value)) {
         return { 
           isValid: false, 
@@ -144,16 +107,20 @@ export function analyzeExpression(expr: string, validNames: string[], counterNam
           errorPos: current.pos, tokens: [] 
         };
       }
+      if (current.type === 'ID' && /^\d+$/.test(current.value)) {
+        return { isValid: false, errorMessage: `Les valeurs numériques doivent être dans des crochets [ ]`, errorPos: current.pos, tokens: [] };
+      }
+      if (['>', '<', '=', '!=', '>=', '<='].includes(current.value)) {
+        return { isValid: false, errorMessage: `L'opérateur "${current.value}" doit être dans des crochets [ ]`, errorPos: current.pos, tokens: [] };
+      }
     }
+    if (current.value === ']') isInsideBrackets = false;
     if (next) {
       if (current.type === 'OPERATOR' && next.type === 'PAREN' && [')', ']'].includes(next.value)) {
         return { isValid: false, errorMessage: `L'opérateur "${current.value}" attend une suite`, errorPos: current.pos, tokens: [] };
       }
       if (current.type === 'ID' && next.type === 'ID') {
         return { isValid: false, errorMessage: `Opérateur manquant entre "${current.value}" et "${next.value}"`, errorPos: next.pos, tokens: [] };
-      }
-      if (current.type === 'PAREN' && ['(', '['].includes(current.value) && [')', ']'].includes(next.value)) {
-        return { isValid: false, errorMessage: `Les parenthèses ou crochets ne peuvent pas être vides`, errorPos: current.pos, tokens: [] };
       }
     }
   }
