@@ -137,6 +137,13 @@ export function analyzeExpression(expr: string, validNames: string[], counterNam
           errorPos: current.pos, tokens: [] 
         };
       }
+      if (current.type === 'ID' && counterNames.includes(current.value)) {
+        return { 
+          isValid: false, 
+          errorMessage: `Le compteur "${current.value}" ne peut être utilisé qu'à l'intérieur de crochets [ ]`, 
+          errorPos: current.pos, tokens: [] 
+        };
+      }
     }
     if (next) {
       if (current.type === 'OPERATOR' && next.type === 'PAREN' && [')', ']'].includes(next.value)) {
