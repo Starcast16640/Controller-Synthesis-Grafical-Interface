@@ -462,6 +462,13 @@ export function SuccessionView() {
     setSelectedTasks([]);
   };
 
+  const handleUpdateModule = () => {
+    if (!newModuleName.trim() || selectedTasks.length < 2) return;
+    updateSuccessionModule(editingModuleId, { name: newModuleName.trim(), task_ids: selectedTasks });
+    setEditingIdModule(null);
+    setModuleName('');
+    setSelectedTasks([]);
+  };
 
   const handleOpenModule = (moduleId: string) => {
     setActiveModuleId(moduleId);
