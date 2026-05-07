@@ -510,7 +510,7 @@ return (
               <button
                 onClick={editingModuleId ? () => handleUpdateModule() : handleCreateModule} 
                 disabled={!newModuleName || selectedTasks.length < 2}
-                className="flex-1 h-12 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-semibold text-sm shadow-md"
+                className={`w-full py-3 text-white font-bold rounded-lg disabled:opacity-30 uppercase text-[10px] shadow-lg ${editingModuleId ? 'bg-orange-500 hover:bg-blue-600' : 'bg-blue-600 hover:bg-blue-700'}`}
               >
                 {editingId ? `Update Group (${selectedTasks.length})` : `Create Group (${selectedTasks.length})`}
               </button>
