@@ -507,10 +507,19 @@ return (
               ))}
             </div>
     
-            <button onClick={handleCreateModule} disabled={!newModuleName || selectedTasks.length < 2}
-              className="w-full py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 disabled:opacity-30 uppercase text-[10px] shadow-lg">
-              Create Module
+            <button 
+              onClick={editingModuleId ? () => handleUpdateModule() : handleCreateModule} 
+              disabled={!newModuleName || selectedTasks.length < 2}
+              className={`w-full py-3 text-white font-bold rounded-lg disabled:opacity-30 uppercase text-[10px] shadow-lg ${editingModuleId ? 'bg-orange-500 hover:bg-orange-600' : 'bg-blue-600 hover:bg-blue-700'}`}
+            >
+              {editingModuleId ? 'Update Module' : 'Create Module'}
             </button>
+            
+            {editingModuleId && (
+              <button onClick={() => { setEditingIdModule(null); setModuleName(''); setSelectedTasks([]); }} className="w-full mt-2 text-[10px] text-gray-400 font-bold uppercase underline">
+                Cancel
+              </button>
+            )}
           </div>
           <div className="flex-1 bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden flex flex-col">
             <div className="bg-gray-50 px-6 py-3 border-b border-gray-200">
