@@ -245,17 +245,18 @@ export function SuccessionView() {
     });
   }, [successionArrows, taskPositions, nodePositions, isDeleteMode, hoveredArrowId]);
 
-  const handleTaskMouseDown = (taskId: string, e: React.MouseEvent) => {
+  const handleTaskMouseDown = (localId: string, e: React.MouseEvent) => {
+    if (e.button !== 0) return;
     e.stopPropagation();
+    const originalTaskId = localId.split('_')[1];
     clickStartPos.current = { x: e.clientX, y: e.clientY };
-    const pos = taskPositions.find((p) => p.id === taskId);
-    if (!pos) return;
-
+    const pos = taskPositions.find((p) => p.id === localId);
+    if (!pos) return
     const container = containerRef.current;
     if (!container) return;
 
     const rect = container.getBoundingClientRect();
-    setDraggingTaskId(taskId);
+    setDraggingTaskId(localId); 
     setDragOffset({
       x: e.clientX - rect.left + container.scrollLeft - pos.x,
       y: e.clientY - rect.top + container.scrollTop - pos.y,
@@ -634,31 +635,30 @@ return (
         >
           <canvas ref={canvasRef} width={2000} height={2000} className="absolute top-0 left-0 pointer-events-none" />
 
-          {taskPositions
-            .filter(pos => {
-              const module = successionModules.find(m => m.id === activeModuleId);
-              return module?.task_ids.includes(pos.id);
-            }).map((pos) => {
-            const task = tasks.find((t) => t.id === pos.id);
-            if (!task) return null;
-            return (
-              <div
-                key={pos.id}
-                className={`absolute rounded-lg p-2 border-2 cursor-move transition duration-200 ${
-                  selectedForLink.find((s) => s.id === pos.id)
-                    ? 'border-blue-500 ring-4 ring-blue-300 shadow-lg scale-105'
-                    : 'border-gray-400 hover:border-gray-600'
-                }`}
-                style={{
-                  left: `${pos.x}px`,
-                  top: `${pos.y}px`,
-                  width: `${TASK_BLOCK_WIDTH}px`,
-                  height: `${TASK_BLOCK_HEIGHT}px`,
-                  backgroundColor: getTaskTypeColor(task.type),
-                  userSelect: 'none',
-                }}
-                onMouseDown={(e) => handleTaskMouseDown(pos.id, e)}
-              >
+         {taskPositions
+            .filter(pos => pos.id.startsWith(`${activeModuleId}_`))
+            .map((pos) => {
+              const originalTaskId = pos.id.split('_')[1];
+              const task = tasks.find((t) => t.id === originalTaskId);
+              if (!task) return null;
+              const isSelected = selectedForLink.find((s) => s.id === originalTaskId && s.type === 'task');
+
+              return (
+                <div
+                  key={pos.id}
+                  className={`absolute rounded-lg p-2 border-2 cursor-move transition duration-200 ${
+                    isSelected ? 'border-blue-500 ring-4 ring-blue-300 shadow-lg scale-105' : 'border-gray-400 hover:border-gray-600'
+                  }`}
+                  style={{
+                    left: `${pos.x}px`,
+                    top: `${pos.y}px`,
+                    width: `${TASK_BLOCK_WIDTH}px`,
+                    height: `${TASK_BLOCK_HEIGHT}px`,
+                    backgroundColor: getTaskTypeColor(task.type),
+                    userSelect: 'none',
+                  }}
+                  onMouseDown={(e) => handleTaskMouseDown(pos.id, e)}
+                >
                 <div className="text-xs font-bold text-gray-900 truncate">{task.name}</div>
                 <div className="text-xs text-gray-600 mt-1">{task.type.join(', ')}</div>
                 <div className="text-xs text-gray-500 mt-2">Priority: {task.priority}</div>
