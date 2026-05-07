@@ -115,53 +115,38 @@ export function SuccessionView() {
   };
 
   useEffect(() => {
-    setTaskPositions((prevPositions) => {
-      const validPositions = prevPositions.filter(pos => 
-        tasks.some(task => task.id === pos.id)
-      );
+    if (!activeModuleId) return;
+
+    const currentModule = successionModules.find(m => m.id === activeModuleId);
+    if (!currentModule) return;
+    setTaskPositions((prev) => {
+      const newPos = [...prev];
+      currentModule.task_ids.forEach((taskId, idx) => {
+        const existing = newPos.find(p => p.id === `${activeModuleId}_${taskId}`);
+        if (!existing) {
+          // Grille par défaut
+          const cols = Math.ceil(Math.sqrt(currentModule.task_ids.length)) || 5;
+          newPos.push({
+            id: `${activeModuleId}_${taskId}`,
+            x: (idx % cols) * (TASK_BLOCK_WIDTH + 40) + 20,
+            y: Math.floor(idx / cols) * (TASK_BLOCK_HEIGHT + 40) + 20,
+          });
+        }
+      });
+      return newPos;
+    });
+    setNodePositions((prev) => {
+      const newPos = [...prev];
+      const moduleNodes = successionNodes.filter(n => n.module_id === activeModuleId);
       
-      const newPositions = [...validPositions];
-      let hasChanges = validPositions.length !== prevPositions.length;
-
-      tasks.forEach((task, idx) => {
-        if (!newPositions.some((p) => p.id === task.id)) {
-          const hasDBPos = task.position_x !== null && task.position_x !== undefined && task.position_x !== 0;
-          
-          if (hasDBPos) {
-            newPositions.push({ id: task.id, x: task.position_x!, y: task.position_y! });
-          } else {
-            const cols = Math.ceil(Math.sqrt(tasks.length)) || 5;
-            newPositions.push({
-              id: task.id,
-              x: (idx % cols) * (TASK_BLOCK_WIDTH + 40) + 20,
-              y: Math.floor(idx / cols) * (TASK_BLOCK_HEIGHT + 40) + 20,
-            });
-          }
-          hasChanges = true;
+      moduleNodes.forEach((node) => {
+        if (!newPos.some(p => p.id === node.id)) {
+           newPos.push({ id: node.id, x: node.position_x, y: node.position_y });
         }
       });
-
-      return hasChanges ? newPositions : prevPositions;
+      return newPos;
     });
-  }, [tasks]);
-
-  useEffect(() => {
-    setNodePositions((prevPositions) => {
-      const validPositions = prevPositions.filter(pos => 
-        successionNodes.some(node => node.id === pos.id)
-      );
-      const newPositions = [...validPositions];
-      let hasChanges = validPositions.length !== prevPositions.length;
-
-      successionNodes.forEach((node) => {
-        if (!newPositions.some((p) => p.id === node.id)) {
-          newPositions.push({ id: node.id, x: node.position_x, y: node.position_y });
-          hasChanges = true;
-        }
-      });
-      return hasChanges ? newPositions : prevPositions;
-    });
-  }, [successionNodes]);
+  }, [activeModuleId, successionModules, successionNodes]);
 
   useEffect(() => {
     const allValidNames = [
