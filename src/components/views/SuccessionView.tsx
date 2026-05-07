@@ -443,6 +443,16 @@ export function SuccessionView() {
     setSelectedTasks([]);
   };
 
+  const handleOpenModule = (moduleId: string) => {
+    setActiveModuleId(moduleId);
+    setIsDeleteMode(false);
+  };
+
+  const handleCloseModule = () => {
+    setActiveModuleId(null);
+    setSelectedForLink([]);
+  };
+
   const getTaskTypeColor = (type: string[]) => {
     if (type.includes('reactivable')) return '#dcfce7';
     if (type.includes('pausable')) return '#fef3c7';
