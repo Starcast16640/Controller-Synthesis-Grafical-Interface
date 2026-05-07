@@ -508,16 +508,15 @@ return (
             </div>
             <div className="flex gap-2 w-full mt-4">
               <button
-                ref={btnRef}
-                onClick={handleCreateGroup}
-                disabled={selectedTasks.length < 2}
+                onClick={editingModuleId ? () => handleUpdateModule() : handleCreateModule} 
+                disabled={!newModuleName || selectedTasks.length < 2}
                 className="flex-1 h-12 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-semibold text-sm shadow-md"
               >
                 {editingId ? `Update Group (${selectedTasks.length})` : `Create Group (${selectedTasks.length})`}
               </button>
               {editingId && (
                 <button
-                  onClick={() => { setEditingId(null); setSelectedTasks([]); }}
+                  onClick={() => { setEditingIdModule(null); setModuleName(''); setSelectedTasks([]); }}
                   className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors font-semibold text-sm shadow-md"
                 >
                   Cancel
