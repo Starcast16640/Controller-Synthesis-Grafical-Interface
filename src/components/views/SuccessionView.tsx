@@ -119,15 +119,17 @@ export function SuccessionView() {
 
     const currentModule = successionModules.find(m => m.id === activeModuleId);
     if (!currentModule) return;
+
     setTaskPositions((prev) => {
       const newPos = [...prev];
       currentModule.task_ids.forEach((taskId, idx) => {
-        const existing = newPos.find(p => p.id === `${activeModuleId}_${taskId}`);
+        const localId = `${activeModuleId}_${taskId}`;
+        
+        const existing = newPos.find(p => p.id === localId);
         if (!existing) {
-          // Grille par défaut
           const cols = Math.ceil(Math.sqrt(currentModule.task_ids.length)) || 5;
           newPos.push({
-            id: `${activeModuleId}_${taskId}`,
+            id: localId,
             x: (idx % cols) * (TASK_BLOCK_WIDTH + 40) + 20,
             y: Math.floor(idx / cols) * (TASK_BLOCK_HEIGHT + 40) + 20,
           });
@@ -168,6 +170,7 @@ export function SuccessionView() {
 
   const getArrowCoords = (arrow: any) => {
     if (arrow.module_id !== activeModuleId) return { fromX: null, fromY: null, toX: null, toY: null };
+
     const fromPos = arrow.from_type === 'task' 
       ? taskPositions.find(p => p.id === `${activeModuleId}_${arrow.from_id}`)
       : nodePositions.find(p => p.id === arrow.from_id);
