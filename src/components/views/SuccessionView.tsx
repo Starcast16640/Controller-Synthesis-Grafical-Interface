@@ -178,7 +178,7 @@ export function SuccessionView() {
       errorMessage: result.errorMessage || "",
       errorPos: result.errorPos || 0
     });
-  }, [nodeForm.expression, sensors, observers, tasks]);
+  }, [nodeForm.expression, sensors, observers, tasks, counters]);
 
   const getArrowCoords = (arrow: any) => {
   const fromPos = arrow.from_type === 'task' 
