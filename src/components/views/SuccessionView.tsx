@@ -436,13 +436,27 @@ export function SuccessionView() {
       alert("Veuillez donner un nom et sélectionner au moins 2 tâches.");
       return;
     }
+    const sortedIds = [...selectedTasks].sort();
+    const nameExists = successionModules.some(m => m.name.toLowerCase() === newModuleName.trim().toLowerCase());
+    const groupExists = successionModules.some(m => JSON.stringify([...m.task_ids].sort()) === JSON.stringify(sortedIds));
+
+    if (nameExists) {
+      showNotify(`Le nom de module "${newModuleName}" est déjà pris.`);
+      return;
+    }
+
+    if (groupExists) {
+      alert("Un module avec ce groupe exact de tâches existe déjà.");
+      return;
+    }
     addSuccessionModule({
-      name: newModuleName,
+      name: newModuleName.trim(),
       task_ids: selectedTasks
     });
     setModuleName('');
     setSelectedTasks([]);
   };
+
 
   const handleOpenModule = (moduleId: string) => {
     setActiveModuleId(moduleId);
