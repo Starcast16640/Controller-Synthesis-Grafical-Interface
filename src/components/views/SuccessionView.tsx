@@ -167,15 +167,16 @@ export function SuccessionView() {
   }, [nodeForm.expression, sensors, observers, tasks, counters]);
 
   const getArrowCoords = (arrow: any) => {
-  const fromPos = arrow.from_type === 'task' 
-    ? taskPositions.find(p => p.id === arrow.from_id)
-    : nodePositions.find(p => p.id === arrow.from_id);
-    
-  const toPos = arrow.to_type === 'task'
-    ? taskPositions.find(p => p.id === arrow.to_id)
-    : nodePositions.find(p => p.id === arrow.to_id);
+    if (arrow.module_id !== activeModuleId) return { fromX: null, fromY: null, toX: null, toY: null };
+    const fromPos = arrow.from_type === 'task' 
+      ? taskPositions.find(p => p.id === `${activeModuleId}_${arrow.from_id}`)
+      : nodePositions.find(p => p.id === arrow.from_id);
+      
+    const toPos = arrow.to_type === 'task'
+      ? taskPositions.find(p => p.id === `${activeModuleId}_${arrow.to_id}`)
+      : nodePositions.find(p => p.id === arrow.to_id);
 
-  if (!fromPos || !toPos) return { fromX: null, fromY: null, toX: null, toY: null };
+    if (!fromPos || !toPos) return { fromX: null, fromY: null, toX: null, toY: null };
 
   const startX = arrow.from_type === 'task' ? fromPos.x + TASK_BLOCK_WIDTH / 2 : fromPos.x;
   const startY = arrow.from_type === 'task' ? fromPos.y + TASK_BLOCK_HEIGHT / 2 : fromPos.y;
