@@ -852,6 +852,5 @@ return (
         </div>
       )}      
     </div>
-    </div>
   );
 }
