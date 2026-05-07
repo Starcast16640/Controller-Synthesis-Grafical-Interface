@@ -534,6 +534,12 @@ return (
                       <td className="px-6 py-4 text-right">
                         <div className="flex justify-end gap-2">
                           <button onClick={() => handleOpenModule(mod.id)} className="px-3 py-1 bg-emerald-500 text-white text-[10px] font-bold rounded-lg hover:bg-emerald-600 shadow-sm uppercase">Open Graph</button>
+                          <button 
+                            onClick={() => { setEditingIdModule(mod.id); setModuleName(mod.name); setSelectedTasks(mod.task_ids); }} 
+                            className="p-2 text-blue-600 hover:bg-blue-50 rounded-full transition-colors"
+                          >
+                            <Edit className="w-4 h-4" />
+                          </button>
                           <button onClick={() => deleteSuccessionModule(mod.id)} className="p-2 text-red-600 hover:bg-red-50 rounded-full transition-colors"><Trash2 className="w-4 h-4" /></button>
                         </div>
                       </td>
