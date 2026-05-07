@@ -430,6 +430,19 @@ export function SuccessionView() {
     });
   };
 
+  const handleCreateModule = () => {
+    if (!newModuleName.trim() || selectedTasks.length < 2) {
+      alert("Veuillez donner un nom et sélectionner au moins 2 tâches.");
+      return;
+    }
+    addSuccessionModule({
+      name: newModuleName,
+      task_ids: selectedTasks
+    });
+    setModuleName('');
+    setSelectedTasks([]);
+  };
+
   const getTaskTypeColor = (type: string[]) => {
     if (type.includes('reactivable')) return '#dcfce7';
     if (type.includes('pausable')) return '#fef3c7';
