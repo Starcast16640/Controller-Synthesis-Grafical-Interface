@@ -326,10 +326,10 @@ export function CounterView() {
                   </td>
                   <td className="px-6 py-4 text-right">
                     <div className="flex justify-end gap-2 pr-2">
-                      <button onClick={() => { setEditingId(c.id); setFormData(c); }} className="p-2 text-blue-600 hover:bg-blue-50 rounded-full transition-colors">
+                      <button onClick={() => { setEditingId(c.id); setFormData(c); }} className="text-blue-600 hover:text-blue-900 m-4">
                         <Edit className="w-4 h-4" />
                       </button>
-                      <button onClick={() => deleteCounter(c.id)} className="p-2 text-red-600 hover:bg-red-50 rounded-full transition-colors">
+                      <button onClick={() => deleteCounter(c.id)} className="text-red-600 hover:text-red-900">
                         <Trash2 className="w-4 h-4" />
                       </button>
                     </div>
