@@ -426,7 +426,8 @@ export function SuccessionView() {
       expression: '', 
       split_type: 'none', 
       position_x: 100, 
-      position_y: 100 
+      position_y: 100,
+      module_id: activeModuleId
     });
   };
 
@@ -460,14 +461,86 @@ export function SuccessionView() {
     return '#dbeafe';
   };
 
-  return (
-    <div className="p-6 h-full flex flex-col">
+return (
+  <div className="p-6 h-full flex flex-col overflow-hidden">
+    {!activeModuleId ? (
+      <div className="flex flex-col h-full animate-in fade-in duration-500">
+        <h2 className="text-2xl font-bold text-gray-900 mb-6 uppercase text-xs tracking-widest">Succession Modules</h2>
+        
+        <div className="flex flex-1 gap-6 overflow-hidden">
+          <div className="w-1/3 bg-white p-6 rounded-xl shadow-md border border-gray-200 flex flex-col">
+            <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">New Module Name</label>
+            <input 
+              type="text" 
+              placeholder="e.g. Main Cycle" 
+              value={newModuleName}
+              onChange={(e) => setModuleName(e.target.value)}
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 mb-4 outline-none"
+            />
+            
+            <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Select Tasks for this module</label>
+            <div className="flex-1 overflow-y-auto space-y-2 mb-4 pr-2 custom-scrollbar">
+              {tasks.map(t => (
+                <button key={t.id} onClick={() => selectedTasks.includes(t.id) ? setSelectedTasks(selectedTasks.filter(id => id !== t.id)) : setSelectedTasks([...selectedTasks, t.id])}
+                  className={`w-full text-left px-4 py-2 rounded-lg text-xs font-bold transition-all border-2 ${selectedTasks.includes(t.id) ? 'bg-blue-600 border-blue-700 text-white shadow-md translate-x-1' : 'bg-gray-50 border-transparent text-gray-500 hover:bg-gray-100'}`}>
+                  {t.name}
+                </button>
+              ))}
+            </div>
+    
+            <button onClick={handleCreateModule} disabled={!newModuleName || selectedTasks.length < 2}
+              className="w-full py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 disabled:opacity-30 uppercase text-[10px] shadow-lg">
+              Create Module
+            </button>
+          </div>
+          <div className="flex-1 bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden flex flex-col">
+            <div className="bg-gray-50 px-6 py-3 border-b border-gray-200">
+              <h3 className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Existing Modules</h3>
+            </div>
+            <div className="flex-1 overflow-y-auto">
+              <table className="w-full text-left">
+                <tbody className="divide-y divide-gray-100">
+                  {successionModules.map((mod) => (
+                    <tr key={mod.id} className="hover:bg-gray-50 group">
+                      <td className="px-6 py-4">
+                        <div className="font-bold text-gray-900 text-sm">{mod.name}</div>
+                        <div className="flex flex-wrap gap-1 mt-1">
+                          {mod.task_ids.map(id => (
+                            <span key={id} className="text-[9px] bg-blue-50 text-blue-600 px-1.5 py-0.5 rounded font-black border border-blue-100 uppercase">
+                              {tasks.find(t => t.id === id)?.name || '?'}
+                            </span>
+                          ))}
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 text-right">
+                        <div className="flex justify-end gap-2">
+                          <button onClick={() => handleOpenModule(mod.id)} className="px-3 py-1 bg-emerald-500 text-white text-[10px] font-bold rounded-lg hover:bg-emerald-600 shadow-sm uppercase">Open Graph</button>
+                          <button onClick={() => deleteSuccessionModule(mod.id)} className="p-2 text-red-600 hover:bg-red-50 rounded-full transition-colors"><Trash2 className="w-4 h-4" /></button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    ) : (
+      <>
       <div className="flex justify-between items-center mb-4">
         <div>
           <h2 className="text-2xl font-bold text-gray-900">Succession View</h2>
-          <p className="text-[11px] text-gray-500 mt-1">
-            💡 Tip: Right-click on a node to edit its properties.
-          </p>
+          <button 
+            onClick={() => setActiveModuleId(null)}
+            className="mt-2 text-[10px] font-black text-blue-600 hover:underline uppercase"
+          >
+            ← Back to modules list
+          </button>
+        </div>
+        <p className="text-[11px] text-gray-500 mt-1">
+          💡 Tip: Right-click on a node to edit its properties.
+        </p>
         </div>
         <div className="flex gap-2">
           <button
@@ -525,7 +598,11 @@ export function SuccessionView() {
         >
           <canvas ref={canvasRef} width={2000} height={2000} className="absolute top-0 left-0 pointer-events-none" />
 
-          {taskPositions.map((pos) => {
+          {taskPositions
+            .filter(pos => {
+              const module = successionModules.find(m => m.id === activeModuleId);
+              return module?.task_ids.includes(pos.id);
+            }).map((pos) => {
             const task = tasks.find((t) => t.id === pos.id);
             if (!task) return null;
             return (
@@ -553,7 +630,11 @@ export function SuccessionView() {
             );
           })}
 
-          {nodePositions.map((pos) => {
+          {nodePositions
+            .filter(pos => {
+              const node = successionNodes.find(n => n.id === pos.id);
+              return node?.module_id === activeModuleId;
+            }).map((pos) => {
             const node = successionNodes.find((n) => n.id === pos.id);
             if (!node) return null;
             const isSelected = selectedForLink.some((s) => s.id === pos.id);
