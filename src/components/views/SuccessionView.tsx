@@ -68,6 +68,10 @@ export function SuccessionView() {
   const [isDeleteMode, setIsDeleteMode] = useState(false);
   const [hoveredArrowId, setHoveredArrowId] = useState<string | null>(null);
   const [diag, setDiag] = useState({ isValid: true, errorMessage: "", errorPos: 0 });
+  const [newModuleName, setModuleName] = useState('');
+  const [selectedTasks, setSelectedTasks] = useState<string[]>([]);
+  const [activeModuleId, setActiveModuleId] = useState<string | null>(null);
+  const [editingModuleId, setEditingIdModule] = useState<string | null>(null);
   const modalExprRef = useRef<HTMLTextAreaElement>(null);
 
   const insertInModal = (value: string) => {
