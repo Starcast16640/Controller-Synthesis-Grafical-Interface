@@ -789,13 +789,11 @@ return (
                   </div>
                 </div>
             
-                {!diag.isValid && (
-                  <div className="mb-4 p-2 bg-red-50 border-l-4 border-red-500 text-red-700 text-[11px] flex items-start gap-2">
-                    <span className="font-bold underline uppercase tracking-tighter whitespace-nowrap flex-shrink-0">Diagnostic :</span>
-                    <span className="leading-tight break-words">{diag.errorMessage} (Pos: {diag.errorPos})</span>
-                  </div>
-                )}
-              </>
+               {!diag.isValid && (
+              <div className="mb-4 p-2 bg-red-50 border-l-4 border-red-500 text-red-700 text-[11px] flex items-start gap-2">
+                <span className="font-bold underline uppercase tracking-tighter whitespace-nowrap flex-shrink-0">Diagnostic :</span>
+                <span className="leading-tight break-words">{diag.errorMessage} (Pos: {diag.errorPos})</span>
+              </div>
             )}
             <label className="flex items-center gap-3 mb-6 p-3 bg-emerald-50 border border-emerald-100 rounded-lg cursor-pointer hover:bg-emerald-100 transition-colors">
               <input
@@ -823,11 +821,14 @@ return (
             <div className="flex gap-2">
               <button
                 onClick={() => {
-                  if (!diag.isValid) {return;}
+                  if (nodeForm.split_type === 'selection' && !diag.isValid) {
+                    alert("Veuillez corriger l'expression avant de sauvegarder.");
+                    return;
+                  }
                   updateSuccessionNode(editingNode, nodeForm);
                   setEditingNode(null);
                 }}
-                className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-bold"
               >
                 Save
               </button>
@@ -836,20 +837,21 @@ return (
                   deleteSuccessionNode(editingNode);
                   setEditingNode(null);
                 }}
-                className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
+                className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-bold"
               >
                 Delete
               </button>
               <button
                 onClick={() => setEditingNode(null)}
-                className="flex-1 px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors"
+                className="flex-1 px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors font-bold"
               >
                 Cancel
               </button>
             </div>
           </div>
         </div>
-      )}      
+      )}
+      </div>
     </div>
   );
 }
