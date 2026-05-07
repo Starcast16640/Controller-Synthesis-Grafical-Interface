@@ -585,7 +585,6 @@ return (
             Delete Mode
           </button>
         </div>
-      </div>
       <div className="flex-1 relative bg-gray-50 rounded-lg border border-gray-200 overflow-hidden">
         <div
           ref={containerRef}
