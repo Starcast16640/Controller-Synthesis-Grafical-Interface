@@ -540,7 +540,7 @@ return (
                           >
                             <Edit className="w-4 h-4" />
                           </button>
-                          <button onClick={() => deleteSuccessionModule(mod.id)} className="p-2 text-red-600 hover:bg-red-50 rounded-full transition-colors"><Trash2 className="w-4 h-4" /></button>
+                          <button onClick={() => deleteSuccessionModule(mod.id)} className="text-red-600 hover:text-red-900"><Trash2 className="w-4 h-4" /></button>
                         </div>
                       </td>
                     </tr>
