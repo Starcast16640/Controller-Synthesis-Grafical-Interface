@@ -127,13 +127,13 @@ export function IncompatibilityView() {
                         <div className="flex justify-end gap-2 pr-2">
                           <button 
                             onClick={() => { setEditingId(link.id); setSelectedTasks(link.task_ids || []); }}
-                            className="p-2 text-blue-600 hover:bg-blue-50 rounded-full transition-colors"
+                            className="text-blue-600 hover:text-blue-900 mr-4"
                           >
                             <Edit className="w-4 h-4" />
                           </button>
                           <button 
                             onClick={() => deleteIncompatibilityLink(link.id)}
-                            className="p-2 text-red-600 hover:bg-red-50 rounded-full transition-colors"
+                            className="text-red-600 hover:text-red-900"
                           >
                             <Trash2 className="w-4 h-4" />
                           </button>
