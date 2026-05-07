@@ -251,7 +251,8 @@ export function SuccessionView() {
     const originalTaskId = localId.split('_')[1];
     clickStartPos.current = { x: e.clientX, y: e.clientY };
     const pos = taskPositions.find((p) => p.id === localId);
-    if (!pos) return
+    if (!pos) return;
+
     const container = containerRef.current;
     if (!container) return;
 
@@ -372,14 +373,18 @@ export function SuccessionView() {
       Math.pow(e.clientY - clickStartPos.current.y, 2)
     );
     if (distance < 5) {
-      if (draggingTaskId) handleElementSelect(draggingTaskId, 'task');
+      if (draggingTaskId) {
+        const originalTaskId = draggingTaskId.split('_')[1];
+        handleElementSelect(originalTaskId, 'task');
+      }
       if (draggingNodeId) handleElementSelect(draggingNodeId, 'node');
     }
     try {
       if (draggingTaskId) {
         const pos = taskPositions.find((p) => p.id === draggingTaskId);
+        const originalTaskId = draggingTaskId.split('_')[1];
         if (pos) {
-          updateTask(draggingTaskId, { 
+          updateTask(originalTaskId, { 
             position_x: Math.round(pos.x), 
             position_y: Math.round(pos.y) 
           });
@@ -596,6 +601,7 @@ return (
                   from_id: selectedForLink[0].id,
                   to_type: selectedForLink[1].type,
                   to_id: selectedForLink[1].id,
+                  module_id: activeModuleId,
                 });
                 setSelectedForLink([]);
               }
@@ -636,19 +642,21 @@ return (
           <canvas ref={canvasRef} width={2000} height={2000} className="absolute top-0 left-0 pointer-events-none" />
 
          {taskPositions
-            .filter(pos => pos.id.startsWith(`${activeModuleId}_`))
-            .map((pos) => {
-              const originalTaskId = pos.id.split('_')[1];
-              const task = tasks.find((t) => t.id === originalTaskId);
-              if (!task) return null;
-              const isSelected = selectedForLink.find((s) => s.id === originalTaskId && s.type === 'task');
+            .filter(pos => {
+              const module = successionModules.find(m => m.id === activeModuleId);
+              return module?.task_ids.includes(pos.id);
+            }).map((pos) => {
+            const originalTaskId = pos.id.split('_')[1];
+            const task = tasks.find((t) => t.id === originalTaskId);
+            if (!task) return null;
+            const isSelected = selectedForLink.some((s) => s.id === originalTaskId && s.type === 'task');
 
-              return (
-                <div
-                  key={pos.id}
-                  className={`absolute rounded-lg p-2 border-2 cursor-move transition duration-200 ${
-                    isSelected ? 'border-blue-500 ring-4 ring-blue-300 shadow-lg scale-105' : 'border-gray-400 hover:border-gray-600'
-                  }`}
+            return (
+              <div
+                key={pos.id}
+                className={`absolute rounded-lg p-2 border-2 cursor-move transition duration-200 ${
+                  isSelected ? 'border-blue-500 ring-4 ring-blue-300 shadow-lg scale-105' : 'border-gray-400 hover:border-gray-600'
+                }`}
                   style={{
                     left: `${pos.x}px`,
                     top: `${pos.y}px`,
