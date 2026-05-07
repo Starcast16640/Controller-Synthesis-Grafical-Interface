@@ -512,7 +512,7 @@ return (
                 disabled={!newModuleName || selectedTasks.length < 2}
                 className={`w-full py-3 text-white font-bold rounded-lg disabled:opacity-30 uppercase text-[10px] shadow-lg ${editingModuleId ? 'bg-orange-500 hover:bg-blue-600' : 'bg-blue-600 hover:bg-blue-700'}`}
               >
-                {editingId ? `Update Group (${selectedTasks.length})` : `Create Group (${selectedTasks.length})`}
+                {editingModuleId ? 'Update Module' : 'Create Module'}
               </button>
               {editingId && (
                 <button
