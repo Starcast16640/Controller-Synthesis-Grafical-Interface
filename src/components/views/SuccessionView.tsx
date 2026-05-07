@@ -506,18 +506,22 @@ return (
                 </button>
               ))}
             </div>
-            <div className="flex gap-2 w-full mt-4">
-              <button
-                onClick={editingModuleId ? () => handleUpdateModule() : handleCreateModule} 
+            <div className="flex gap-2 w-full">
+              <button 
+                onClick={editingModuleId ? handleUpdateModule : handleCreateModule} 
                 disabled={!newModuleName || selectedTasks.length < 2}
-                className={`w-full py-3 text-white font-bold rounded-lg disabled:opacity-30 uppercase text-[10px] shadow-lg ${editingModuleId ? 'bg-orange-500 hover:bg-blue-600' : 'bg-blue-600 hover:bg-blue-700'}`}
+                className="flex-1 py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 disabled:opacity-30 uppercase text-[10px] shadow-sm transition-colors"
               >
-                {editingModuleId ? 'Update Module' : 'Create Module'}
-              </button>
-              {editingId && (
-                <button
-                  onClick={() => { setEditingIdModule(null); setModuleName(''); setSelectedTasks([]); }}
-                  className="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors font-semibold text-sm shadow-md"
+                {editingModuleId ? `Update Module (${selectedTasks.length})` : `Create Module (${selectedTasks.length})`}
+              </button
+              {editingModuleId && (
+                <button 
+                  onClick={() => { 
+                    setEditingIdModule(null); 
+                    setModuleName(''); 
+                    setSelectedTasks([]); 
+                  }} 
+                  className="px-6 py-3 bg-gray-200 text-gray-700 font-bold rounded-lg hover:bg-gray-300 uppercase text-[10px] shadow-sm transition-colors"
                 >
                   Cancel
                 </button>
