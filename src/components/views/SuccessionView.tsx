@@ -472,7 +472,7 @@ return (
             <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">New Module Name</label>
             <input 
               type="text" 
-              placeholder="e.g. Main Cycle" 
+              placeholder="ex : MainCycle" 
               value={newModuleName}
               onChange={(e) => setModuleName(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 mb-4 outline-none"
