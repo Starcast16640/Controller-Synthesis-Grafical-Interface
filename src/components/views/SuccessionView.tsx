@@ -513,7 +513,7 @@ return (
                 className="flex-1 py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 disabled:opacity-30 uppercase text-[10px] shadow-sm transition-colors"
               >
                 {editingModuleId ? `Update Module (${selectedTasks.length})` : `Create Module (${selectedTasks.length})`}
-              </button
+              </button>
               {editingModuleId && (
                 <button 
                   onClick={() => { 
@@ -526,6 +526,7 @@ return (
                   Cancel
                 </button>
               )}
+              
             </div>
           </div>
           <div className="flex-1 bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden flex flex-col">
