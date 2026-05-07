@@ -41,6 +41,10 @@ export function SuccessionView() {
     addSuccessionNode,
     updateSuccessionNode,
     deleteSuccessionNode,
+    successionModules, 
+    addSuccessionModule, 
+    updateSuccessionModule, 
+    deleteSuccessionModule 
   } = useData();
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
