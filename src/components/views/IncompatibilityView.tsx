@@ -112,7 +112,7 @@ export function IncompatibilityView() {
                           {tasks.map(task => {
                             const isActive = (link.task_ids || []).includes(task.id);
                             return (
-                              <span key={task.id} className={`px-2 py-0.5 rounded text-[9px] font-bold border ${
+                              <span key={task.id} className={`px-2 py-0.5 rounded text-[11px] font-bold border ${
                                 isActive 
                                   ? 'bg-blue-100 text-blue-700 border-blue-200'
                                   : 'bg-gray-50 text-gray-300 border-transparent opacity-40'
