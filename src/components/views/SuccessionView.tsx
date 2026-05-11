@@ -504,23 +504,48 @@ return (
               onChange={(e) => setModuleName(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 mb-4 outline-none"
             />
-            
-            <label className="block text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-1">Select Tasks for this module</label>
-            <div className="flex-1 overflow-y-auto space-y-2 mb-4 pr-2 custom-scrollbar">
-              {tasks.map(t => (
-                <button key={t.id} onClick={() => selectedTasks.includes(t.id) ? setSelectedTasks(selectedTasks.filter(id => id !== t.id)) : setSelectedTasks([...selectedTasks, t.id])}
-                  className={`w-full text-left px-4 py-2 rounded-lg text-xs font-bold transition-all border-2 ${selectedTasks.includes(t.id) ? 'bg-blue-600 border-blue-700 text-white shadow-md translate-x-1' : 'bg-gray-50 border-transparent text-gray-500 hover:bg-gray-100'}`}>
-                  {t.name}
-                </button>
-              ))}
+            <div className="flex-1 flex gap-4 overflow-hidden mb-4">
+              <div className="flex-1 flex flex-col overflow-hidden">
+                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2 text-center border-b border-gray-100 pb-1">
+                  Sources
+                </label>
+                <div className="flex-1 overflow-y-auto space-y-1.5 custom-scrollbar pr-2">
+                  {tasks.map(t => (
+                    <button key={`src_${t.id}`} 
+                      onClick={() => sourceTasks.includes(t.id) ? setSourceTasks(sourceTasks.filter(id => id !== t.id)) : setSourceTasks([...sourceTasks, t.id])}
+                      className={`w-full text-left px-3 py-1.5 rounded text-[10px] font-bold transition-all border ${
+                        sourceTasks.includes(t.id) ? 'bg-blue-600 border-blue-700 text-white shadow-md translate-x-1' : 'bg-gray-50 border-gray-200 text-gray-500 hover:bg-blue-50'
+                      }`}>
+                      {t.name}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className="flex items-center justify-center text-gray-300 font-bold">➔</div>
+              <div className="flex-1 flex flex-col overflow-hidden">
+                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2 text-center border-b border-gray-100 pb-1">
+                  Targets
+                </label>
+                <div className="flex-1 overflow-y-auto space-y-1.5 custom-scrollbar pr-2">
+                  {tasks.map(t => (
+                    <button key={`tgt_${t.id}`} 
+                      onClick={() => targetTasks.includes(t.id) ? setTargetTasks(targetTasks.filter(id => id !== t.id)) : setTargetTasks([...targetTasks, t.id])}
+                      className={`w-full text-left px-3 py-1.5 rounded text-[10px] font-bold transition-all border ${
+                        targetTasks.includes(t.id) ? 'bg-indigo-600 border-indigo-700 text-white shadow-md -translate-x-1' : 'bg-gray-50 border-gray-200 text-gray-500 hover:bg-indigo-50'
+                      }`}>
+                      {t.name}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
             <div className="flex gap-2 w-full">
               <button 
                 onClick={editingModuleId ? handleUpdateModule : handleCreateModule} 
-                disabled={!newModuleName || selectedTasks.length < 2}
+                disabled={!newModuleName || sourceTasks.length === 0 || targetTasks.length === 0}
                 className="flex-1 py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 disabled:opacity-30 uppercase text-[10px] shadow-sm transition-colors"
               >
-                {editingModuleId ? `Update Module (${selectedTasks.length})` : `Create Module (${selectedTasks.length})`}
+                {editingModuleId ? `Update Module` : `Create Module`}
               </button>
               {editingModuleId && (
                 <button 
