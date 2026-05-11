@@ -571,13 +571,23 @@ return (
                   {successionModules.map((mod) => (
                     <tr key={mod.id} className="hover:bg-gray-50 group">
                       <td className="px-6 py-4">
-                        <div className="font-bold text-gray-900 text-sm">{mod.name}</div>
-                        <div className="flex flex-wrap gap-1 mt-1">
-                          {mod.task_ids.map(id => (
-                            <span key={id} className="text-[11px] bg-blue-50 text-blue-600 px-1.5 py-0.5 rounded font-black border border-blue-100">
-                              {tasks.find(t => t.id === id)?.name || '?'}
-                            </span>
-                          ))}
+                        <div className="font-bold text-gray-900 text-sm mb-1">{mod.name}</div>
+                        <div className="flex items-center gap-2">
+                          <div className="flex flex-wrap gap-1">
+                            {mod.task_ids.slice(0, Math.ceil(mod.task_ids.length / 2)).map(id => (
+                              <span key={`s_${id}`} className="text-[9px] bg-blue-50 text-blue-600 px-1.5 py-0.5 rounded font-black border border-blue-100 uppercase">
+                                {tasks.find(t => t.id === id)?.name || '?'}
+                              </span>
+                            ))}
+                          </div>
+                          <span className="text-gray-400 text-xs font-black">➔</span>
+                          <div className="flex flex-wrap gap-1">
+                            {mod.task_ids.slice(Math.ceil(mod.task_ids.length / 2)).map(id => (
+                              <span key={`t_${id}`} className="text-[9px] bg-indigo-50 text-indigo-600 px-1.5 py-0.5 rounded font-black border border-indigo-100 uppercase">
+                                {tasks.find(t => t.id === id)?.name || '?'}
+                              </span>
+                            ))}
+                          </div>
                         </div>
                       </td>
                       <td className="px-6 py-4 text-right">
