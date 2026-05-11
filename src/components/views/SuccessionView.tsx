@@ -603,7 +603,7 @@ return (
                               setSourceTasks(allIds.slice(0, half));
                               setTargetTasks(allIds.slice(half)); 
                             }} 
-                            className="text-blue-600 hover:text-blue-900 mr-4"
+                            className="text-blue-600 hover:text-blue-900 mr-4 ml-4"
                           >
                             <Edit className="w-4 h-4" />
                           </button>
