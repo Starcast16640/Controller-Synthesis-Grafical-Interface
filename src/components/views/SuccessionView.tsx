@@ -248,6 +248,7 @@ export function SuccessionView() {
   const handleTaskMouseDown = (localId: string, e: React.MouseEvent) => {
     if (e.button !== 0) return;
     e.stopPropagation();
+    
     const originalTaskId = localId.split('_')[1];
     clickStartPos.current = { x: e.clientX, y: e.clientY };
     const pos = taskPositions.find((p) => p.id === localId);
