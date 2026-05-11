@@ -505,11 +505,11 @@ return (
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 mb-4 outline-none"
             />
             <div className="flex-1 flex gap-5 overflow-hidden mb-4">
-              <div className="flex-1 flex flex-col overflow-hidden gap-5">
+              <div className="flex-1 flex flex-col overflow-hidden">
                 <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2 text-center border-b border-gray-100 pb-1">
                   Sources
                 </label>
-                <div className="flex-1 overflow-y-auto space-y-1.5 custom-scrollbar pr-2">
+                <div className="flex-1 overflow-y-auto space-y-1.5 custom-scrollbar pr-2 gap-5">
                   {tasks.map(t => (
                     <button key={`src_${t.id}`} 
                       onClick={() => sourceTasks.includes(t.id) ? setSourceTasks(sourceTasks.filter(id => id !== t.id)) : setSourceTasks([...sourceTasks, t.id])}
