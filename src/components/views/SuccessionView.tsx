@@ -575,15 +575,15 @@ return (
                         <div className="flex items-center gap-2">
                           <div className="flex flex-wrap gap-1">
                             {mod.task_ids.slice(0, Math.ceil(mod.task_ids.length / 2)).map(id => (
-                              <span key={`s_${id}`} className="text-[11px] bg-blue-50 text-blue-600 px-1.5 py-0.5 rounded font-black border border-blue-100 uppercase">
+                              <span key={`s_${id}`} className="text-[10px] bg-blue-50 text-blue-600 px-1.5 py-0.5 rounded font-black border border-blue-100 uppercase">
                                 {tasks.find(t => t.id === id)?.name || '?'}
                               </span>
                             ))}
                           </div>
-                          <span className="text-indigo-600 text-xs font-black">➔</span> 
+                          <span className="text-indigo-500 text-xs font-black">➔</span> 
                           <div className="flex flex-wrap gap-1">
                             {mod.task_ids.slice(Math.ceil(mod.task_ids.length / 2)).map(id => (
-                              <span key={`t_${id}`} className="text-[11px] bg-indigo-50 text-indigo-600 px-1.5 py-0.5 rounded font-black border border-indigo-100 uppercase">
+                              <span key={`t_${id}`} className="text-[10px] bg-indigo-50 text-indigo-600 px-1.5 py-0.5 rounded font-black border border-indigo-100 uppercase">
                                 {tasks.find(t => t.id === id)?.name || '?'}
                               </span>
                             ))}
