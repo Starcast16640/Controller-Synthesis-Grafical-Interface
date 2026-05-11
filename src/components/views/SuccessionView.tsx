@@ -509,7 +509,7 @@ return (
                 <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2 text-center border-b border-gray-100 pb-1">
                   Sources
                 </label>
-                <div className="flex-1 overflow-y-auto space-y-1.5 custom-scrollbar pr-2 gap-2">
+                <div className="flex-1 overflow-y-auto space-y-1.5 custom-scrollbar pr-2 gap-4">
                   {tasks.map(t => (
                     <button key={`src_${t.id}`} 
                       onClick={() => sourceTasks.includes(t.id) ? setSourceTasks(sourceTasks.filter(id => id !== t.id)) : setSourceTasks([...sourceTasks, t.id])}
