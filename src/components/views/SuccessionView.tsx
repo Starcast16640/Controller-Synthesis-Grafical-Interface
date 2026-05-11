@@ -525,7 +525,7 @@ return (
                 <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2 text-center border-b border-gray-100 pb-1">
                   Targets
                 </label>
-                <div className="flex-1 overflow-y-auto space-y-1.5 custom-scrollbar pr-2">
+                <div className="flex-1 overflow-y-auto space-y-2.5 custom-scrollbar pr-2">
                   {tasks.map(t => (
                     <button key={`tgt_${t.id}`} 
                       onClick={() => targetTasks.includes(t.id) ? setTargetTasks(targetTasks.filter(id => id !== t.id)) : setTargetTasks([...targetTasks, t.id])}
