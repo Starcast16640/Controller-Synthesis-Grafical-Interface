@@ -521,7 +521,6 @@ return (
                   ))}
                 </div>
               </div>
-              <div className="flex items-center justify-center text-gray-300 font-bold">➔</div>
               <div className="flex-1 flex flex-col overflow-hidden">
                 <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2 text-center border-b border-gray-100 pb-1">
                   Targets
