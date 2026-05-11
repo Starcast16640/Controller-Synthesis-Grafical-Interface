@@ -580,7 +580,7 @@ return (
                               </span>
                             ))}
                           </div>
-                          <span className="text-indigo-400 text-xs font-black bg-indigo-50">➔</span> 
+                          <span className="text-indigo-400 text-xs font-black ">➔</span> 
                           <div className="flex flex-wrap gap-1">
                             {mod.task_ids.slice(Math.ceil(mod.task_ids.length / 2)).map(id => (
                               <span key={`t_${id}`} className="text-[9px] bg-indigo-50 text-indigo-600 px-1.5 py-0.5 rounded font-black border border-indigo-100 uppercase">
