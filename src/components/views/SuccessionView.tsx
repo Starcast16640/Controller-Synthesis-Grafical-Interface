@@ -544,7 +544,7 @@ return (
                         <div className="font-bold text-gray-900 text-sm">{mod.name}</div>
                         <div className="flex flex-wrap gap-1 mt-1">
                           {mod.task_ids.map(id => (
-                            <span key={id} className="text-[9px] bg-blue-50 text-blue-600 px-1.5 py-0.5 rounded font-black border border-blue-100 uppercase">
+                            <span key={id} className="text-[9px] bg-blue-50 text-blue-600 px-1.5 py-0.5 rounded font-black border border-blue-100">
                               {tasks.find(t => t.id === id)?.name || '?'}
                             </span>
                           ))}
