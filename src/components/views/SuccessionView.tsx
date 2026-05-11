@@ -439,37 +439,36 @@ export function SuccessionView() {
       showNotify("Please enter a module name.", "error");
       return;
     }
-    if (selectedTasks.length < 2) {
-      showNotify("Select at least 2 tasks for a module.", "error");
+    if (sourceTasks.length === 0 || targetTasks.length === 0) {
+      showNotify("Select at least 1 Source and 1 Target task.", "error");
       return;
     }
+
     const nameExists = successionModules.some(m => m.name.toLowerCase() === newModuleName.trim().toLowerCase());
     if (nameExists) {
       showNotify(`The name "${newModuleName}" is already used for a module.`, "error");
       return;
     }
-    const sortedIds = [...selectedTasks].sort();
-    const groupExists = successionModules.some(m => 
-      JSON.stringify([...m.task_ids].sort()) === JSON.stringify(sortedIds)
-    );
-    if (groupExists) {
-      showNotify("A module with this exact set of tasks already exists.", "error");
-      return;
-    }
     addSuccessionModule({
       name: newModuleName.trim(),
-      task_ids: selectedTasks
+      task_ids: [...new Set([...sourceTasks, ...targetTasks])] 
     });
+    
     setModuleName('');
-    setSelectedTasks([]);
+    setSourceTasks([]);
+    setTargetTasks([]);
   };
 
   const handleUpdateModule = () => {
-    if (!newModuleName.trim() || selectedTasks.length < 2) return;
-    updateSuccessionModule(editingModuleId, { name: newModuleName.trim(), task_ids: selectedTasks });
+    if (!newModuleName.trim() || sourceTasks.length === 0 || targetTasks.length === 0) return;
+    updateSuccessionModule(editingModuleId, { 
+      name: newModuleName.trim(), 
+      task_ids: [...new Set([...sourceTasks, ...targetTasks])] 
+    });
     setEditingIdModule(null);
     setModuleName('');
-    setSelectedTasks([]);
+    setSourceTasks([]);
+    setTargetTasks([]);
   };
 
   const handleOpenModule = (moduleId: string) => {
