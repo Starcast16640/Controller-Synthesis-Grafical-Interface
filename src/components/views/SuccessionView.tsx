@@ -573,7 +573,7 @@ return (
       </div>
     ) : (
       <>
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex justify-between items-center mb-3">
         <div>
           <h2 className="text-2xl font-bold text-gray-900">Succession View</h2>
           <button 
