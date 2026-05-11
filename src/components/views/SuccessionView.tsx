@@ -571,7 +571,7 @@ return (
                   {successionModules.map((mod) => (
                     <tr key={mod.id} className="hover:bg-gray-50 group">
                       <td className="px-6 py-4">
-                        <div className="font-bold text-gray-900 text-sm mb-1">{mod.name}</div>
+                        <div className="font-bold text-gray-1000 text-sm mb-1">{mod.name}</div>
                         <div className="flex items-center gap-2">
                           <div className="flex flex-wrap gap-1">
                             {mod.task_ids.slice(0, Math.ceil(mod.task_ids.length / 2)).map(id => (
