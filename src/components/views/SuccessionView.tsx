@@ -514,7 +514,7 @@ return (
                     <button key={`src_${t.id}`} 
                       onClick={() => sourceTasks.includes(t.id) ? setSourceTasks(sourceTasks.filter(id => id !== t.id)) : setSourceTasks([...sourceTasks, t.id])}
                       className={`w-full text-left px-3 py-1.5 rounded text-[10px] font-bold transition-all border ${
-                        sourceTasks.includes(t.id) ? 'bg-blue-600 border-blue-700 text-white shadow-md translate-x-1' : 'bg-gray-50 border-gray-200 text-gray-500 hover:bg-blue-50'
+                        sourceTasks.includes(t.id) ? 'bg-blue-600 border-blue-700 text-white shadow-md ' : 'bg-gray-50 border-gray-200 text-gray-500 hover:bg-blue-50'
                       }`}>
                       {t.name}
                     </button>
