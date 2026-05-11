@@ -583,7 +583,7 @@ return (
                           <span className="text-indigo-600 text-xs font-black">➔</span> 
                           <div className="flex flex-wrap gap-1">
                             {mod.task_ids.slice(Math.ceil(mod.task_ids.length / 2)).map(id => (
-                              <span key={`t_${id}`} className="text-11px] bg-indigo-50 text-indigo-600 px-1.5 py-0.5 rounded font-black border border-indigo-100 uppercase">
+                              <span key={`t_${id}`} className="text-[11px] bg-indigo-50 text-indigo-600 px-1.5 py-0.5 rounded font-black border border-indigo-100 uppercase">
                                 {tasks.find(t => t.id === id)?.name || '?'}
                               </span>
                             ))}
