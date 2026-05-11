@@ -587,7 +587,7 @@ return (
           💡 Tip: Right-click on a node to edit its properties.
         </p>
         </div>
-        <div className="flex gap-10">
+        <div className="flex gap-6">
           <button
             onClick={handleCreateNode}
             className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
