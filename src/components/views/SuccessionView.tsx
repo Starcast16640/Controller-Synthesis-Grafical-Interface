@@ -594,8 +594,15 @@ return (
                         <div className="flex justify-end gap-2">
                           <button onClick={() => handleOpenModule(mod.id)} className="px-3 py-1 bg-emerald-500 text-white text-[10px] font-bold rounded-lg hover:bg-emerald-600 shadow-sm uppercase">Open Graph</button>
                           <button 
-                            onClick={() => { setEditingIdModule(mod.id); setModuleName(mod.name); setSelectedTasks(mod.task_ids); }} 
-                            className="text-blue-600 hover:text-blue-900 m-4"
+                            onClick={() => { 
+                              setEditingIdModule(mod.id); 
+                              setModuleName(mod.name); 
+                              const allIds = mod.task_ids || [];
+                              const half = Math.ceil(allIds.length / 2);
+                              setSourceTasks(allIds.slice(0, half));
+                              setTargetTasks(allIds.slice(half)); 
+                            }} 
+                            className="p-2 text-blue-600 hover:bg-blue-50 rounded-full transition-colors"
                           >
                             <Edit className="w-4 h-4" />
                           </button>
