@@ -120,6 +120,8 @@ export function SuccessionView() {
     const currentModule = successionModules.find(m => m.id === activeModuleId);
     if (!currentModule) return;
 
+    const savedPositions = JSON.parse(localStorage.getItem('local_task_positions') || '{}');
+
     setTaskPositions((prev) => {
       const newPos = [...prev];
       currentModule.task_ids.forEach((taskId, idx) => {
@@ -127,12 +129,16 @@ export function SuccessionView() {
         
         const existing = newPos.find(p => p.id === localId);
         if (!existing) {
-          const cols = Math.ceil(Math.sqrt(currentModule.task_ids.length)) || 5;
-          newPos.push({
-            id: localId,
-            x: (idx % cols) * (TASK_BLOCK_WIDTH + 40) + 20,
-            y: Math.floor(idx / cols) * (TASK_BLOCK_HEIGHT + 40) + 20,
-          });
+          if (savedPositions[localId]) {
+            newPos.push({ id: localId, x: savedPositions[localId].x, y: savedPositions[localId].y });
+          } else {
+            const cols = Math.ceil(Math.sqrt(currentModule.task_ids.length)) || 5;
+            newPos.push({
+              id: localId,
+              x: (idx % cols) * (TASK_BLOCK_WIDTH + 40) + 20,
+              y: Math.floor(idx / cols) * (TASK_BLOCK_HEIGHT + 40) + 20,
+            });
+          }
         }
       });
       return newPos;
@@ -383,12 +389,10 @@ export function SuccessionView() {
     try {
       if (draggingTaskId) {
         const pos = taskPositions.find((p) => p.id === draggingTaskId);
-        const originalTaskId = draggingTaskId.split('_')[1];
         if (pos) {
-          updateTask(originalTaskId, { 
-            position_x: Math.round(pos.x), 
-            position_y: Math.round(pos.y) 
-          });
+          const savedPositions = JSON.parse(localStorage.getItem('local_task_positions') || '{}');
+          savedPositions[draggingTaskId] = { x: Math.round(pos.x), y: Math.round(pos.y) };
+          localStorage.setItem('local_task_positions', JSON.stringify(savedPositions));
         }
       }
       if (draggingNodeId) {
