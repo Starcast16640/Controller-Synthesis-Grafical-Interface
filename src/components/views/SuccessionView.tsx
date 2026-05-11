@@ -551,7 +551,8 @@ return (
                   onClick={() => { 
                     setEditingIdModule(null); 
                     setModuleName(''); 
-                    setSelectedTasks([]); 
+                    setSourceTasks([]);
+                    setTargetTasks([]);
                   }} 
                   className="px-6 py-3 bg-gray-200 text-gray-700 font-bold rounded-lg hover:bg-gray-300 uppercase text-[10px] shadow-sm transition-colors"
                 >
