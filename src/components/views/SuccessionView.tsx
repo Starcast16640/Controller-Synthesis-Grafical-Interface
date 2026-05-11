@@ -491,7 +491,7 @@ return (
   <div className="p-6 h-full flex flex-col overflow-hidden">
     {!activeModuleId ? (
       <div className="flex flex-col h-full animate-in fade-in duration-500">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6 uppercase text-xs tracking-widest">Succession Modules</h2>
+        <h2 className="text-2xl font-bold text-gray-900">Succession Modules</h2>
         
         <div className="flex flex-1 gap-6 overflow-hidden">
           <div className="w-1/3 bg-white p-6 rounded-xl shadow-md border border-gray-200 flex flex-col">
