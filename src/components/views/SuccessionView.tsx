@@ -642,9 +642,9 @@ return (
           <canvas ref={canvasRef} width={2000} height={2000} className="absolute top-0 left-0 pointer-events-none" />
 
          {taskPositions
-            .filter(pos => {
-              const module = successionModules.find(m => m.id === activeModuleId);
-              return module?.task_ids.includes(pos.id);
+            .filter(pos => pos.id.startsWith(`${activeModuleId}_`))
+            .map((pos) => {
+            const originalTaskId = pos.id.split('_')[1];
             }).map((pos) => {
             const originalTaskId = pos.id.split('_')[1];
             const task = tasks.find((t) => t.id === originalTaskId);
