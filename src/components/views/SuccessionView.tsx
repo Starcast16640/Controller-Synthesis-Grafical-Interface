@@ -647,7 +647,7 @@ return (
             const originalTaskId = pos.id.split('_')[1];
             const task = tasks.find((t) => t.id === originalTaskId);
             if (!task) return null;
-            const isSelected = selectedForLink.some((s) => s.id === originalTaskId && s.type === 'task');
+            const isSelected = selectedForLink.some((s) => s.id === originalTaskId && s.type === 'task'); 
 
             return (
               <div
