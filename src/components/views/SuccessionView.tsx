@@ -513,7 +513,7 @@ return (
                   {tasks.map(t => (
                     <button key={`src_${t.id}`} 
                       onClick={() => sourceTasks.includes(t.id) ? setSourceTasks(sourceTasks.filter(id => id !== t.id)) : setSourceTasks([...sourceTasks, t.id])}
-                      className={`w-full text-left px-3 py-1.5 rounded text-[10px] font-bold transition-all border ${
+                      className={`w-full text-left px-3 py-1.5 rounded text-[12px] font-bold transition-all border ${
                         sourceTasks.includes(t.id) ? 'bg-blue-600 border-blue-700 text-white shadow-md translate-x-1' : 'bg-gray-50 border-gray-200 text-gray-500 hover:bg-blue-50'
                       }`}> 
                       {t.name}
@@ -529,7 +529,7 @@ return (
                   {tasks.map(t => (
                     <button key={`tgt_${t.id}`} 
                       onClick={() => targetTasks.includes(t.id) ? setTargetTasks(targetTasks.filter(id => id !== t.id)) : setTargetTasks([...targetTasks, t.id])}
-                      className={`w-full text-left px-3 py-1.5 rounded text-[10px] font-bold transition-all border ${
+                      className={`w-full text-left px-3 py-1.5 rounded text-[12px] font-bold transition-all border ${
                         targetTasks.includes(t.id) ? 'bg-indigo-600 border-indigo-700 text-white shadow-md translate-x-1' : 'bg-gray-50 border-gray-200 text-gray-500 hover:bg-indigo-50'
                       }`}>
                       {t.name}
