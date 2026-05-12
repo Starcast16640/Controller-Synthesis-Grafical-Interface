@@ -43,6 +43,7 @@ interface DataContextType {
   addSuccessionModule: (module: Omit<SuccessionModule, 'id' | 'created_at'>) => void;
   updateSuccessionModule: (id: string, updates: Partial<SuccessionModule>) => void;
   deleteSuccessionModule: (id: string) => void;
+  showNotify: (message: string, type?: 'success' | 'error') => void;
 }
 
 const DataContext = createContext<DataContextType | undefined>(undefined);
@@ -353,6 +354,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
         addSuccessionModule,
         updateSuccessionModule,
         deleteSuccessionModule,
+        showNotify,
       }}
     >
       {children}
