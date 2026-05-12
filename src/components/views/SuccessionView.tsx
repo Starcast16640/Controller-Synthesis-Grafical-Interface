@@ -126,23 +126,42 @@ export function SuccessionView() {
 
     setTaskPositions((prev) => {
       const newPos = [...prev];
-      currentModule.task_ids.forEach((taskId, idx) => {
+      const containerWidth = containerRef.current?.clientWidth || 800;
+      const maxCols = Math.max(1, Math.floor(containerWidth / (TASK_BLOCK_WIDTH + 40)));
+      const sources = currentModule.source_ids || [];
+      sources.forEach((taskId, idx) => {
         const localId = `${activeModuleId}_${taskId}`;
-        
-        const existing = newPos.find(p => p.id === localId);
-        if (!existing) {
+        if (!newPos.find(p => p.id === localId)) {
           if (savedPositions[localId]) {
             newPos.push({ id: localId, x: savedPositions[localId].x, y: savedPositions[localId].y });
           } else {
-            const cols = Math.ceil(Math.sqrt(currentModule.task_ids.length)) || 5;
             newPos.push({
               id: localId,
-              x: (idx % cols) * (TASK_BLOCK_WIDTH + 40) + 20,
-              y: Math.floor(idx / cols) * (TASK_BLOCK_HEIGHT + 40) + 20,
+              x: (idx % maxCols) * (TASK_BLOCK_WIDTH + 40) + 40,
+              y: Math.floor(idx / maxCols) * (TASK_BLOCK_HEIGHT + 40) + 40,
             });
           }
         }
       });
+      const targets = currentModule.target_ids || [];
+      targets.forEach((taskId, idx) => {
+        const localId = `${activeModuleId}_${taskId}`;
+        if (!newPos.find(p => p.id === localId)) {
+          if (savedPositions[localId]) {
+            newPos.push({ id: localId, x: savedPositions[localId].x, y: savedPositions[localId].y });
+          } else {
+            const sourceRows = Math.ceil(sources.length / maxCols);
+            const startY = 40 + (sourceRows * (TASK_BLOCK_HEIGHT + 40)) + 300; 
+
+            newPos.push({
+              id: localId,
+              x: (idx % maxCols) * (TASK_BLOCK_WIDTH + 40) + 40,
+              y: startY + Math.floor(idx / maxCols) * (TASK_BLOCK_HEIGHT + 40),
+            });
+          }
+        }
+      });
+
       return newPos;
     });
     setNodePositions((prev) => {
