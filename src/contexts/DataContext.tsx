@@ -197,16 +197,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
   const addSuccessionModule = (module: Omit<SuccessionModule, 'id' | 'created_at'>) => {
     const nameExists = successionModules.some(m => m.name.toLowerCase() === module.name.toLowerCase());
     if (nameExists) {
-      showNotify(`The name "${module.name}" is already used for a module.`, "error");
-      return;
-    }
-    const sortedNewIds = [...module.task_ids].sort();
-    const groupExists = successionModules.some(m => 
-      JSON.stringify([...m.task_ids].sort()) === JSON.stringify(sortedNewIds)
-    );
-
-    if (groupExists) {
-      showNotify("A module with this exact set of tasks already exists.", "error");
+      showNotify(`The name "${module.name}" is already used.`, "error");
       return;
     }
     const newModule = { 
