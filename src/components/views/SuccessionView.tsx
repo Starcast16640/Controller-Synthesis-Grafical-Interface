@@ -443,15 +443,27 @@ export function SuccessionView() {
       showNotify("Select at least 1 Source and 1 Target task.", "error");
       return;
     }
-
     const nameExists = successionModules.some(m => m.name.toLowerCase() === newModuleName.trim().toLowerCase());
     if (nameExists) {
       showNotify(`The name "${newModuleName}" is already used for a module.`, "error");
       return;
     }
+    const sortedSrc = [...sourceTasks].sort();
+    const sortedTgt = [...targetTasks].sort();
+    
+    const groupExists = successionModules.some(m => 
+      JSON.stringify([...(m.source_ids || [])].sort()) === JSON.stringify(sortedSrc) &&
+      JSON.stringify([...(m.target_ids || [])].sort()) === JSON.stringify(sortedTgt)
+    );
+
+    if (groupExists) {
+      showNotify("A module with this exact set of Sources and Targets already exists.", "error");
+      return;
+    }
     addSuccessionModule({
       name: newModuleName.trim(),
-      task_ids: [...new Set([...sourceTasks, ...targetTasks])] 
+      source_ids: sourceTasks,
+      target_ids: targetTasks
     });
     
     setModuleName('');
@@ -461,10 +473,13 @@ export function SuccessionView() {
 
   const handleUpdateModule = () => {
     if (!newModuleName.trim() || sourceTasks.length === 0 || targetTasks.length === 0) return;
+    
     updateSuccessionModule(editingModuleId, { 
       name: newModuleName.trim(), 
-      task_ids: [...new Set([...sourceTasks, ...targetTasks])] 
+      source_ids: sourceTasks, 
+      target_ids: targetTasks 
     });
+    
     setEditingIdModule(null);
     setModuleName('');
     setSourceTasks([]);
