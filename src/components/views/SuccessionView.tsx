@@ -462,6 +462,11 @@ export function SuccessionView() {
       showNotify("Select at least 1 Source and 1 Target task.", "error");
       return;
     }
+    const hasIntersection = sourceTasks.some(taskId => targetTasks.includes(taskId));
+    if (hasIntersection) {
+      showNotify("Une tâche ne peut pas être à la fois Source et Target dans le même module.", "error");
+      return;
+    }
     const nameExists = successionModules.some(m => m.name.toLowerCase() === newModuleName.trim().toLowerCase());
     if (nameExists) {
       showNotify(`The name "${newModuleName}" is already used for a module.`, "error");
