@@ -569,15 +569,24 @@ return (
                   Targets
                 </label>
                 <div className="flex-1 overflow-y-auto space-y-2.5 custom-scrollbar pr-2">
-                  {tasks.map(t => (
-                    <button key={`tgt_${t.id}`} 
-                      onClick={() => targetTasks.includes(t.id) ? setTargetTasks(targetTasks.filter(id => id !== t.id)) : setTargetTasks([...targetTasks, t.id])}
-                      className={`w-full text-left px-3 py-1.5 rounded text-[12px] font-bold transition-all border ${
-                        targetTasks.includes(t.id) ? 'bg-indigo-600 border-indigo-700 text-white shadow-md translate-x-1' : 'bg-gray-50 border-gray-200 text-gray-500 hover:bg-indigo-50'
-                      }`}>
-                      {t.name}
-                    </button>
-                  ))}
+                  {tasks.map(t => {
+                    const isSource = sourceTasks.includes(t.id);
+                  
+                    return (
+                      <button key={`tgt_${t.id}`} 
+                        disabled={isSource}
+                        onClick={() => targetTasks.includes(t.id) ? setTargetTasks(targetTasks.filter(id => id !== t.id)) : setTargetTasks([...targetTasks, t.id])}
+                        className={`w-full text-left px-3 py-1.5 rounded text-[10px] font-bold transition-all border ${
+                          targetTasks.includes(t.id) 
+                            ? 'bg-indigo-600 border-indigo-700 text-white shadow-md -translate-x-1' 
+                            : isSource 
+                              ? 'bg-gray-100 text-gray-300 border-gray-200 cursor-not-allowed opacity-50'
+                              : 'bg-gray-50 border-gray-200 text-gray-500 hover:bg-indigo-50'
+                        }`}>
+                        {t.name}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             </div>
