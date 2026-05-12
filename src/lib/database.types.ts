@@ -169,7 +169,8 @@ export interface Database {
 export interface SuccessionModule {
   id: string;
   name: string;
-  task_ids: string[];
+  source_ids: string[];
+  target_ids: string[];
   created_at: string;
 }
 
