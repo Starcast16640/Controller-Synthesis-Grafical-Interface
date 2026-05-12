@@ -556,7 +556,7 @@ return (
                       <button key={`src_${t.id}`} 
                         disabled={isTarget}
                         onClick={() => sourceTasks.includes(t.id) ? setSourceTasks(sourceTasks.filter(id => id !== t.id)) : setSourceTasks([...sourceTasks, t.id])}
-                        className={`w-full text-left px-3 py-1.5 rounded text-[10px] font-bold transition-all border ${
+                        className={`w-full text-left px-3 py-1.5 rounded text-[10px] font-bold transition border ${
                           sourceTasks.includes(t.id) 
                             ? 'bg-blue-600 border-blue-700 text-white shadow-md' 
                             : isTarget 
@@ -581,7 +581,7 @@ return (
                       <button key={`tgt_${t.id}`} 
                         disabled={isSource}
                         onClick={() => targetTasks.includes(t.id) ? setTargetTasks(targetTasks.filter(id => id !== t.id)) : setTargetTasks([...targetTasks, t.id])}
-                        className={`w-full text-left px-3 py-1.5 rounded text-[10px] font-bold transition-all border-2 ${
+                        className={`w-full text-left px-3 py-1.5 rounded text-[10px] font-bold transition border ${
                           targetTasks.includes(t.id) 
                             ? 'bg-indigo-600 border-indigo-700 text-white shadow-md -translate-x-1' 
                             : isSource 
