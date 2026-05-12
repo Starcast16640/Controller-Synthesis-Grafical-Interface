@@ -105,14 +105,33 @@ export function SuccessionView() {
   };
 
   const handleElementSelect = (id: string, type: 'task' | 'node') => {
+    const currentModule = successionModules.find(m => m.id === activeModuleId);
+    let isSource = false;
+    let isTarget = false;
+    if (type === 'task' && currentModule) {
+      isSource = currentModule.source_ids?.includes(id) || false;
+      isTarget = currentModule.target_ids?.includes(id) || false;
+    }
+
     setSelectedForLink((prev) => {
       if (prev.find((p) => p.id === id)) {
         return prev.filter((p) => p.id !== id);
       }
-      if (prev.length >= 2) {
+      if (prev.length === 0) {
+        if (isTarget) {
+          showNotify("Une Target ne peut pas être un point de départ.", "error");
+          return prev;
+        }
+        return [{ id, type }];
+      }
+      if (prev.length === 1) {
+        if (isSource) {
+          showNotify("Une Source ne peut pas recevoir de flèche.", "error");
+          return prev;
+        }
         return [prev[0], { id, type }];
       }
-      return [...prev, { id, type }];
+      return [prev[0], { id, type }];
     });
   };
 
