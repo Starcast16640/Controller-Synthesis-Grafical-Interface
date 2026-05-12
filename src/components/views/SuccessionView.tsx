@@ -573,7 +573,7 @@ return (
                 <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2 text-center border-b border-gray-100 pb-1">
                   Targets
                 </label>
-                <div className="flex-1 overflow-y-auto space-y-2.5 custom-scrollbar pr-2 pl-1 py-1 ">
+                <div className="flex-1 overflow-y-auto space-y-2.5 custom-scrollbar pr-2 pl-1">
                   {tasks.map(t => {
                     const isSource = sourceTasks.includes(t.id);
                   
