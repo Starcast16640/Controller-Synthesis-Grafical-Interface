@@ -720,11 +720,26 @@ return (
           <button
             onClick={() => {
               if (selectedForLink.length === 2) {
+                const currentModule = successionModules.find(m => m.id === activeModuleId);
+                const fromId = selectedForLink[0].id;
+                const toId = selectedForLink[1].id;
+                if (currentModule) {
+                  if (selectedForLink[0].type === 'task' && currentModule.target_ids?.includes(fromId)) {
+                    showNotify("Garde-fou : Les Targets ne peuvent pas émettre.", "error");
+                    setSelectedForLink([]);
+                    return;
+                  }
+                  if (selectedForLink[1].type === 'task' && currentModule.source_ids?.includes(toId)) {
+                    showNotify("Garde-fou : Les Sources ne peuvent pas recevoir.", "error");
+                    setSelectedForLink([]);
+                    return;
+                  }
+                }
                 addSuccessionArrow({
                   from_type: selectedForLink[0].type,
-                  from_id: selectedForLink[0].id,
+                  from_id: fromId,
                   to_type: selectedForLink[1].type,
-                  to_id: selectedForLink[1].id,
+                  to_id: toId,
                   module_id: activeModuleId,
                 });
                 setSelectedForLink([]);
