@@ -544,7 +544,7 @@ return (
                   Sources
                 </label>
                 <div className="flex-1 overflow-y-auto space-y-2.5 custom-scrollbar pr-2">
-                  {tasks.map(t => 
+                  {tasks.map(t => {
                     const isTarget = targetTasks.includes(t.id);
                   
                     return (
