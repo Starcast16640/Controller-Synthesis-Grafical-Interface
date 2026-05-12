@@ -517,7 +517,7 @@ return (
               placeholder="ex : MainCycle" 
               value={newModuleName}
               onChange={(e) => setModuleName(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 mb-4 outline-none"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
             />
             <div className="flex-1 flex gap-5 overflow-hidden mb-4">
               <div className="flex-1 flex flex-col overflow-hidden">
