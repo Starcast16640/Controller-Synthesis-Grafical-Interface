@@ -714,15 +714,23 @@ return (
                 const fromId = selectedForLink[0].id;
                 const toId = selectedForLink[1].id;
                 if (currentModule) {
-                  if (selectedForLink[0].type === 'task' && currentModule.target_ids?.includes(fromId)) {
-                    showNotify("Garde-fou : Les Targets ne peuvent pas émettre.", "error");
-                    setSelectedForLink([]);
-                    return;
+                  if (selectedForLink[0].type === 'task') {
+                    const isSource = currentModule.source_ids?.includes(fromId);
+                    const isTarget = currentModule.target_ids?.includes(fromId);
+                    if (isTarget && !isSource) {
+                      showNotify("Action bloquée : Une Target pure ne peut pas émettre.", "error");
+                      setSelectedForLink([]);
+                      return;
+                    }
                   }
-                  if (selectedForLink[1].type === 'task' && currentModule.source_ids?.includes(toId)) {
-                    showNotify("Garde-fou : Les Sources ne peuvent pas recevoir.", "error");
-                    setSelectedForLink([]);
-                    return;
+                  if (selectedForLink[1].type === 'task') {
+                    const isSource = currentModule.source_ids?.includes(toId);
+                    const isTarget = currentModule.target_ids?.includes(toId);
+                    if (isSource && !isTarget) {
+                      showNotify("Action bloquée : Une Source pure ne peut pas recevoir.", "error");
+                      setSelectedForLink([]);
+                      return;
+                    }
                   }
                 }
                 addSuccessionArrow({
