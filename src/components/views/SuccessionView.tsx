@@ -597,7 +597,7 @@ return (
                     return (
                       <button key={`tgt_${t.id}`}
                         onClick={() => targetTasks.includes(t.id) ? setTargetTasks(targetTasks.filter(id => id !== t.id)) : setTargetTasks([...targetTasks, t.id])}
-                        className={`w-full text-left px-3 py-1.5 rounded text-[16px] font-bold transition border ${
+                        className={`w-full text-left px-3 py-2 rounded text-[16px] font-bold transition border ${
                           targetTasks.includes(t.id) 
                             ? 'bg-indigo-600 border-indigo-700 text-white shadow-md -translate-x-1' 
                             : 'bg-gray-50 border-gray-200 text-gray-500 hover:bg-indigo-50'
