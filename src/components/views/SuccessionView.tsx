@@ -565,7 +565,7 @@ return (
             />
             <div className="flex-1 flex gap-5 overflow-hidden mb-4">
               <div className="flex-1 flex flex-col overflow-hidden">
-                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2 text-center border-b border-gray-100 pb-1">
+                <label className="block text-[13px] font-bold text-gray-400 uppercase tracking-wider mb-2 text-center border-b border-gray-100 pb-1">
                   Sources
                 </label>
                 <div className="flex-1 overflow-y-auto space-y-2.5 custom-scrollbar pr-2 pl-1">
@@ -587,7 +587,7 @@ return (
                 </div>
               </div>
               <div className="flex-1 flex flex-col overflow-hidden">
-                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2 text-center border-b border-gray-100 pb-1">
+                <label className="block text-[13px] font-bold text-gray-400 uppercase tracking-wider mb-2 text-center border-b border-gray-100 pb-1">
                   Targets
                 </label>
                 <div className="flex-1 overflow-y-auto space-y-2.5 custom-scrollbar pr-2 pl-1">
