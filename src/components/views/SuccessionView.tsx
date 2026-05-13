@@ -113,26 +113,27 @@ export function SuccessionView() {
       isSource = currentModule.source_ids?.includes(id) || false;
       isTarget = currentModule.target_ids?.includes(id) || false;
     }
-    if (selectedForLink.find((p) => p.id === id)) {
-      setSelectedForLink((prev) => prev.filter((p) => p.id !== id));
-      return;
-    }
-    if (selectedForLink.length === 0) {
-      if (isTarget) {
-        showNotify("Une Target ne peut pas être un point de départ.", "error");
-        return;
+    const isBoth = isSource && isTarget;
+    setSelectedForLink((prev) => {
+      if (prev.find((p) => p.id === id)) {
+        return prev.filter((p) => p.id !== id);
       }
-      setSelectedForLink([{ id, type }]);
-      return;
-    }
-    if (selectedForLink.length === 1) {
-      if (isSource) {
-        showNotify("Une Source ne peut pas recevoir de flèche.", "error");
-        return; 
+      if (prev.length === 0) {
+        if (isTarget && !isBoth) {
+          showNotify("Une Target pure ne peut pas émettre de flèche.", "error");
+          return prev;
+        }
+        return [{ id, type }];
       }
-      setSelectedForLink(prev => [prev[0], { id, type }]);
-      return;
-    }
+      if (prev.length === 1) {
+        if (isSource && !isBoth) {
+          showNotify("Une Source pure ne peut pas recevoir de flèche.", "error");
+          return prev;
+        }
+        return [prev[0], { id, type }];
+      }
+      return [prev[0], { id, type }];
+    });
   };
 
   useEffect(() => {
