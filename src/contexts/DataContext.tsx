@@ -140,8 +140,7 @@ export function DataProvider({ children }: { children: ReactNode }) {
 
     setIncompatibilityLinks(prev => prev.map(link => ({
       ...link,
-      task1_ids: (link.task1_ids || []).filter(taskId => taskId !== id),
-      task2_ids: (link.task2_ids || []).filter(taskId => taskId !== id)
+      task_ids: (link.task_ids || []).filter(taskId => taskId !== id)
     })));
   };
 
