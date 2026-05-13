@@ -142,6 +142,16 @@ export function DataProvider({ children }: { children: ReactNode }) {
       ...link,
       task_ids: (link.task_ids || []).filter(taskId => taskId !== id)
     })));
+
+    setSuccessionModules(prev => prev.map(module => ({
+      ...module,
+      source_ids: (module.source_ids || []).filter(srcId => srcId !== id),
+      target_ids: (module.target_ids || []).filter(tgtId => tgtId !== id)
+    })));
+
+    setSuccessionArrows(prev => prev.filter(a => a.from_id !== id && a.to_id !== id));
+
+    showNotify("Tâche supprimée du projet.", "error");
   };
 
   const addIncompatibilityLink = (link: { task_ids: string[] }) => {
