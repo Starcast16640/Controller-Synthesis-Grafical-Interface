@@ -565,7 +565,7 @@ return (
             />
             <div className="flex-1 flex gap-5 overflow-hidden mb-4">
               <div className="flex-1 flex flex-col overflow-hidden">
-                <label className="block text-[15px] font-bold text-gray-400 uppercase tracking-wider mb-2 text-center border-b border-gray-100 pb-1">
+                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2 text-center border-b border-gray-100 pb-1">
                   Sources
                 </label>
                 <div className="flex-1 overflow-y-auto space-y-2.5 custom-scrollbar pr-2 pl-1">
@@ -575,7 +575,7 @@ return (
                     return (
                       <button key={`src_${t.id}`} 
                         onClick={() => sourceTasks.includes(t.id) ? setSourceTasks(sourceTasks.filter(id => id !== t.id)) : setSourceTasks([...sourceTasks, t.id])}
-                        className={`w-full text-left px-3 py-1.5 rounded text-[12px] font-bold transition border ${
+                        className={`w-full text-left px-3 py-1.5 rounded text-[16px] font-bold transition border ${
                           sourceTasks.includes(t.id) 
                             ? 'bg-indigo-600 border-indigo-700 text-white shadow-md -translate-x-1' 
                             : 'bg-gray-50 border-gray-200 text-gray-500 hover:bg-indigo-50'
@@ -587,7 +587,7 @@ return (
                 </div>
               </div>
               <div className="flex-1 flex flex-col overflow-hidden">
-                <label className="block text-[15px] font-bold text-gray-400 uppercase tracking-wider mb-2 text-center border-b border-gray-100 pb-1">
+                <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-2 text-center border-b border-gray-100 pb-1">
                   Targets
                 </label>
                 <div className="flex-1 overflow-y-auto space-y-2.5 custom-scrollbar pr-2 pl-1">
@@ -597,7 +597,7 @@ return (
                     return (
                       <button key={`tgt_${t.id}`}
                         onClick={() => targetTasks.includes(t.id) ? setTargetTasks(targetTasks.filter(id => id !== t.id)) : setTargetTasks([...targetTasks, t.id])}
-                        className={`w-full text-left px-3 py-1.5 rounded text-[12px] font-bold transition border ${
+                        className={`w-full text-left px-3 py-1.5 rounded text-[16px] font-bold transition border ${
                           targetTasks.includes(t.id) 
                             ? 'bg-indigo-600 border-indigo-700 text-white shadow-md -translate-x-1' 
                             : 'bg-gray-50 border-gray-200 text-gray-500 hover:bg-indigo-50'
