@@ -137,6 +137,11 @@ export function SuccessionView() {
   };
 
   useEffect(() => {
+    setSourceTasks(prev => prev.filter(id => tasks.some(t => t.id === id)));
+    setTargetTasks(prev => prev.filter(id => tasks.some(t => t.id === id)));
+  }, [tasks]);
+
+  useEffect(() => {
     if (!activeModuleId) return;
 
     const currentModule = successionModules.find(m => m.id === activeModuleId);
