@@ -18,6 +18,10 @@ export function IncompatibilityView() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const btnRef = useRef<HTMLButtonElement>(null);
 
+  useEffect(() => {
+    setSelectedTasks(prev => prev.filter(id => tasks.some(t => t.id === id)));
+  }, [tasks]);
+
   const handleCreateGroup = () => {
     if (selectedTasks.length < 2) return;
     const sortedIds = [...selectedTasks].sort();
