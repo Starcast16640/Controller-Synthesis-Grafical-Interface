@@ -660,15 +660,13 @@ return (
                       <td className="px-6 py-4 text-right">
                         <div className="flex justify-end gap-2">
                           <button onClick={() => handleOpenModule(mod.id)} className="px-3 py-1 bg-emerald-500 text-white text-[10px] font-bold rounded-lg hover:bg-emerald-600 shadow-sm uppercase">Open Graph</button>
-                          <button 
-                            onClick={() => { 
-                              setEditingIdModule(mod.id); 
-                              setModuleName(mod.name); 
-                              const allIds = mod.task_ids || [];
-                              const half = Math.ceil(allIds.length / 2);
-                              setSourceTasks(allIds.slice(0, half));
-                              setTargetTasks(allIds.slice(half)); 
-                            }} 
+                          <button
+                            onClick={() => {
+                              setEditingIdModule(mod.id);
+                              setModuleName(mod.name);
+                              setSourceTasks([...(mod.source_ids || [])]);
+                              setTargetTasks([...(mod.target_ids || [])]);
+                            }}
                             className="text-blue-600 hover:text-blue-900 mr-4 ml-4"
                           >
                             <Edit className="w-4 h-4" />
