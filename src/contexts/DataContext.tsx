@@ -137,6 +137,10 @@ export function DataProvider({ children }: { children: ReactNode }) {
 
   const deleteTask = (id: string) => {
     setTasks(prev => prev.filter(t => t.id !== id));
+
+    setIncompatibilityLinks(prev => prev.filter(link => 
+      !link.task_ids.includes(id)
+    ));
   };
 
   const addIncompatibilityLink = (link: { task_ids: string[] }) => {
