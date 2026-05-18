@@ -867,11 +867,18 @@ return (
                   });
                 }}
               >
-                <span className={`font-black pointer-events-none ${isInit ? 'text-emerald-900' : 'text-yellow-900'} ${node.split_type === 'both' ? 'text-lg' : 'text-base'}`}>
-                  {node.split_type === 'both' ? '&' : (
-                    node.split_type === 'only_one' ? '1' : (
-                      node.split_type === 'selection' ? '?' : ''
-                    )
+                <span className={`font-black pointer-events-none ${isInit ? 'text-emerald-900' : 'text-yellow-900'} text-lg`}>
+                  {node.split_type === 'sync_and' && (
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+                  )}
+                  {node.split_type === 'cond_and' && (
+                    <span className="text-sm">∀</span>
+                  )}
+                  {node.split_type === 'only_one' && (
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/></svg> 
+                  )}
+                  {node.split_type === 'selection' && (
+                    <span className="text-sm">?</span>
                   )}
                 </span>
                 <div 
