@@ -1029,7 +1029,7 @@ return (
               <option value="none">None (Simple Junction)</option>
               <option value="sync_and">Synchronous AND (➕ - All start together)</option>
               <option value="cond_and">Conditional AND (∀ - Each has a condition)</option>
-              <option value="only_one">Exclusive OR (◯ - Only one starts)</option>
+              <option value="only_one">Exclusive OR (⊕ - Only one starts)</option>
               <option value="selection">Selection (? - Global Condition)</option>
             </select>
             {nodeForm.split_type === 'cond_and' && outgoingArrows.length > 0 && (
