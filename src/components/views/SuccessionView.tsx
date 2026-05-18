@@ -879,7 +879,7 @@ return (
                     <span className="text-sm">∀</span>
                   )}
                   {node.split_type === 'only_one' && (
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/></svg> 
+                    ⊕
                   )}
                   {node.split_type === 'selection' && (
                     <span className="text-sm">?</span>
