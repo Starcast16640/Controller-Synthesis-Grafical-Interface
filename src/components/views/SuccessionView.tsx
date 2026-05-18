@@ -1027,7 +1027,7 @@ return (
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 mb-4"
             >
               <option value="none">None (Simple Junction)</option>
-              <option value="sync_and">Synchronous AND (➕ - All start together)</option>
+              <option value="sync_and">Synchronous AND (& - All start together)</option>
               <option value="cond_and">Conditional AND (∀ - Each has a condition)</option>
               <option value="only_one">Exclusive OR (⊕ - Only one starts)</option>
               <option value="selection">Selection (? - Global Condition)</option>
