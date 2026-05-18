@@ -280,42 +280,27 @@ export function SuccessionView() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     successionArrows.forEach((arrow) => {
-      let { fromX, fromY, toX, toY } = getArrowCoords(arrow);
+      const { fromX, fromY, toX, toY, isBidirectional } = getArrowCoords(arrow);
       if (fromX !== null && fromY !== null && toX !== null && toY !== null) {
         const isHovered = isDeleteMode && arrow.id === hoveredArrowId;
         const color = isHovered ? '#ef4444' : '#3b82f6';
         ctx.strokeStyle = color;
         ctx.lineWidth = isHovered ? 4 : 2;
-        const isBidirectional = successionArrows.some(a => 
-          a.module_id === arrow.module_id && 
-          a.from_id === arrow.to_id && 
-          a.to_id === arrow.from_id
-        );
         let tipAngle;
+        ctx.beginPath();
+        ctx.moveTo(fromX, fromY);
         if (isBidirectional) {
           const dx = toX - fromX;
           const dy = toY - fromY;
           const dist = Math.sqrt(dx * dx + dy * dy);
-          const gap = 15; 
-          const offsetX = -(dy / dist) * gap;
-          const offsetY = (dx / dist) * gap;
-          fromX += offsetX;
-          fromY += offsetY;
-          toX += offsetX;
-          toY += offsetY;
           const midX = (fromX + toX) / 2;
           const midY = (fromY + toY) / 2;
-          const controlX = midX - (dy / dist) * 45;
-          const controlY = midY + (dx / dist) * 45;
-
-          ctx.beginPath();
-          ctx.moveTo(fromX, fromY);
+          const curveOffset = 30;
+          const controlX = midX - (dy / dist) * curveOffset;
+          const controlY = midY + (dx / dist) * curveOffset;
           ctx.quadraticCurveTo(controlX, controlY, toX, toY);
-          
           tipAngle = Math.atan2(toY - controlY, toX - controlX);
         } else {
-          ctx.beginPath();
-          ctx.moveTo(fromX, fromY);
           ctx.lineTo(toX, toY);
           tipAngle = Math.atan2(toY - fromY, toX - fromX);
         }
