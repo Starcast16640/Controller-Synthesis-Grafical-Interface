@@ -58,7 +58,7 @@ export function SuccessionView() {
   const [draggingNodeId, setDraggingNodeId] = useState<string | null>(null);
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const [editingNode, setEditingNode] = useState<string | null>(null);
-  const [nodeForm, setNodeForm] = useState({ name: '', expression: '', split_type: 'none', is_initial: false });
+  const [nodeForm, setNodeForm] = useState({ name: '', expression: '', split_type: 'none', is_initial: false, out_expressions: {} });
   const [editingNameId, setEditingNameId] = useState<string | null>(null);
   const [editingNameValue, setEditingNameValue] = useState('');
   const [isDrawingArrow, setIsDrawingArrow] = useState(false);
