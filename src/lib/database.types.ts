@@ -177,6 +177,16 @@ export interface SuccessionModule {
   created_at: string;
 }
 
+export interface Counter {
+  id: string;
+  name: string;
+  initial_value: number;
+  max_value: number;
+  factory_io_address: string;
+  expressions: { increase?: string; decrease?: string; reset?: string; };
+  created_at: string;
+}
+
 export type Sensor = Database['public']['Tables']['sensors']['Row'];
 export type Observer = Database['public']['Tables']['observers']['Row'];
 export type Task = Database['public']['Tables']['tasks']['Row'];
