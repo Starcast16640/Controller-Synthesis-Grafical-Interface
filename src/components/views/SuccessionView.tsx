@@ -222,7 +222,6 @@ export function SuccessionView() {
 
   const getArrowCoords = (arrow: any) => {
     if (arrow.module_id !== activeModuleId) return { fromX: null, fromY: null, toX: null, toY: null };
-
     const fromPos = arrow.from_type === 'task' 
       ? taskPositions.find(p => p.id === `${activeModuleId}_${arrow.from_id}`)
       : nodePositions.find(p => p.id === arrow.from_id);
@@ -230,43 +229,48 @@ export function SuccessionView() {
       ? taskPositions.find(p => p.id === `${activeModuleId}_${arrow.to_id}`)
       : nodePositions.find(p => p.id === arrow.to_id);
     if (!fromPos || !toPos) return { fromX: null, fromY: null, toX: null, toY: null };
-    let startX = arrow.from_type === 'task' ? fromPos.x + TASK_BLOCK_WIDTH / 2 : fromPos.x;
-    let startY = arrow.from_type === 'task' ? fromPos.y + TASK_BLOCK_HEIGHT / 2 : fromPos.y;
-    let endX = arrow.to_type === 'task' ? toPos.x + TASK_BLOCK_WIDTH / 2 : toPos.x;
-    let endY = arrow.to_type === 'task' ? toPos.y + TASK_BLOCK_HEIGHT / 2 : toPos.y;
-    const isBidirectional = successionArrows.some(a => 
-      a.module_id === arrow.module_id && a.from_id === arrow.to_id && a.to_id === arrow.from_id
-    );
-    let angle = Math.atan2(endY - startY, endX - startX);
-    let fromAngle = angle;
-    let toAngle = angle + Math.PI;
-
-    if (isBidirectional) {
-      fromAngle += 0.25; 
-      toAngle += 0.25; 
-    }
-    const getBoxIntersection = (cx: number, cy: number, currentAngle: number) => {
-      const cos = Math.cos(currentAngle);
-      const sin = Math.sin(currentAngle);
+    const startX = arrow.from_type === 'task' ? fromPos.x + TASK_BLOCK_WIDTH / 2 : fromPos.x;
+    const startY = arrow.from_type === 'task' ? fromPos.y + TASK_BLOCK_HEIGHT / 2 : fromPos.y;
+    const endX = arrow.to_type === 'task' ? toPos.x + TASK_BLOCK_WIDTH / 2 : toPos.x;
+    const endY = arrow.to_type === 'task' ? toPos.y + TASK_BLOCK_HEIGHT / 2 : toPos.y;
+    const angle = Math.atan2(endY - startY, endX - startX);
+    const getBoxIntersection = (cx: number, cy: number, isForward: boolean) => {
+      const ang = isForward ? angle : angle + Math.PI;
+      const cos = Math.cos(ang);
+      const sin = Math.sin(ang);
       const scale = Math.min(
         Math.abs((TASK_BLOCK_WIDTH / 2) / cos),
         Math.abs((TASK_BLOCK_HEIGHT / 2) / sin)
       );
       return { x: cx + cos * scale, y: cy + sin * scale };
     };
-    const fromX = arrow.from_type === 'node' 
-      ? startX + Math.cos(fromAngle) * NODE_RADIUS 
-      : getBoxIntersection(startX, startY, fromAngle).x;
-    const fromY = arrow.from_type === 'node' 
-      ? startY + Math.sin(fromAngle) * NODE_RADIUS 
-      : getBoxIntersection(startX, startY, fromAngle).y;
-    const toX = arrow.to_type === 'node'
-      ? endX + Math.cos(toAngle) * NODE_RADIUS
-      : getBoxIntersection(endX, endY, toAngle).x;
-    const toY = arrow.to_type === 'node'
-      ? endY + Math.sin(toAngle) * NODE_RADIUS 
-      : getBoxIntersection(endX, endY, toAngle).y;
-
+    let fromX = arrow.from_type === 'node' 
+      ? startX + Math.cos(angle) * NODE_RADIUS 
+      : getBoxIntersection(startX, startY, true).x;
+    let fromY = arrow.from_type === 'node' 
+      ? startY + Math.sin(angle) * NODE_RADIUS 
+      : getBoxIntersection(startX, startY, true).y;
+    let toX = arrow.to_type === 'node'
+      ? endX - Math.cos(angle) * NODE_RADIUS 
+      : getBoxIntersection(endX, endY, false).x;
+    let toY = arrow.to_type === 'node'
+      ? endY - Math.sin(angle) * NODE_RADIUS 
+      : getBoxIntersection(endX, endY, false).y;
+    const isBidirectional = successionArrows.some(a => 
+      a.module_id === arrow.module_id && a.from_id === arrow.to_id && a.to_id === arrow.from_id
+    );
+    if (isBidirectional) {
+      const gap = 12;
+      const dx = toX - fromX;
+      const dy = toY - fromY;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      const offsetX = -(dy / dist) * gap;
+      const offsetY = (dx / dist) * gap;
+      fromX += offsetX;
+      fromY += offsetY;
+      toX += offsetX;
+      toY += offsetY;
+    }
     return { fromX, fromY, toX, toY };
   };
   
