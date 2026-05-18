@@ -356,20 +356,12 @@ export function SuccessionView() {
       const mouseY = e.clientY - rect.top + container.scrollTop;
       let foundArrowId = null;
       for (const arrow of successionArrows) {
-        const { fromX, fromY, toX, toY, isBidirectional } = getArrowCoords(arrow);
+        const { fromX, fromY, toX, toY } = getArrowCoords(arrow);
         if (fromX && fromY && toX && toY) {
-          let dist;
-          if (isBidirectional) {
-             const dx = toX - fromX;
-             const dy = toY - fromY;
-             const d = Math.sqrt(dx * dx + dy * dy);
-             const midX = (fromX + toX) / 2 - (dy / d) * 30;
-             const midY = (fromY + toY) / 2 + (dx / d) * 30;
-             dist = Math.sqrt(Math.pow(mouseX - midX, 2) + Math.pow(mouseY - midY, 2));
-          } else {
-             dist = getDistanceToSegment({ x: mouseX, y: mouseY }, { x: fromX, y: fromY }, { x: toX, y: toY });
-          }
-          if (dist < 15) {
+          const dist = getDistanceToSegment(
+            { x: mouseX, y: mouseY }, { x: fromX, y: fromY }, { x: toX, y: toY }
+          );
+          if (dist < 10) {
             foundArrowId = arrow.id;
             break;
           }
