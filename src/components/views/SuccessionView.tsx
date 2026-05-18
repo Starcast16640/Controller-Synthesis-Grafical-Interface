@@ -878,7 +878,7 @@ return (
                   {node.split_type === 'cond_and' && (
                     <span className="text-sm">∀</span>
                   )}
-                  {node.split_type === 'only_one' && (*
+                  {node.split_type === 'only_one' && (
                     <span className="text-sm">⊕</span>
                   )}
                   {node.split_type === 'selection' && (
