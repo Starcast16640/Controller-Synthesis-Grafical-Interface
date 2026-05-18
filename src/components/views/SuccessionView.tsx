@@ -273,25 +273,40 @@ export function SuccessionView() {
 
     successionArrows.forEach((arrow) => {
       const { fromX, fromY, toX, toY } = getArrowCoords(arrow);
-      
       if (fromX !== null && fromY !== null && toX !== null && toY !== null) {
         const isHovered = isDeleteMode && arrow.id === hoveredArrowId;
         const color = isHovered ? '#ef4444' : '#3b82f6';
         ctx.strokeStyle = color;
         ctx.lineWidth = isHovered ? 4 : 2;
-
         ctx.beginPath();
         ctx.moveTo(fromX, fromY);
-        ctx.lineTo(toX, toY);
+        const isBidirectional = successionArrows.some(a => 
+          a.module_id === arrow.module_id && 
+          a.from_id === arrow.to_id && 
+          a.to_id === arrow.from_id
+        );
+        let tipAngle;
+        if (isBidirectional) {
+          const dx = toX - fromX;
+          const dy = toY - fromY;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          const midX = (fromX + toX) / 2;
+          const midY = (fromY + toY) / 2;
+          const controlX = midX - (dy / dist) * 30;
+          const controlY = midY + (dx / dist) * 30;
+          ctx.quadraticCurveTo(controlX, controlY, toX, toY);
+          tipAngle = Math.atan2(toY - controlY, toX - controlX);
+        } else {
+          ctx.lineTo(toX, toY);
+          tipAngle = Math.atan2(toY - fromY, toX - fromX);
+        }
         ctx.stroke();
-
-        const angle = Math.atan2(toY - fromY, toX - fromX);
         const arrowSize = 15;
         ctx.fillStyle = color;
         ctx.beginPath();
         ctx.moveTo(toX, toY);
-        ctx.lineTo(toX - arrowSize * Math.cos(angle - Math.PI / 6), toY - arrowSize * Math.sin(angle - Math.PI / 6));
-        ctx.lineTo(toX - arrowSize * Math.cos(angle + Math.PI / 6), toY - arrowSize * Math.sin(angle + Math.PI / 6));
+        ctx.lineTo(toX - arrowSize * Math.cos(tipAngle - Math.PI / 6), toY - arrowSize * Math.sin(tipAngle - Math.PI / 6));
+        ctx.lineTo(toX - arrowSize * Math.cos(tipAngle + Math.PI / 6), toY - arrowSize * Math.sin(tipAngle + Math.PI / 6));
         ctx.fill();
       }
     });
