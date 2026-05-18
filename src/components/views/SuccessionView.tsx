@@ -293,7 +293,7 @@ export function SuccessionView() {
           const midX = (fromX + toX) / 2;
           const midY = (fromY + toY) / 2;
           const controlX = midX - (dy / dist) * 60;
-          const controlY = midY + (dx / dist) * 45;
+          const controlY = midY + (dx / dist) * 60;
           ctx.quadraticCurveTo(controlX, controlY, toX, toY);
           tipAngle = Math.atan2(toY - controlY, toX - controlX);
         } else {
