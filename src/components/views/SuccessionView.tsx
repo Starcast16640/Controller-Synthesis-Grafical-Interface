@@ -221,57 +221,64 @@ export function SuccessionView() {
   }, [nodeForm.expression, sensors, observers, tasks, counters]);
 
   const getArrowCoords = (arrow: any) => {
-    if (arrow.module_id !== activeModuleId) return { fromX: null, fromY: null, toX: null, toY: null };
+    if (arrow.module_id !== activeModuleId) return { fromX: null, fromY: null, toX: null, toY: null, angle: null };
+
     const fromPos = arrow.from_type === 'task' 
       ? taskPositions.find(p => p.id === `${activeModuleId}_${arrow.from_id}`)
       : nodePositions.find(p => p.id === arrow.from_id);
+      
     const toPos = arrow.to_type === 'task'
       ? taskPositions.find(p => p.id === `${activeModuleId}_${arrow.to_id}`)
       : nodePositions.find(p => p.id === arrow.to_id);
-    if (!fromPos || !toPos) return { fromX: null, fromY: null, toX: null, toY: null };
+
+    if (!fromPos || !toPos) return { fromX: null, fromY: null, toX: null, toY: null, angle: null };
     const startX = arrow.from_type === 'task' ? fromPos.x + TASK_BLOCK_WIDTH / 2 : fromPos.x;
     const startY = arrow.from_type === 'task' ? fromPos.y + TASK_BLOCK_HEIGHT / 2 : fromPos.y;
     const endX = arrow.to_type === 'task' ? toPos.x + TASK_BLOCK_WIDTH / 2 : toPos.x;
     const endY = arrow.to_type === 'task' ? toPos.y + TASK_BLOCK_HEIGHT / 2 : toPos.y;
+
     const angle = Math.atan2(endY - startY, endX - startX);
-    const getBoxIntersection = (cx: number, cy: number, isForward: boolean) => {
-      const ang = isForward ? angle : angle + Math.PI;
-      const cos = Math.cos(ang);
-      const sin = Math.sin(ang);
-      const scale = Math.min(
-        Math.abs((TASK_BLOCK_WIDTH / 2) / cos),
-        Math.abs((TASK_BLOCK_HEIGHT / 2) / sin)
-      );
-      return { x: cx + cos * scale, y: cy + sin * scale };
-    };
-    let fromX = arrow.from_type === 'node' 
-      ? startX + Math.cos(angle) * NODE_RADIUS 
-      : getBoxIntersection(startX, startY, true).x;
-    let fromY = arrow.from_type === 'node' 
-      ? startY + Math.sin(angle) * NODE_RADIUS 
-      : getBoxIntersection(startX, startY, true).y;
-    let toX = arrow.to_type === 'node'
-      ? endX - Math.cos(angle) * NODE_RADIUS 
-      : getBoxIntersection(endX, endY, false).x;
-    let toY = arrow.to_type === 'node'
-      ? endY - Math.sin(angle) * NODE_RADIUS 
-      : getBoxIntersection(endX, endY, false).y;
     const isBidirectional = successionArrows.some(a => 
       a.module_id === arrow.module_id && a.from_id === arrow.to_id && a.to_id === arrow.from_id
     );
-    if (isBidirectional) {
-      const gap = 12;
-      const dx = toX - fromX;
-      const dy = toY - fromY;
-      const dist = Math.sqrt(dx * dx + dy * dy);
-      const offsetX = -(dy / dist) * gap;
-      const offsetY = (dx / dist) * gap;
-      fromX += offsetX;
-      fromY += offsetY;
-      toX += offsetX;
-      toY += offsetY;
-    }
-    return { fromX, fromY, toX, toY };
+    const gap = isBidirectional ? 12 : 0;
+    const getIntersection = (cx: number, cy: number, isTask: boolean, isForward: boolean) => {
+      const ux = Math.cos(angle);
+      const uy = Math.sin(angle);
+      const nx = -Math.sin(angle);
+      const ny = Math.cos(angle);
+      const ox = gap * nx;
+      const oy = gap * ny;
+      let t = 0;
+      if (!isTask) {
+        const dist = Math.sqrt(Math.max(0, NODE_RADIUS * NODE_RADIUS - gap * gap));
+        t = isForward ? dist : -dist;
+      } else {
+        const halfW = TASK_BLOCK_WIDTH / 2;
+        const halfH = TASK_BLOCK_HEIGHT / 2;
+        
+        let tx = Infinity;
+        if (Math.abs(ux) > 0.0001) {
+          const targetX = isForward ? Math.sign(ux) * halfW : -Math.sign(ux) * halfW;
+          tx = (targetX - ox) / ux;
+        }
+        let ty = Infinity;
+        if (Math.abs(uy) > 0.0001) {
+          const targetY = isForward ? Math.sign(uy) * halfH : -Math.sign(uy) * halfH;
+          ty = (targetY - oy) / uy;
+        }
+        
+        t = isForward ? Math.min(tx > 0 ? tx : Infinity, ty > 0 ? ty : Infinity) 
+                      : Math.max(tx < 0 ? tx : -Infinity, ty < 0 ? ty : -Infinity);
+      }
+
+      return { x: cx + ox + t * ux, y: cy + oy + t * uy };
+    };
+
+    const from = getIntersection(startX, startY, arrow.from_type === 'task', true);
+    const to = getIntersection(endX, endY, arrow.to_type === 'task', false);
+
+    return { fromX: from.x, fromY: from.y, toX: to.x, toY: to.y, angle };
   };
   
  useEffect(() => {
