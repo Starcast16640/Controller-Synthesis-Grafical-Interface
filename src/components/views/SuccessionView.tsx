@@ -221,46 +221,54 @@ export function SuccessionView() {
   }, [nodeForm.expression, sensors, observers, tasks, counters]);
 
   const getArrowCoords = (arrow: any) => {
-    if (arrow.module_id !== activeModuleId) return { fromX: null, fromY: null, toX: null, toY: null };
-
+    if (arrow.module_id !== activeModuleId) return { fromX: null, fromY: null, toX: null, toY: null, isBidirectional: false };
     const fromPos = arrow.from_type === 'task' 
       ? taskPositions.find(p => p.id === `${activeModuleId}_${arrow.from_id}`)
       : nodePositions.find(p => p.id === arrow.from_id);
-      
     const toPos = arrow.to_type === 'task'
       ? taskPositions.find(p => p.id === `${activeModuleId}_${arrow.to_id}`)
       : nodePositions.find(p => p.id === arrow.to_id);
-
-    if (!fromPos || !toPos) return { fromX: null, fromY: null, toX: null, toY: null };
-
-  const startX = arrow.from_type === 'task' ? fromPos.x + TASK_BLOCK_WIDTH / 2 : fromPos.x;
-  const startY = arrow.from_type === 'task' ? fromPos.y + TASK_BLOCK_HEIGHT / 2 : fromPos.y;
-  const endX = arrow.to_type === 'task' ? toPos.x + TASK_BLOCK_WIDTH / 2 : toPos.x;
-  const endY = arrow.to_type === 'task' ? toPos.y + TASK_BLOCK_HEIGHT / 2 : toPos.y;
-
-  const angle = Math.atan2(endY - startY, endX - startX);
-
-  const getBoxIntersection = (cx: number, cy: number, isForward: boolean) => {
-    const ang = isForward ? angle : angle + Math.PI;
-    const cos = Math.cos(ang);
-    const sin = Math.sin(ang);
-    const scale = Math.min(
-      Math.abs((TASK_BLOCK_WIDTH / 2) / cos),
-      Math.abs((TASK_BLOCK_HEIGHT / 2) / sin)
+    if (!fromPos || !toPos) return { fromX: null, fromY: null, toX: null, toY: null, isBidirectional: false };
+    let startX = arrow.from_type === 'task' ? fromPos.x + TASK_BLOCK_WIDTH / 2 : fromPos.x;
+    let startY = arrow.from_type === 'task' ? fromPos.y + TASK_BLOCK_HEIGHT / 2 : fromPos.y;
+    let endX = arrow.to_type === 'task' ? toPos.x + TASK_BLOCK_WIDTH / 2 : toPos.x;
+    let endY = arrow.to_type === 'task' ? toPos.y + TASK_BLOCK_HEIGHT / 2 : toPos.y;
+    const isBidirectional = successionArrows.some(a => 
+      a.module_id === arrow.module_id && a.from_id === arrow.to_id && a.to_id === arrow.from_id
     );
-    return { x: cx + cos * scale, y: cy + sin * scale };
+    if (isBidirectional) {
+      const dx = endX - startX;
+      const dy = endY - startY;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      const gap = 15;
+      const offsetX = -(dy / dist) * gap;
+      const offsetY = (dx / dist) * gap;
+      startX += offsetX;
+      startY += offsetY;
+      endX += offsetX;
+      endY += offsetY;
+    }
+    const angle = Math.atan2(endY - startY, endX - startX);
+    const getBoxIntersection = (cx: number, cy: number, isForward: boolean) => {
+      const ang = isForward ? angle : angle + Math.PI;
+      const cos = Math.cos(ang);
+      const sin = Math.sin(ang);
+      const scale = Math.min(
+        Math.abs((TASK_BLOCK_WIDTH / 2) / cos),
+        Math.abs((TASK_BLOCK_HEIGHT / 2) / sin)
+      );
+      return { x: cx + cos * scale, y: cy + sin * scale };
+    };
+    const from = arrow.from_type === 'node' 
+      ? { x: startX + Math.cos(angle) * NODE_RADIUS, y: startY + Math.sin(angle) * NODE_RADIUS }
+      : getBoxIntersection(startX, startY, true);
+
+    const to = arrow.to_type === 'node'
+      ? { x: endX - Math.cos(angle) * NODE_RADIUS, y: endY - Math.sin(angle) * NODE_RADIUS }
+      : getBoxIntersection(endX, endY, false);
+
+    return { fromX: from.x, fromY: from.y, toX: to.x, toY: to.y, isBidirectional };
   };
-    
-  const from = arrow.from_type === 'node' 
-    ? { x: startX + Math.cos(angle) * NODE_RADIUS, y: startY + Math.sin(angle) * NODE_RADIUS }
-    : getBoxIntersection(startX, startY, true);
-
-  const to = arrow.to_type === 'node'
-    ? { x: endX - Math.cos(angle) * NODE_RADIUS, y: endY - Math.sin(angle) * NODE_RADIUS }
-    : getBoxIntersection(endX, endY, false);
-
-  return { fromX: from.x, fromY: from.y, toX: to.x, toY: to.y };
-};
   
  useEffect(() => {
     const canvas = canvasRef.current;
