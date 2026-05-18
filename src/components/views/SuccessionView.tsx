@@ -284,42 +284,17 @@ export function SuccessionView() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     successionArrows.forEach((arrow) => {
-      const { fromX, fromY, toX, toY, isBidirectional } = getArrowCoords(arrow);
+      const { fromX, fromY, toX, toY } = getArrowCoords(arrow);
       if (fromX !== null && fromY !== null && toX !== null && toY !== null) {
         const isHovered = isDeleteMode && arrow.id === hoveredArrowId;
         const color = isHovered ? '#ef4444' : '#3b82f6';
         ctx.strokeStyle = color;
         ctx.lineWidth = isHovered ? 4 : 2;
-        let tipAngle; 
         ctx.beginPath();
         ctx.moveTo(fromX, fromY);
-        if (isBidirectional) {
-          const dx = toX - fromX;
-          const dy = toY - fromY;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          const midX = (fromX + toX) / 2;
-          const midY = (fromY + toY) / 2;
-          const curveOffset = 45;
-          const controlX = midX - (dy / dist) * curveOffset;
-          const controlY = midY + (dx / dist) * curveOffset;
-          ctx.quadraticCurveTo(controlX, controlY, toX, toY);
-          const targetNode = nodePositions.find(p => p.id === arrow.to_id);
-          const targetTask = taskPositions.find(p => p.id === `${activeModuleId}_${arrow.to_id}`);
-          let centerX = toX;
-          let centerY = toY;
-          if (targetNode) {
-            centerX = targetNode.x;
-            centerY = targetNode.y;
-          } else if (targetTask) {
-            centerX = targetTask.x + TASK_BLOCK_WIDTH / 2;
-            centerY = targetTask.y + TASK_BLOCK_HEIGHT / 2;
-          }
-          tipAngle = Math.atan2(toY - centerY, toX - centerX);
-        } else {
-          ctx.lineTo(toX, toY);
-          tipAngle = Math.atan2(toY - fromY, toX - fromX);
-        }
+        ctx.lineTo(toX, toY);
         ctx.stroke();
+        const tipAngle = Math.atan2(toY - fromY, toX - fromX);
         const arrowSize = 15;
         ctx.fillStyle = color;
         ctx.beginPath();
