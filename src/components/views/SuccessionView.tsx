@@ -562,6 +562,10 @@ export function SuccessionView() {
     return '#dbeafe';
   };
 
+  const outgoingArrows = editingNode 
+    ? successionArrows.filter(a => a.from_id === editingNode)
+    : [];
+
 return (
   <div className="p-6 h-full flex flex-col overflow-hidden">
     {!activeModuleId ? (
