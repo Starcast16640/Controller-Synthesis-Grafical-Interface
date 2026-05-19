@@ -219,14 +219,24 @@ export function SuccessionView() {
       'TRUE', 'FALSE', 'AUTO'
     ];
     const onlyCounterNames = counters.map(c => c.name);
-    const result = analyzeExpression(nodeForm.expression || '', allValidNames, onlyCounterNames);
-
+    let targetExpr = '';
+    if (nodeForm.split_type === 'selection') {
+      if (activeModalField) {
+        targetExpr = (nodeForm.out_expressions as any)?.[activeModalField] || '';
+      } else {
+        setDiag({ isValid: true, errorMessage: "", errorPos: 0 });
+        return;
+      }
+    } else {
+      targetExpr = nodeForm.expression || '';
+    }
+    const result = analyzeExpression(targetExpr, allValidNames, onlyCounterNames);
     setDiag({
       isValid: result.isValid,
       errorMessage: result.errorMessage || "",
       errorPos: result.errorPos || 0
     });
-  }, [nodeForm.expression, sensors, observers, tasks, counters]);
+  }, [nodeForm.expression, nodeForm.split_type, nodeForm.out_expressions, activeModalField, sensors, observers, tasks, counters]);
 
   const getArrowCoords = (arrow: any) => {
     if (arrow.module_id !== activeModuleId) return { fromX: null, fromY: null, toX: null, toY: null, angle: null };
