@@ -987,7 +987,7 @@ return (
                             ...nodeForm,
                             out_expressions: { ...(nodeForm.out_expressions as any), [arrow.id]: e.target.value }
                           })}
-                          className={`w-full px-2 py-1.5 text-xs font-mono border rounded focus:outline-none focus:ring-2 transition-all ${
+                          className={`w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent mb-4 ${
                             activeModalField === arrow.id && !diag.isValid 
                               ? 'border-red-500 bg-red-50 focus:ring-red-500 text-red-900' 
                               : 'border-indigo-200 focus:ring-indigo-500'
