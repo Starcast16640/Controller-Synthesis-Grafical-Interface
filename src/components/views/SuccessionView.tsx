@@ -75,6 +75,7 @@ export function SuccessionView() {
   const [editingModuleId, setEditingIdModule] = useState<string | null>(null);
   const [sourceTasks, setSourceTasks] = useState<string[]>([]);
   const [targetTasks, setTargetTasks] = useState<string[]>([]);
+  const [activeModalField, setActiveModalField] = useState<string>('main');
   const modalExprRef = useRef<HTMLTextAreaElement>(null);
 
   const insertInModal = (value: string) => {
