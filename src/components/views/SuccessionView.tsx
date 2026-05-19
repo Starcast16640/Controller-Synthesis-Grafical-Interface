@@ -1050,7 +1050,7 @@ return (
             >
               <option value="none">None (Simple Junction)</option>
               <option value="sync_and">Synchronous AND (& - All start together)</option>
-              <option value="cond_and">Asynchronous AND (∀ - Each has a condition)</option>
+              <option value="cond_and">Asynchronous AND (∀ - All start at different timings)</option>
               <option value="only_one">Exclusive OR (⊕ - Only one starts)</option>
               <option value="selection">Selection (? - Global Condition)</option>
             </select>
