@@ -1032,32 +1032,6 @@ return (
               <option value="only_one">Exclusive OR (⊕ - Only one starts)</option>
               <option value="selection">Selection (? - Global Condition)</option>
             </select>
-            {nodeForm.split_type === 'cond_and' && outgoingArrows.length > 0 && (
-              <div className="mb-4 p-3 bg-indigo-50 border border-indigo-200 rounded-lg">
-                <label className="block text-[10px] font-bold text-indigo-700 uppercase mb-2">Conditions per Outgoing Arrow</label>
-                {outgoingArrows.map((arrow, index) => {
-                  const targetTask = tasks.find(t => t.id === arrow.to_id.split('_')[1]);
-                  const targetName = targetTask ? targetTask.name : `Arrow ${index + 1}`;
-                  return (
-                    <div key={arrow.id} className="mb-2 last:mb-0">
-                      <label className="block text-[9px] font-bold text-indigo-500 uppercase mb-0.5">Condition for ➔ {targetName}</label>
-                      <div className="flex gap-2">
-                        <input
-                          type="text"
-                          placeholder={`Expression to allow ${targetName}`}
-                          value={(nodeForm.out_expressions as any)?.[arrow.id] || ''}
-                          onChange={(e) => setNodeForm({
-                            ...nodeForm,
-                            out_expressions: { ...(nodeForm.out_expressions as any), [arrow.id]: e.target.value }
-                          })}
-                          className="flex-1 px-2 py-1 text-xs font-mono border border-indigo-200 rounded focus:outline-none focus:ring-1 focus:ring-indigo-500"
-                        />
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            )}
             <div className="flex gap-2">
               <button
                 onClick={() => {
