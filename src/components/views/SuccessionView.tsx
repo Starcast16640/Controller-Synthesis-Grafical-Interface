@@ -1008,8 +1008,6 @@ return (
                 <span className="leading-tight break-words">{diag.errorMessage} (Pos: {diag.errorPos})</span>
               </div>
             )}
-              </> 
-            )}
             <label className="flex items-center gap-3 mb-6 p-3 bg-emerald-50 border border-emerald-100 rounded-lg cursor-pointer hover:bg-emerald-100 transition-colors">
               <input
                 type="checkbox"
