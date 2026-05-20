@@ -282,6 +282,9 @@ export function DataProvider({ children }: { children: ReactNode }) {
         });
         return { ...c, expressions: newExprs };
       });
+
+      const localTaskPositions = JSON.parse(localStorage.getItem('local_task_positions') || '{}');
+      
       const projectData = {
         sensors,
         observers: cleanObservers,
@@ -290,7 +293,8 @@ export function DataProvider({ children }: { children: ReactNode }) {
         successionNodes: cleanNodes,
         counters: cleanCounters,
         successionArrows,
-        successionModules
+        successionModules,
+        ui_positions: localTaskPositions
       };
       const json = JSON.stringify(projectData, null, 2);
         const blob = new Blob([json], { type: 'application/json' });
