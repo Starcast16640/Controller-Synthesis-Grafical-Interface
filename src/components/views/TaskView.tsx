@@ -49,6 +49,8 @@ export function TaskView() {
     ...counters.map(c => c.name),
     'TRUE', 'FALSE', 'AUTO'
   ];
+  
+  const onlyCounterNames = counters.map(c => c.name);
 
   useEffect(() => {
     if (!editingId) {
@@ -80,8 +82,6 @@ export function TaskView() {
   };
 
   useEffect(() => {
-    const onlyCounterNames = counters.map(c => c.name);
-
     const target = activeField === 'auth' ? formData.authorization_expression : formData.final_condition;
     const result = analyzeExpression(target, allValidNames, onlyCounterNames);
     
