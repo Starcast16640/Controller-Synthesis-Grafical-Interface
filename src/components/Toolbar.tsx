@@ -60,7 +60,7 @@ export function Toolbar({ currentView, onViewChange, onExport, onJsonExport, onJ
           <div className="relative" ref={menuRef}>
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className={`${sideBtnClass} w-[168px] bg-gray-800 text-white hover:bg-gray-900 justify-between px-4`}
+              className={`${sideBtnClass} items-center w-[168px] bg-gray-800 text-white hover:bg-gray-900 justify-between px-4`}
             >
               <div className="flex items-center gap-2">
                 <Layers className="w-4 h-4" />
