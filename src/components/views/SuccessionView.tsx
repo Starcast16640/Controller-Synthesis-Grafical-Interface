@@ -193,10 +193,10 @@ export function SuccessionView() {
               });
             }
           }
-        });
+        })
 
         return newPos;
-      })
+      });
 
       setNodePositions(() => {
         const newPos: NodePosition[] = [];
