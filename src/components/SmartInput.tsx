@@ -98,14 +98,18 @@ export function SmartInput({ value, onChange, onFocus, validNames, placeholder, 
       />
       {suggestions.length > 0 && (
         <div 
-          className="absolute z-50 bg-white border border-blue-200 shadow-xl rounded-md py-1 min-w-[150px] overflow-hidden"
-          style={{ top: `${cursorPos.top + 25}px`, left: `${cursorPos.left}px` }}
+          className="absolute z-[9999] bg-white border border-gray-200 shadow-2xl rounded-lg min-w-[180px] overflow-hidden divide-y divide-gray-50 animate-in fade-in slide-in-from-top-1"
+          style={{ top: `${cursorPos.top + 35}px`, left: `${cursorPos.left + 15}px` }}
         >
           {suggestions.map((s, index) => (
             <div 
               key={s}
               onMouseDown={(e) => { e.preventDefault(); insertSuggestion(s); }}
-              className={`px-3 py-1.5 text-xs font-bold cursor-pointer ${index === selectedIndex ? 'bg-blue-600 text-white' : 'text-gray-700 hover:bg-blue-50'}`}
+              className={`px-4 py-2 text-xs cursor-pointer transition-colors ${
+                index === selectedIndex 
+                  ? 'bg-blue-600 text-white font-bold' 
+                  : 'text-gray-700 font-medium hover:bg-gray-50'
+              }`}
             >
               {s}
             </div>
