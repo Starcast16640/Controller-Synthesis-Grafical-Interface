@@ -35,7 +35,7 @@ export function Toolbar({ currentView, onViewChange, onExport, onJsonExport, onJ
     { id: 'succession', label: 'Succession', icon: <GitBranch className="w-4 h-4" /> },
     { id: 'combined', label: 'Combined', icon: <Layers className="w-4 h-4" /> },
   ];
-  const sideBtnClass = "flex items-center justify-center w-[167px] gap-2 px-4 py-2 rounded-lg text-[13px] font-bold transition-all shadow-md h-10 uppercase whitespace-nowrap";
+  const sideBtnClass = "flex items-center justify-center w-[168px] gap-2 px-4 py-2 rounded-lg text-[13px] font-bold transition-all shadow-md h-10 uppercase whitespace-nowrap";
 
   return (
     <div className="bg-white border-b border-gray-200 px-6 py-3 shadow-sm">
