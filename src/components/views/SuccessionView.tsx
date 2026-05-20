@@ -151,13 +151,14 @@ export function SuccessionView() {
 
   useEffect(() => {
     if (!activeModuleId) return;
+
     const loadPositions = () => {
       const currentModule = successionModules.find(m => m.id === activeModuleId);
       if (!currentModule) return;
 
       const savedPositions = JSON.parse(localStorage.getItem('local_task_positions') || '{}');
-
-      setTaskPositions((prev) => {
+      
+      setTaskPositions(() => {
         const newPos: TaskPosition[] = []; 
         const containerWidth = containerRef.current?.clientWidth || 800;
         const maxCols = Math.max(1, Math.floor(containerWidth / (TASK_BLOCK_WIDTH + 40)));
@@ -179,7 +180,7 @@ export function SuccessionView() {
         const targets = currentModule.target_ids || [];
         targets.forEach((taskId, idx) => {
           const localId = `${activeModuleId}_${taskId}`;
-          if (!newPos.find(p => p.id === localId))
+          if (!newPos.find(p => p.id === localId)) {
             if (savedPositions[localId]) {
               newPos.push({ id: localId, x: savedPositions[localId].x, y: savedPositions[localId].y });
             } else {
@@ -197,7 +198,6 @@ export function SuccessionView() {
 
         return newPos;
       });
-
       setNodePositions(() => {
         const newPos: NodePosition[] = [];
         const moduleNodes = successionNodes.filter(n => n.module_id === activeModuleId);
