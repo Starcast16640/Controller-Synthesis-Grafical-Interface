@@ -42,6 +42,14 @@ export function TaskView() {
   const addressInputRef = useRef<HTMLInputElement>(null);
   const priorityInputRef = useRef<HTMLInputElement>(null);
 
+  const allValidNames = [
+    ...sensors.map(s => s.name),
+    ...observers.map(o => o.name),
+    ...tasks.map(t => t.name),
+    ...counters.map(c => c.name),
+    'TRUE', 'FALSE', 'AUTO'
+  ];
+
   useEffect(() => {
     if (!editingId) {
       const nextPrio = tasks.length === 0 ? 0 : Math.max(...tasks.map(t => t.priority)) + 1;
@@ -72,7 +80,6 @@ export function TaskView() {
   };
 
   useEffect(() => {
-    const allValidNames = [...sensors.map(s => s.name), ...observers.map(o => o.name), ...tasks.map(t => t.name), ...counters.map(c => c.name), 'TRUE', 'FALSE', 'AUTO'];
     const onlyCounterNames = counters.map(c => c.name);
 
     const target = activeField === 'auth' ? formData.authorization_expression : formData.final_condition;
