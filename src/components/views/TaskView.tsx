@@ -5,7 +5,6 @@ import type { Task } from '../../lib/database.types';
 import { analyzeExpression } from '../../lib/expressionParser';
 import { SmartInput } from '../SmartInput';
 
-
 interface TaskFormData {
   name: string;
   type: string[];
