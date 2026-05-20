@@ -1,3 +1,4 @@
+import { useState, useRef, useEffect } from 'react';
 import { Download, Gauge, Eye, ListTodo, Link2, GitBranch, Layers, Save, Upload, CheckCircle2, Hash, Binary } from 'lucide-react';
 
 export type ViewType = 'sensors' | 'observers' | 'tasks' | 'counters' | 'incompatibility' | 'succession' | 'combined';
