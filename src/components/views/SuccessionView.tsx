@@ -151,20 +151,20 @@ export function SuccessionView() {
 
   useEffect(() => {
     if (!activeModuleId) return;
+    const loadPositions = () => {
+      const currentModule = successionModules.find(m => m.id === activeModuleId);
+      if (!currentModule) return;
 
-    const currentModule = successionModules.find(m => m.id === activeModuleId);
-    if (!currentModule) return;
+      const savedPositions = JSON.parse(localStorage.getItem('local_task_positions') || '{}');
 
-    const savedPositions = JSON.parse(localStorage.getItem('local_task_positions') || '{}');
-
-    setTaskPositions((prev) => {
-      const newPos = [...prev];
-      const containerWidth = containerRef.current?.clientWidth || 800;
-      const maxCols = Math.max(1, Math.floor(containerWidth / (TASK_BLOCK_WIDTH + 40)));
-      const sources = currentModule.source_ids || [];
-      sources.forEach((taskId, idx) => {
-        const localId = `${activeModuleId}_${taskId}`;
-        if (!newPos.find(p => p.id === localId)) {
+      setTaskPositions((prev) => {
+        const newPos: TaskPosition[] = []; 
+        const containerWidth = containerRef.current?.clientWidth || 800;
+        const maxCols = Math.max(1, Math.floor(containerWidth / (TASK_BLOCK_WIDTH + 40)));
+        
+        const sources = currentModule.source_ids || [];
+        sources.forEach((taskId, idx) => {
+          const localId = `${activeModuleId}_${taskId}`;
           if (savedPositions[localId]) {
             newPos.push({ id: localId, x: savedPositions[localId].x, y: savedPositions[localId].y });
           } else {
@@ -174,40 +174,44 @@ export function SuccessionView() {
               y: Math.floor(idx / maxCols) * (TASK_BLOCK_HEIGHT + 40) + 40,
             });
           }
-        }
-      });
-      const targets = currentModule.target_ids || [];
-      targets.forEach((taskId, idx) => {
-        const localId = `${activeModuleId}_${taskId}`;
-        if (!newPos.find(p => p.id === localId)) {
-          if (savedPositions[localId]) {
-            newPos.push({ id: localId, x: savedPositions[localId].x, y: savedPositions[localId].y });
-          } else {
-            const sourceRows = Math.ceil(sources.length / maxCols);
-            const startY = 40 + (sourceRows * (TASK_BLOCK_HEIGHT + 40)) + 300; 
+        });
+        
+        const targets = currentModule.target_ids || [];
+        targets.forEach((taskId, idx) => {
+          const localId = `${activeModuleId}_${taskId}`;
+          if (!newPos.find(p => p.id === localId))
+            if (savedPositions[localId]) {
+              newPos.push({ id: localId, x: savedPositions[localId].x, y: savedPositions[localId].y });
+            } else {
+              const sourceRows = Math.ceil(sources.length / maxCols);
+              const startY = 40 + (sourceRows * (TASK_BLOCK_HEIGHT + 40)) + 300; 
 
-            newPos.push({
-              id: localId,
-              x: (idx % maxCols) * (TASK_BLOCK_WIDTH + 40) + 40,
-              y: startY + Math.floor(idx / maxCols) * (TASK_BLOCK_HEIGHT + 40),
-            });
+              newPos.push({
+                id: localId,
+                x: (idx % maxCols) * (TASK_BLOCK_WIDTH + 40) + 40,
+                y: startY + Math.floor(idx / maxCols) * (TASK_BLOCK_HEIGHT + 40),
+              });
+            }
           }
-        }
+        });
+
+        return newPos;
       });
 
-      return newPos;
-    });
-    setNodePositions((prev) => {
-      const newPos = [...prev];
-      const moduleNodes = successionNodes.filter(n => n.module_id === activeModuleId);
-      
-      moduleNodes.forEach((node) => {
-        if (!newPos.some(p => p.id === node.id)) {
+      setNodePositions(() => {
+        const newPos: NodePosition[] = [];
+        const moduleNodes = successionNodes.filter(n => n.module_id === activeModuleId);
+        
+        moduleNodes.forEach((node) => {
            newPos.push({ id: node.id, x: node.position_x, y: node.position_y });
-        }
+        });
+        return newPos;
       });
-      return newPos;
-    });
+    };
+    loadPositions();
+    window.addEventListener('storage_positions_updated', loadPositions);
+    return () => window.removeEventListener('storage_positions_updated', loadPositions);
+
   }, [activeModuleId, successionModules, successionNodes]);
 
   useEffect(() => {
