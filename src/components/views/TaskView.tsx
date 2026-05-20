@@ -301,8 +301,8 @@ export function TaskView() {
                 validNames={allValidNames}
                 className={`w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
                   activeField === 'auth' && !diag.isValid   
-                    ? 'border-red-500 bg-red-50 focus:ring-2 focus:ring-red-200 text-red-900 shadow-sm' 
-                    : 'border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 shadow-none'
+                    ? 'border-red-500 bg-red-50 focus:ring-red-500 text-red-900' 
+                    : 'border-gray-300 focus:ring-blue-500'
                 }`}
               />
             </div>
