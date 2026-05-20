@@ -329,7 +329,7 @@ export function TaskView() {
                   type="button" 
                   onMouseDown={(e) => e.preventDefault()}
                   onClick={() => setFormData({ ...formData, final_condition: 'AUTO' })}
-                  className="px-4 py-2 bg-orange-100 text-orange-700 rounded-lg text-xs font-bold border border-orange-200 hover:bg-orange-200 h-8"
+                  className="px-4 py-2 bg-orange-100 text-orange-700 rounded-lg text-xs font-bold border border-orange-200 hover:bg-orange-200 h-[11px] w-8"
                 >
                   SET AUTO
                 </button>
