@@ -312,13 +312,14 @@ export function TaskView() {
                 Final Condition
               </label>
               <div className="flex gap-2">
-                <input
-                  ref={finalRef}
+                <SmartInput
+                  inputRef={finalRef as any}
                   onFocus={() => setActiveField('final')}
                   placeholder="Final Condition (or 'AUTO')"
                   value={formData.final_condition}
-                  onChange={(e) => setFormData({ ...formData, final_condition: e.target.value })}
-                  className={`flex-1 px-4 py-2 border rounded-lg focus:ring-2 font-mono text-sm transition-colors resize-none ${
+                  onChange={(val) => setFormData({ ...formData, final_condition: val })}
+                  validNames={allValidNames}
+                  className={`flex-1 px-4 py-2 h-12 border rounded-lg focus:outline-none font-mono text-sm transition-all ${
                     activeField === 'final' && !diag.isValid 
                       ? 'border-red-500 bg-red-50 focus:ring-red-500 text-red-900' 
                       : 'border-gray-300 focus:ring-blue-500'
