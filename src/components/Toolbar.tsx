@@ -12,6 +12,20 @@ interface ToolbarProps {
 }
 
 export function Toolbar({ currentView, onViewChange, onExport, onJsonExport, onJsonImport }: ToolbarProps) {
+
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+  
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsMenuOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+  
   const views: { id: ViewType; label: string; icon: React.ReactNode }[] = [
     { id: 'sensors', label: 'Sensors', icon: <Gauge className="w-4 h-4" /> },
     { id: 'observers', label: 'Observers', icon: <Eye className="w-4 h-4" /> },
