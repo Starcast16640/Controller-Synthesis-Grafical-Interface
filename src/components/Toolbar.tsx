@@ -57,23 +57,44 @@ export function Toolbar({ currentView, onViewChange, onExport, onJsonExport, onJ
           ))}
         </div>
         <div className="flex items-center gap-2">
-          <button
-            onClick={onJsonExport}
-            className={`${sideBtnClass} bg-gray-800 text-white hover:bg-gray-900`}
+          <div className="relative" ref={menuRef}>
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className={`${sideBtnClass} bg-gray-800 text-white hover:bg-gray-900 justify-between px-4`}
             >
-            <Save className="w-4 h-4" />
-            <span>Download Save</span>
-          </button>
-          <label className={`${sideBtnClass} bg-blue-600 text-white hover:bg-blue-700 cursor-pointer`}>
-            <Upload className="w-4 h-4" />
-            <span>Upload Save</span>
-            <input 
-              type="file" 
-              accept=".json" 
-              className="hidden" 
-              onChange={(e) => e.target.files?.[0] && onJsonImport(e.target.files[0])} 
-            />
-          </label>
+              <div className="flex items-center gap-2">
+                <Layers className="w-4 h-4" />
+                <span>Project File</span>
+              </div>
+              <span className="text-[10px]">▼</span>
+            </button>
+
+            {isMenuOpen && (
+              <div className="absolute top-full right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-200 overflow-hidden z-50 animate-in fade-in slide-in-from-top-2">
+                <button
+                  onClick={() => { onJsonExport(); setIsMenuOpen(false); }}
+                  className="w-full flex items-center gap-3 px-4 py-3 text-left text-xs font-bold text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-colors border-b border-gray-100 uppercase"
+                >
+                  <Save className="w-4 h-4" />
+                  Download Save
+                </button>
+                
+                <label className="w-full flex items-center gap-3 px-4 py-3 text-left text-xs font-bold text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors cursor-pointer uppercase">
+                  <Upload className="w-4 h-4" />
+                  Upload Save
+                  <input 
+                    type="file" 
+                    accept=".json" 
+                    className="hidden" 
+                    onChange={(e) => {
+                      if (e.target.files?.[0]) onJsonImport(e.target.files[0]);
+                      setIsMenuOpen(false);
+                    }} 
+                  />
+                </label>
+              </div>
+            )}
+          </div>
           <button
             onClick={onExport}
             className={`${sideBtnClass} bg-green-600 text-white hover:bg-green-700`}
