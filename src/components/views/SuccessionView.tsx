@@ -193,7 +193,7 @@ export function SuccessionView() {
               });
             }
           }
-        })
+        });
 
         return newPos;
       });
