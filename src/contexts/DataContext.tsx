@@ -328,6 +328,12 @@ export function DataProvider({ children }: { children: ReactNode }) {
         if (data.successionArrows) setSuccessionArrows(data.successionArrows);
         if (data.counters) setCounters(data.counters);
         if (data.successionModules) setSuccessionModules(data.successionModules);
+
+        if (data.ui_positions) {
+          localStorage.setItem('local_task_positions', JSON.stringify(data.ui_positions));
+          window.dispatchEvent(new Event('storage_positions_updated'));
+        }
+        
         showNotify("Project loaded successfully!", "success");
       } catch (err) {
         showNotify("Error: Invalid JSON file.", "error");
