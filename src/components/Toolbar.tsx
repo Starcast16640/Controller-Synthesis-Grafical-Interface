@@ -70,7 +70,7 @@ export function Toolbar({ currentView, onViewChange, onExport, onJsonExport, onJ
             </button>
 
             {isMenuOpen && (
-              <div className="absolute top-full right-0 mt-2 w-48 bg-white rounded-xl shadow-xl border border-gray-200 overflow-hidden z-50 animate-in fade-in slide-in-from-top-2">
+              <div className="absolute top-full left-0 mt-2 w-full bg-white rounded-xl shadow-xl border border-gray-200 overflow-hidden z-50 animate-in fade-in slide-in-from-top-2">
                 <button
                   onClick={() => { onJsonExport(); setIsMenuOpen(false); }}
                   className="w-full flex items-center gap-3 px-4 py-3 text-left text-xs font-bold text-gray-700 hover:bg-gray-50 hover:text-blue-600 transition-colors border-b border-gray-100 uppercase"
