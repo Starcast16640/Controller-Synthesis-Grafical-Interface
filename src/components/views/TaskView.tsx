@@ -3,7 +3,6 @@ import { useData } from '../../contexts/DataContext';
 import { Plus, Trash2, Edit, X } from 'lucide-react';
 import type { Task } from '../../lib/database.types';
 import { analyzeExpression } from '../../lib/expressionParser';
-import { SmartInput } from '../SmartInput';
 
 interface TaskFormData {
   name: string;
@@ -292,17 +291,17 @@ export function TaskView() {
               <label className="block text-xs font-bold text-gray-500 uppercase mb-1">
                 Authorization Logic
               </label> 
-              <SmartInput
-                inputRef={authRef as any}
+              <input
+                ref={authRef}
                 onFocus={() => setActiveField('auth')}
+                type="text"
                 placeholder="Authorization Expression"
                 value={formData.authorization_expression}
-                onChange={(val) => setFormData({ ...formData, authorization_expression: val })}
-                validNames={allValidNames}
-                className={`flex-1 px-4 py-2 border rounded-lg focus:ring-2 font-mono text-sm transition-colors resize-none ${
-                  activeField === 'auth' && !diag.isValid   
-                    ? 'border-red-500 bg-red-50 focus:ring-2 focus:ring-red-200 text-red-900 shadow-sm' 
-                    : 'border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 shadow-none'
+                onChange={(e) => setFormData({ ...formData, authorization_expression: e.target.value })}
+                className={`w-full px-4 py-2 border rounded-lg focus:ring-2 font-mono text-sm transition-colors ${
+                  activeField === 'auth' && !diag.isValid 
+                    ? 'border-red-500 bg-red-50 focus:ring-red-500 text-red-900' 
+                    : 'border-gray-300 focus:ring-blue-500'
                 }`}
               />
             </div>
