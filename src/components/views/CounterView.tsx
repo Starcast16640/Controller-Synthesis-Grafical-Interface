@@ -186,7 +186,7 @@ export function CounterView() {
                     onFocus={() => setActiveField('increase')} 
                     value={formData.expressions.increase || ''}
                     onChange={(val) => setFormData({...formData, expressions: {...formData.expressions, increase: val}})}
-                    validNames={allValidNames}
+                    validNames={allNames}
                     placeholder="Increase Expression"
                     className={`w-full px-4 py-2 border rounded-lg focus:outline-none font-mono text-sm transition-all resize-none h-12 ${
                       activeField === 'increase' && !diag.isValid 
