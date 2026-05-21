@@ -36,7 +36,11 @@ export function SmartInput({ value, onChange, onFocus, validNames, placeholder, 
         setSelectedIndex(0);
         const lines = textBeforeCursor.split('\n');
         const currentLine = lines.length;
-        setCursorPos({ top: currentLine * 20, left: 16 });
+        const lines = textBeforeCursor.split('\n');
+        const currentLine = lines.length - 1;
+        const currentLineText = lines[currentLine];
+        const leftOffset = Math.min(currentLineText.length * 7, textarea.current ? textarea.current.clientWidth - 180 : 0);
+        setCursorPos({ top: currentLine * 24, left: leftOffset });
       } else {
         setSuggestions([]);
       }
