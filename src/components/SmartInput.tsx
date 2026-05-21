@@ -35,8 +35,6 @@ export function SmartInput({ value, onChange, onFocus, validNames, placeholder, 
         setSuggestions(filtered.slice(0, 5));
         setSelectedIndex(0);
         const lines = textBeforeCursor.split('\n');
-        const currentLine = lines.length;
-        const lines = textBeforeCursor.split('\n');
         const currentLine = lines.length - 1;
         const currentLineText = lines[currentLine];
         const leftOffset = Math.min(currentLineText.length * 7, textarea.current ? textarea.current.clientWidth - 180 : 0);
