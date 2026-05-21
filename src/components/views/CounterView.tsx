@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useData } from '../../contexts/DataContext';
 import { Plus, Trash2, Edit, Binary } from 'lucide-react';
 import { analyzeExpression } from '../../lib/expressionParser';
+import { SmartInput } from '../SmartInput';
 
 export function CounterView() {
   const { counters, sensors, observers, tasks, addCounter, updateCounter, deleteCounter, showNotify } = useData();
@@ -109,14 +110,15 @@ export function CounterView() {
     }, 0);
   };
 
-  useEffect(() => {
-    const allNames = [
+  const allNames = [
       ...sensors.map(s => s.name), 
       ...observers.map(o => o.name), 
       ...tasks.map(t => t.name), 
       ...counters.map(c => c.name),
       'TRUE', 'FALSE'
     ];
+
+  useEffect(() => {
     const currentExpr = (formData.expressions?.[activeField as keyof typeof formData.expressions]) || '';
     const result = analyzeExpression(currentExpr, allNames);
 
@@ -178,20 +180,20 @@ export function CounterView() {
           <div className="space-y-4 p-4 bg-gray-50/50 rounded-xl border border-gray-100">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-bold text-green-500 uppercase mb-1">Increase Condition (+1)</label>
-                <input 
-                  ref={increaseRef}
-                  type="text" 
-                  onFocus={() => setActiveField('increase')} 
-                  value={formData.expressions.increase}
-                  onChange={(e) => setFormData({...formData, expressions: {...formData.expressions, increase: e.target.value}})}
-                  className={`w-full px-4 py-2 border rounded-lg focus:ring-2 font-mono text-sm transition-colors ${
-                    activeField === 'increase' && !diag.isValid 
-                      ? 'border-red-500 bg-red-50 focus:ring-red-500 text-red-900 shadow-sm' 
-                      : 'border-gray-300 focus:ring-blue-500 shadow-none'
-                  }`} 
-                  placeholder="Increase Expression" 
-                />
+                <label className="block text-[10px] font-bold text-green-600 uppercase mb-1">Increase Condition (+1)</label>
+                  <SmartInput 
+                    inputRef={increaseRef as any}
+                    onFocus={() => setActiveField('increase')} 
+                    value={formData.expressions.increase || ''}
+                    onChange={(val) => setFormData({...formData, expressions: {...formData.expressions, increase: val}})}
+                    validNames={allValidNames}
+                    placeholder="Increase Expression"
+                    className={`w-full px-4 py-2 border rounded-lg focus:outline-none font-mono text-sm transition-all resize-none h-12 ${
+                      activeField === 'increase' && !diag.isValid 
+                        ? 'border-red-500 bg-red-50 focus:ring-2 focus:ring-red-200 text-red-900 shadow-sm' 
+                        : 'border-gray-300 focus:ring-blue-500 shadow-none'
+                    }`} 
+                  />
               </div>
               <div>
                 <label className="block text-xs font-bold text-red-500 uppercase mb-1">Decrease Condition (-1)</label>
